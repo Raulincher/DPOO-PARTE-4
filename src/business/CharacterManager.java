@@ -4,6 +4,7 @@ import business.entities.Character;
 import persistance.CharacterAPI;
 import persistance.CharacterDAO;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -41,6 +42,22 @@ public class CharacterManager {
      */
     public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit){
         return characterDAO.saveCharacter(new Character(characterName, playerName, characterLevel, body, mind, spirit));
+    }
+
+
+    /**
+     * Esta función servirá para crear un character
+     *
+     * @param characterName, el nombre deseado del personaje
+     * @param playerName, el nombre del jugador
+     * @param characterLevel, el nivel deseado del personaje
+     * @param body, el body deseado del personaje
+     * @param mind, el mind deseado del personaje
+     * @param spirit, el espíritu deseado del personaje
+     * @return se guardará a través del DAO el personaje creado
+     */
+    public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit) throws IOException {
+        return characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Character(characterName, playerName, characterLevel, body, mind, spirit));
     }
 
     /**
@@ -457,6 +474,17 @@ public class CharacterManager {
      */
     public ArrayList<Character> getAllCharacters(){
         return characterDAO.readCharacterJSON();
+    }
+
+
+    /**
+     * Esta función pide a través de la API una lista con el nombre de todos
+     * los characters existentes
+     *
+     * @return devolverá un Array con todos los personajes
+     */
+    public Character[] getAPICharacters() throws IOException {
+        return characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
     }
 
     /**

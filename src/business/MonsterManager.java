@@ -4,6 +4,7 @@ import business.entities.Monster;
 import persistance.MonsterAPI;
 import persistance.MonsterDAO;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -31,6 +32,14 @@ public class MonsterManager {
      * @return ArrayList con los Monsters
      */
     public ArrayList<Monster> getAllMonsters(){return monsterDAO.getListOfMonsters();}
+
+
+    /**
+     * Esta función genera una ArrayList con todos los Monsters
+     *
+     * @return ArrayList con los Monsters
+     */
+    public Monster[] getAPIMonsters() throws IOException {return monsterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/shared/monsters");}
 
     /**
      * Esta función calcula cuanto daño causará un Monster dependiendo

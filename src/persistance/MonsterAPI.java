@@ -1,5 +1,8 @@
 package persistance;
 
+import business.entities.Monster;
+import com.google.gson.Gson;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -12,6 +15,7 @@ import java.net.http.HttpResponse;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 
 public class MonsterAPI {
     private final HttpClient client;
@@ -41,7 +45,7 @@ public class MonsterAPI {
      * @return The contents of the URL represented as text.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public String getFromUrl(String url) throws IOException {
+    public Monster[] getFromUrl(String url) throws IOException {
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -53,7 +57,8 @@ public class MonsterAPI {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             // Just return the body
-            return response.body();
+            Gson g = new Gson();
+            return g.fromJson(response.body(), Monster[].class);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);

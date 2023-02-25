@@ -8,6 +8,7 @@ import business.entities.Character;
 import business.entities.Monster;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +28,7 @@ public class UIController {
     }
 
 
-    public void run() {
+    public void run() throws IOException {
         int option;
         boolean isUsingApi = false;
         int i = 0;
@@ -56,6 +57,8 @@ public class UIController {
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
                             executeOption(option, isUsingApi);
+                        }else{
+                            uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                         }
                     }else if(adventures == null){
                         uiManager.showMainMenu();
@@ -75,23 +78,28 @@ public class UIController {
                 uiManager.showMessage("Error: The monsters.json file can’t be accessed.\n");
             }
         }else{
+
+            Monster[] getMonstersFromApi = monsterManager.getAPIMonsters();
             isUsingApi = true;
-            if(serverConnect){
+
+            if(getMonstersFromApi != null){
                 uiManager.showMessage("Data was successfully loaded.\n\n\n");
 
                 do {
-                    ArrayList<Character> characters = characterManager.getAllCharacters();
-                    for (Character character: characters) {
+                    Character[] characters = characterManager.getAPICharacters();
+                    for (Character ignored : characters) {
                         i++;
                         totalCharacters = i;
                     }
                     i = 0;
-                    ArrayList<Adventure> adventures = adventureManager.getAdventuresList();
+                    Adventure[] adventures = adventureManager.getAPIAdventuresList();
                     if(totalCharacters < 3){
                         uiManager.showMainMenuDissabled();
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
                             executeOption(option, isUsingApi);
+                        }else{
+                            uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                         }
                     }else if(adventures == null){
                         uiManager.showMainMenu();
@@ -121,7 +129,7 @@ public class UIController {
 
                     do {
                         ArrayList<Character> characters = characterManager.getAllCharacters();
-                        for (Character character: characters) {
+                        for (Character ignored : characters) {
                             i++;
                             totalCharacters = i;
                         }
@@ -132,6 +140,8 @@ public class UIController {
                             option = uiManager.askForInteger("\nYour answer: ");
                             if(option != 4){
                                 executeOption(option, isUsingApi);
+                            }else{
+                                uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                             }
                         }else if(adventures == null){
                             uiManager.showMainMenu();
@@ -155,7 +165,7 @@ public class UIController {
     }
 
 
-    private void executeOption(int option, boolean isUsingApi) {
+    private void executeOption(int option, boolean isUsingApi) throws IOException {
         uiManager.showMessage("");
         switch (option) {
             case 1:
@@ -180,11 +190,12 @@ public class UIController {
         }
     }
 
-    private void characterCreation(boolean isUsingApi){
+    private void characterCreation(boolean isUsingApi) throws IOException {
         int error = 0;
         String characterName = "NoCharacterName";
         String playerName = "NoPlayerName";
         int characterLevel = 0;
+        boolean saved = false;
         boolean exist = false;
         uiManager.showMessage("""
                 Tavern keeper: “Oh, so you are new to this land.”
@@ -260,8 +271,12 @@ public class UIController {
 
         //class
         //String characterClass = "Adventurer";
+        if(!isUsingApi){
+            saved = characterManager.createCharacter(characterName, playerName, experience, bodySum, mindSum, spiritSum);
+        }else{
+            saved = characterManager.createCharacterAPI(characterName, playerName, experience, bodySum, mindSum, spiritSum);
+        }
 
-        boolean saved = characterManager.createCharacter(characterName, playerName, experience, bodySum, mindSum, spiritSum);
 
 
         if (saved){
@@ -270,6 +285,7 @@ public class UIController {
             uiManager.showMessage("\nTavern keeper: “Im sorry friend but " + characterName +  " couldn't be found on the guild. Try it again next time.");
             uiManager.showMessage("There is an error in the save of your character.");
         }
+
     }
 
 

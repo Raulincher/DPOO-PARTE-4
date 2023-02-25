@@ -6,6 +6,7 @@ import business.entities.Character;
 import persistance.AdventureAPI;
 import persistance.AdventureDAO;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -100,6 +101,8 @@ public class AdventureManager {
     public ArrayList<Adventure> getAdventuresList(){
         return adventureDAO.getAllAdventures();
     }
+
+    public Adventure[] getAPIAdventuresList() throws IOException {return adventureAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures");}
 
 
     public boolean checkMonsterTypeOfEncounter(ArrayList<Monster> monstersInEncounter, ArrayList<Monster> monstersList, int option){

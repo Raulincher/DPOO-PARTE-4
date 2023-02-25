@@ -1,5 +1,8 @@
 package persistance;
 
+import business.entities.Character;
+import com.google.gson.Gson;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -41,7 +44,7 @@ public class CharacterAPI {
      * @return The contents of the URL represented as text.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public String getFromUrl(String url) throws IOException {
+    public Character[] getFromUrl(String url) throws IOException {
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -53,7 +56,8 @@ public class CharacterAPI {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             // Just return the body
-            return response.body();
+            Gson g = new Gson();
+            return g.fromJson(response.body(), Character[].class);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);
@@ -66,20 +70,28 @@ public class CharacterAPI {
      * The request body is set to the corresponding parameter, and the response body is returned just in case.
      *
      * @param url  A String representation of the URL to post to, which will be assumed to use HTTP/HTTPS.
-     * @param body The content to post, which will be sent to the server in the request body.
+     * @param character The content to post, which will be sent to the server in the request body.
      * @return The contents of the response, in case the server sends anything back after posting the content.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public String postToUrl(String url, String body) throws IOException {
+    public Boolean postToUrl(String url, Character character) throws IOException {
+
+        boolean saved = false;
+        Gson g = new Gson();
+        String characterString = g.toJson(character);
+
+        System.out.println(characterString);
+
         try {
             // Define the request
             // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
-            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(body)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(characterString)).build();
 
             // We could use a BodyHandler that discards the response body, but here we return the API's response
             // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
+            response.body();
+            return saved;
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);
