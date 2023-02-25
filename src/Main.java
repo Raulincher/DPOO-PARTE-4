@@ -1,19 +1,18 @@
 import business.AdventureManager;
 import business.CharacterManager;
 import business.MonsterManager;
-import persistance.AdventureDAO;
-import persistance.CharacterDAO;
-import persistance.MonsterDAO;
+import persistance.*;
 import presentation.UIController;
 import presentation.UIManager;
 import java.io.File;
+import java.io.IOException;
 
 public class Main {
 
     /**
      * Función padre para hacer funcionar el programa
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
         // Indicamos los JSON
         File characterJSON = new File("files/characters.json");
@@ -24,12 +23,14 @@ public class Main {
         MonsterDAO monsterDAO = new MonsterDAO();
         CharacterDAO characterDAO = new CharacterDAO();
         AdventureDAO adventureDAO = new AdventureDAO();
-
+        MonsterAPI monsterAPI = new MonsterAPI();
+        CharacterAPI characterAPI = new CharacterAPI();
+        AdventureAPI adventureAPI = new AdventureAPI();
 
         // Business
-        CharacterManager characterManager = new CharacterManager(characterDAO);
-        AdventureManager adventureManager = new AdventureManager(adventureDAO, characterManager);
-        MonsterManager monsterManager = new MonsterManager(monsterDAO);
+        CharacterManager characterManager = new CharacterManager(characterDAO, characterAPI);
+        AdventureManager adventureManager = new AdventureManager(adventureDAO, characterManager, adventureAPI);
+        MonsterManager monsterManager = new MonsterManager(monsterDAO, monsterAPI);
 
         // Presentation
         UIManager uiManager = new UIManager();

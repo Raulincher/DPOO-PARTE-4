@@ -2,15 +2,15 @@
   {
     "name": "Amrod",
     "player": "SonsOfFeanor",
-    "xp": 229,
-    "body": 2,
+    "xp": 293,
+    "body": 1,
     "mind": 0,
     "spirit": 0
   },
   {
     "name": "Caranthir",
     "player": "SonsOfFeanor",
-    "xp": 306,
+    "xp": 1930,
     "body": 2,
     "mind": 0,
     "spirit": 1
@@ -18,7 +18,7 @@
   {
     "name": "Curufin",
     "player": "SonsOfFeanor",
-    "xp": 286,
+    "xp": 1910,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -26,7 +26,7 @@
   {
     "name": "Elendil",
     "player": "Eru Ilúvatar",
-    "xp": 307,
+    "xp": 1635,
     "body": 1,
     "mind": 3,
     "spirit": 2
@@ -34,7 +34,7 @@
   {
     "name": "Fëanor",
     "player": "SonsOfFeanor",
-    "xp": 407,
+    "xp": 1587,
     "body": 1,
     "mind": 1,
     "spirit": 2

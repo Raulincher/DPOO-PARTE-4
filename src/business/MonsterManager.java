@@ -1,6 +1,7 @@
 package business;
 
 import business.entities.Monster;
+import persistance.MonsterAPI;
 import persistance.MonsterDAO;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class MonsterManager {
 
     // Añadimos los componentes
     MonsterDAO monsterDAO;
+    MonsterAPI monsterAPI;
 
     // Creamos los constructores
     /**
@@ -18,9 +20,9 @@ public class MonsterManager {
      *
      * @param monsterDAO, lo vincularemos con su respectivo DAO
      */
-    public MonsterManager(MonsterDAO monsterDAO) {
-
+    public MonsterManager(MonsterDAO monsterDAO, MonsterAPI monsterAPI) {
         this.monsterDAO = monsterDAO;
+        this.monsterAPI = monsterAPI;
     }
 
     /**

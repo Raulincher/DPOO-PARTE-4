@@ -1,6 +1,7 @@
 package business;
 
 import business.entities.Character;
+import persistance.CharacterAPI;
 import persistance.CharacterDAO;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class CharacterManager {
 
     // Añadimos los componentes
     CharacterDAO characterDAO;
+    CharacterAPI characterAPI;
 
     // Creamos constructores
     /**
@@ -21,8 +23,9 @@ public class CharacterManager {
      *
      * @param characterDAO, lo vincularemos con su respectivo DAO
      */
-    public CharacterManager(CharacterDAO characterDAO){
+    public CharacterManager(CharacterDAO characterDAO, CharacterAPI characterAPI){
         this.characterDAO = characterDAO;
+        this.characterAPI = characterAPI;
     }
 
     /**

@@ -3,6 +3,7 @@ package business;
 import business.entities.Adventure;
 import business.entities.Monster;
 import business.entities.Character;
+import persistance.AdventureAPI;
 import persistance.AdventureDAO;
 
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ import java.util.Objects;
 public class AdventureManager {
 
     AdventureDAO adventureDAO;
+    AdventureAPI adventureAPI;
     CharacterManager characterManager;
 
 
-    public AdventureManager(AdventureDAO adventureDAO, CharacterManager characterManager){
+    public AdventureManager(AdventureDAO adventureDAO, CharacterManager characterManager, AdventureAPI adventureAPI){
         this.adventureDAO = adventureDAO;
         this.characterManager = characterManager;
-
+        this.adventureAPI = adventureAPI;
     }
 
     public void setMonstersEncounter(ArrayList<Monster> monsters, ArrayList<ArrayList<Monster>> encounterMonsters, int monsterOption, int lastQuantity ,int monsterQuantity, int auxEncounter){
@@ -113,7 +115,7 @@ public class AdventureManager {
             i++;
         }
 
-        if(monstersList.get(option - 1).getMonsterChallenge().equals("Boss") && bossCounter > 2){
+        if(monstersList.get(option - 1).getMonsterChallenge().equals("Boss") && bossCounter >= 1){
             exist = true;
         }
 
@@ -121,16 +123,18 @@ public class AdventureManager {
         return exist;
     }
 
-    public void setMonstersLifeList(ArrayList<String> monstersLife, ArrayList<Monster> monstersInEncounter, ArrayList<String> listOfPriorities, int characterQuantity){
+    public void setMonstersLifeList(ArrayList<Character> charactersInParty, ArrayList<String> monstersLife, ArrayList<Monster> monstersInEncounter, ArrayList<String> listOfPriorities, int characterQuantity){
         int z = 0;
         int i = 0;
-        while(i + characterQuantity < listOfPriorities.size()){
-            String[] auxName = listOfPriorities.get(i + characterQuantity).split("\\d+");
+        while(z < listOfPriorities.size()){
+            String[] auxName = listOfPriorities.get(z).split("\\d+");
             String actualName = auxName[0];
-            if(monstersInEncounter.get(z).getMonsterName().equals(actualName)){
-                monstersLife.add(i,monstersInEncounter.get(z).getMonsterName() + monstersInEncounter.get(z).getMonsterHitPoints() + "/" + monstersInEncounter.get(z).getMonsterHitPoints());
-                i++;
-                z = 0;
+            for(int a = 0; a < monstersInEncounter.size(); a++){
+                if(monstersInEncounter.get(a).getMonsterName().equals(actualName)){
+                    monstersLife.add(i,monstersInEncounter.get(a).getMonsterName() + monstersInEncounter.get(a).getMonsterHitPoints() + "/" + monstersInEncounter.get(a).getMonsterHitPoints());
+                    i++;
+                    a = monstersInEncounter.size();
+                }
             }
             z++;
         }
