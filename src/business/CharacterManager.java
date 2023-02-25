@@ -40,8 +40,8 @@ public class CharacterManager {
      * @param spirit, el espíritu deseado del personaje
      * @return se guardará a través del DAO el personaje creado
      */
-    public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit){
-        return characterDAO.saveCharacter(new Character(characterName, playerName, characterLevel, body, mind, spirit));
+    public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
+        return characterDAO.saveCharacter(new Character(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
     }
 
 
@@ -56,8 +56,8 @@ public class CharacterManager {
      * @param spirit, el espíritu deseado del personaje
      * @return se guardará a través del DAO el personaje creado
      */
-    public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit) throws IOException {
-        return characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Character(characterName, playerName, characterLevel, body, mind, spirit));
+    public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) throws IOException {
+        return characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Character(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
     }
 
     /**
@@ -590,6 +590,66 @@ public class CharacterManager {
         if(noCoincidence){
             filteredCharacters = new ArrayList<>(1);
             filteredCharacters.add(null);
+        }
+
+        return filteredCharacters;
+    }
+
+
+    /**
+     * Esta función genera una lista de los personajes que un propio jugador crea.
+     * En caso que no coincida, devuelve la ArrayList vacía
+     *
+     * @param playerName, valor que contendrá el nombre del jugador
+     * @return filteredCharacters, lista con todos los personajes que ha creado un jugador
+     */
+    public Character[] filteredAPIPlayers(String playerName) throws IOException {
+        Character[] characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+        Character[] filteredCharacters = new Character[0];
+        int i = 0;
+        int j = 0;
+        boolean noCoincidence = true;
+
+        // A través del if, nos aseguramos de que se haya introducido algo
+        if(!Objects.equals(playerName, "")){
+
+            // Buscamos si el nombre del jugador coincide y lo guardamos en la variable j
+            while(i < characters.length){
+                if(characters[i].getPlayerName().toLowerCase(Locale.ROOT).contains(playerName.toLowerCase(Locale.ROOT))){
+                    j++;
+                }
+                i++;
+            }
+
+            // Añadimos los personajes en una nueva ArrayList
+            filteredCharacters = new Character[j];
+
+            i = 0;
+            j = 0;
+
+            // Nos aseguramos de que haya creado algún personaje, en caso contrario lo recalcamos
+            while(i < characters.length){
+                if(characters[i].getPlayerName().toLowerCase(Locale.ROOT).contains(playerName.toLowerCase(Locale.ROOT))){
+                    filteredCharacters[j] = characters[i];
+                    j++;
+                    noCoincidence = false;
+                }else{
+                    if(j == 0){
+                        noCoincidence = true;
+                    }
+                }
+                i++;
+            }
+        }else{
+
+            // Si no introduce un nombre, mostramos todos los personajes
+            filteredCharacters = characters;
+            noCoincidence = false;
+        }
+
+        // Si no tiene ningún personaje creado, le damos una ArrayList vacía
+        if(noCoincidence){
+            filteredCharacters[0] = null;
         }
 
         return filteredCharacters;

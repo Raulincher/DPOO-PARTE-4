@@ -75,12 +75,8 @@ public class CharacterAPI {
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
     public Boolean postToUrl(String url, Character character) throws IOException {
-
-        boolean saved = false;
         Gson g = new Gson();
         String characterString = g.toJson(character);
-
-        System.out.println(characterString);
 
         try {
             // Define the request
@@ -91,11 +87,14 @@ public class CharacterAPI {
             // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             response.body();
-            return saved;
+            return true;
+
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);
         }
+
+
     }
 
     /**

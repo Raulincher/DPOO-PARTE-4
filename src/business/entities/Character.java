@@ -2,7 +2,7 @@ package business.entities;
 
 public class Character {
 
-    String name, player;
+    String name, player, characterClass;
     int xp, body, mind, spirit;
 
     //Creamos constructor con todos los atributos
@@ -15,14 +15,16 @@ public class Character {
      * @param body, body del Character
      * @param mind, mind del Character
      * @param spirit, spirit del Character
+     * @param characterClass, clase del Character
      */
-    public Character(String characterName, String playerName, int characterLevel, int body, int mind, int spirit){
+    public Character(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
         this.name = characterName;
         this.player = playerName;
         this.xp = characterLevel;
         this.body = body;
         this.mind = mind;
         this.spirit = spirit;
+        this.characterClass = characterClass;
     }
 
     /**
@@ -66,6 +68,13 @@ public class Character {
      * @return spirit, que será el spirit del character
      */
     public int getSpirit() {return spirit;}
+
+    /**
+     * Esta función llamará a la clase del character
+     *
+     * @return class, que será la clase del character
+     */
+    public String getCharacterClass() {return characterClass;}
 
     /**
      * Esta función servirá para actualizar la experiencia del character
