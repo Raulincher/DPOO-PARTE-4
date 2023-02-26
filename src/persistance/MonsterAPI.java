@@ -16,6 +16,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MonsterAPI {
     private final HttpClient client;
@@ -45,7 +46,10 @@ public class MonsterAPI {
      * @return The contents of the URL represented as text.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public Monster[] getFromUrl(String url) throws IOException {
+    public ArrayList<Monster> getFromUrl(String url) throws IOException {
+
+        Monster[] monsters = null;
+
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -58,7 +62,9 @@ public class MonsterAPI {
 
             // Just return the body
             Gson g = new Gson();
-            return g.fromJson(response.body(), Monster[].class);
+            monsters = g.fromJson(response.body(), Monster[].class);
+            return new ArrayList<Monster>(Arrays.asList(monsters));
+
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);

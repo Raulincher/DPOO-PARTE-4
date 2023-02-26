@@ -1003,5 +1003,1565 @@
         }
       ]
     ]
+  },
+  {
+    "name": "ghghg",
+    "encounters": 2,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        }
+      ],
+      [
+        {
+          "name": "Snaga",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 4,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snaga",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 4,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snaga",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 4,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snaga",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 4,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snaga",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 4,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Easterling",
+          "challenge": "Minion",
+          "experience": 4,
+          "hitPoints": 8,
+          "initiative": 0,
+          "damageDice": "d6",
+          "damageType": "Physical"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "hola",
+    "encounters": 2,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Goblin",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 5,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        }
+      ],
+      [
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "pepe",
+    "encounters": 2,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Sauron",
+          "challenge": "Boss",
+          "experience": 148,
+          "hitPoints": 89,
+          "initiative": 3,
+          "damageDice": "d20",
+          "damageType": "Physical"
+        }
+      ],
+      [
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        }
+      ]
+    ]
   }
 ]

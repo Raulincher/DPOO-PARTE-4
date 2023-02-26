@@ -158,5 +158,23 @@
     "body": 1,
     "mind": 1,
     "spirit": 1
+  },
+  {
+    "name": "DFJHHDF",
+    "player": "DSFSDF",
+    "characterClass": "Mage",
+    "xp": 300,
+    "body": 0,
+    "mind": 1,
+    "spirit": 1
+  },
+  {
+    "name": "Dff",
+    "player": "dsdf",
+    "characterClass": "Adventurer",
+    "xp": 200,
+    "body": 2,
+    "mind": 0,
+    "spirit": 1
   }
 ]

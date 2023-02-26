@@ -102,7 +102,7 @@ public class AdventureManager {
         return adventureDAO.getAllAdventures();
     }
 
-    public Adventure[] getAPIAdventuresList() throws IOException {return adventureAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures");}
+    public ArrayList<Adventure> getAPIAdventuresList() throws IOException {return adventureAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures");}
 
 
     public boolean checkMonsterTypeOfEncounter(ArrayList<Monster> monstersInEncounter, ArrayList<Monster> monstersList, int option){
@@ -254,6 +254,11 @@ public class AdventureManager {
 
     public boolean createAdventure(String adventureName, int encounters, ArrayList<ArrayList<Monster>> monsters){
         return adventureDAO.saveAdventure(new Adventure(adventureName, encounters, monsters));
+    }
+
+
+    public boolean createAdventureAPI(String adventureName, int encounters, ArrayList<ArrayList<Monster>> monsters) throws IOException {
+        return adventureAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures", new Adventure(adventureName, encounters, monsters));
     }
 
     public void enemyDice(ArrayList<String> monstersDamage, ArrayList<Monster> monstersInEncounter){

@@ -483,7 +483,7 @@ public class CharacterManager {
      *
      * @return devolverá un Array con todos los personajes
      */
-    public Character[] getAPICharacters() throws IOException {
+    public ArrayList<Character> getAPICharacters() throws IOException {
         return characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
     }
 
@@ -539,8 +539,14 @@ public class CharacterManager {
      * @param playerName, valor que contendrá el nombre del jugador
      * @return filteredCharacters, lista con todos los personajes que ha creado un jugador
      */
-    public ArrayList<Character> filteredPlayers(String playerName){
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+    public ArrayList<Character> filteredPlayers(String playerName, boolean isUsingAPI) throws IOException {
+        ArrayList<Character> characters = null;
+
+        if(isUsingAPI){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+        }else{
+            characters = characterDAO.readCharacterJSON();
+        }
         ArrayList<Character> filteredCharacters = null;
         int i = 0;
         int j = 0;
@@ -596,63 +602,29 @@ public class CharacterManager {
     }
 
 
-    /**
-     * Esta función genera una lista de los personajes que un propio jugador crea.
-     * En caso que no coincida, devuelve la ArrayList vacía
-     *
-     * @param playerName, valor que contendrá el nombre del jugador
-     * @return filteredCharacters, lista con todos los personajes que ha creado un jugador
-     */
-    public Character[] filteredAPIPlayers(String playerName) throws IOException {
-        Character[] characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-        Character[] filteredCharacters = new Character[0];
-        int i = 0;
-        int j = 0;
-        boolean noCoincidence = true;
+    public String initialEvolution(String characterClass, int characterLevel){
 
-        // A través del if, nos aseguramos de que se haya introducido algo
-        if(!Objects.equals(playerName, "")){
+        String evolution;
 
-            // Buscamos si el nombre del jugador coincide y lo guardamos en la variable j
-            while(i < characters.length){
-                if(characters[i].getPlayerName().toLowerCase(Locale.ROOT).contains(playerName.toLowerCase(Locale.ROOT))){
-                    j++;
-                }
-                i++;
+        if(characterClass.equals("Adventurer")){
+            if(characterLevel > 0 && characterLevel < 4){
+                evolution = "Adventurer";
+            }else if(characterLevel > 3 && characterLevel < 8){
+                evolution = "Warrior";
+            }else{
+                evolution = "Champion";
             }
-
-            // Añadimos los personajes en una nueva ArrayList
-            filteredCharacters = new Character[j];
-
-            i = 0;
-            j = 0;
-
-            // Nos aseguramos de que haya creado algún personaje, en caso contrario lo recalcamos
-            while(i < characters.length){
-                if(characters[i].getPlayerName().toLowerCase(Locale.ROOT).contains(playerName.toLowerCase(Locale.ROOT))){
-                    filteredCharacters[j] = characters[i];
-                    j++;
-                    noCoincidence = false;
-                }else{
-                    if(j == 0){
-                        noCoincidence = true;
-                    }
-                }
-                i++;
+        }else if(characterClass.equals("Cleric")){
+            if(characterLevel > 0 && characterLevel < 5){
+                evolution = "Cleric";
+            }else{
+                evolution = "Paladin";
             }
         }else{
-
-            // Si no introduce un nombre, mostramos todos los personajes
-            filteredCharacters = characters;
-            noCoincidence = false;
+            evolution = "Mage";
         }
 
-        // Si no tiene ningún personaje creado, le damos una ArrayList vacía
-        if(noCoincidence){
-            filteredCharacters[0] = null;
-        }
-
-        return filteredCharacters;
+        return evolution;
     }
 
     /**

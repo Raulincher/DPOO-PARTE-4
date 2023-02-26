@@ -79,20 +79,20 @@ public class UIController {
             }
         }else{
 
-            Monster[] getMonstersFromApi = monsterManager.getAPIMonsters();
+            ArrayList<Monster> getMonstersFromApi = monsterManager.getAPIMonsters();
             isUsingApi = true;
 
             if(getMonstersFromApi != null){
                 uiManager.showMessage("Data was successfully loaded.\n\n\n");
 
                 do {
-                    Character[] characters = characterManager.getAPICharacters();
+                    ArrayList<Character> characters = characterManager.getAPICharacters();
                     for (Character ignored : characters) {
                         i++;
                         totalCharacters = i;
                     }
                     i = 0;
-                    Adventure[] adventures = adventureManager.getAPIAdventuresList();
+                    ArrayList<Adventure> adventures = adventureManager.getAPIAdventuresList();
                     if(totalCharacters < 3){
                         uiManager.showMainMenuDissabled();
                         option = uiManager.askForInteger("\nYour answer: ");
@@ -284,6 +284,7 @@ public class UIController {
 
         }while(!Objects.equals(characterClass, "Cleric") && !Objects.equals(characterClass, "Adventurer") && !Objects.equals(characterClass, "Mage"));
 
+        characterClass = characterManager.initialEvolution(characterClass, characterLevel);
 
         if(!isUsingApi){
             saved = characterManager.createCharacter(characterName, playerName, experience, bodySum, mindSum, spiritSum, characterClass);
@@ -307,158 +308,85 @@ public class UIController {
         uiManager.showMessage("Tavern keeper: “Lads! The Boss wants to see you, come here!”\n" + "“Who piques your interest?”");
         String playerName = uiManager.askForString("-> Enter the name of the Player to filter: ");
 
-        if(isUsingApi){
-            Character[] character = characterManager.filteredAPIPlayers(playerName);
-            if(character.length > 0){
-                uiManager.showMessage("You watch as some adventurers get up from their chairs and approach you.\n");
-                while(i < character.length ){
-                    uiManager.showMessage("\t" + (i+1) +"." + character[i].getCharacterName());
-                    i++;
+        ArrayList<Character> character = characterManager.filteredPlayers(playerName, isUsingApi);
+        if(character.get(0) != null){
+            uiManager.showMessage("You watch as some adventurers get up from their chairs and approach you.\n");
+            while(i < character.size() ){
+                uiManager.showMessage("\t" + (i+1) +"." + character.get(i).getCharacterName());
+                i++;
+            }
+            uiManager.showMessage("\t\n0. Back");
+
+            int characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
+            if((characterPicked) > character.size() || (characterPicked) < 0) {
+                while ((characterPicked) > character.size() || (characterPicked) < 1) {
+                    uiManager.showMessage("Tavern keeper: “Please choose an existing character”\n");
+                    characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
                 }
-                uiManager.showMessage("\t\n0. Back");
+            }
 
-                int characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.length + "]: ");
-                if((characterPicked) > character.length || (characterPicked) < 0) {
-                    while ((characterPicked) > character.length || (characterPicked) < 1) {
-                        uiManager.showMessage("Tavern keeper: “Please choose an existing character”\n");
-                        characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.length + "]: ");
-                    }
-                }
+            if(characterPicked != 0){
+                Character characterChosen = character.get(characterPicked - 1);
 
-                if(characterPicked != 0){
-                    Character characterChosen = character[characterPicked - 1];
+                int bodyChosen = characterChosen.getBody();
+                String bodyIntToString;
 
-                    int bodyChosen = characterChosen.getBody();
-                    String bodyIntToString;
-
-                    if(bodyChosen >=  0){
-                        bodyIntToString = "+" + bodyChosen;
-                    }else{
-                        bodyIntToString = String.valueOf(bodyChosen);
-                    }
-
-                    int mindChosen = characterChosen.getMind();
-                    String mindIntToString;
-
-                    if(mindChosen >=  0){
-                        mindIntToString = "+" + mindChosen;
-                    }else{
-                        mindIntToString = String.valueOf(mindChosen);
-                    }
-
-                    int spiritChosen = characterChosen.getSpirit();
-                    String spiritIntToString;
-
-                    if(spiritChosen >=  0){
-                        spiritIntToString = "+" + spiritChosen;
-                    }else{
-                        spiritIntToString = String.valueOf(spiritChosen);
-                    }
-
-                    uiManager.showMessage("Tavern keeper: “Hey" + characterChosen.getCharacterName()  + " get here; the boss wants to see you!”\n");
-                    uiManager.showMessage("* " + "Name:   " + characterChosen.getCharacterName());
-                    uiManager.showMessage("* " + "Player: " + characterChosen.getPlayerName());
-                    uiManager.showMessage("* " + "Class:  Adventurer" );
-                    uiManager.showMessage("* " + "level:  " + characterManager.revertXpToLevel(characterChosen.getCharacterLevel()));
-                    uiManager.showMessage("* " + "XP:     " + characterChosen.getCharacterLevel());
-                    uiManager.showMessage("* " + "Body:   " + bodyIntToString);
-                    uiManager.showMessage("* " + "Mind:   " + mindIntToString);
-                    uiManager.showMessage("* " + "Spirit: " + spiritIntToString);
-
-                    uiManager.showMessage("[Enter name to delete, or press enter to cancel]\n");
-                    String characterDelete = uiManager.askForString("Do you want to delete " + characterChosen.getCharacterName() + " ? ");
-
-                    boolean erased = characterManager.deleteCharacter(characterDelete);
-                    if(erased){
-                        uiManager.showMessage("\nTavern keeper: “I’m sorry kiddo, but you have to leave.”\n");
-                        uiManager.showMessage("Character " + characterChosen.getCharacterName() + " left the Guild.\n");
-                    }
+                if(bodyChosen >=  0){
+                    bodyIntToString = "+" + bodyChosen;
                 }else{
-                    uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to meet”\n");
+                    bodyIntToString = String.valueOf(bodyChosen);
                 }
+
+                int mindChosen = characterChosen.getMind();
+                String mindIntToString;
+
+                if(mindChosen >=  0){
+                    mindIntToString = "+" + mindChosen;
+                }else{
+                    mindIntToString = String.valueOf(mindChosen);
+                }
+
+                int spiritChosen = characterChosen.getSpirit();
+                String spiritIntToString;
+
+                if(spiritChosen >=  0){
+                    spiritIntToString = "+" + spiritChosen;
+                }else{
+                    spiritIntToString = String.valueOf(spiritChosen);
+                }
+
+                uiManager.showMessage("Tavern keeper: “Hey" + characterChosen.getCharacterName()  + " get here; the boss wants to see you!”\n");
+                uiManager.showMessage("* " + "Name:   " + characterChosen.getCharacterName());
+                uiManager.showMessage("* " + "Player: " + characterChosen.getPlayerName());
+                uiManager.showMessage("* " + "Class:  " + characterChosen.getCharacterClass());
+                uiManager.showMessage("* " + "level:  " + characterManager.revertXpToLevel(characterChosen.getCharacterLevel()));
+                uiManager.showMessage("* " + "XP:     " + characterChosen.getCharacterLevel());
+                uiManager.showMessage("* " + "Body:   " + bodyIntToString);
+                uiManager.showMessage("* " + "Mind:   " + mindIntToString);
+                uiManager.showMessage("* " + "Spirit: " + spiritIntToString);
+
+                uiManager.showMessage("[Enter name to delete, or press enter to cancel]\n");
+                String characterDelete = uiManager.askForString("Do you want to delete " + characterChosen.getCharacterName() + " ? ");
+
+                boolean erased = characterManager.deleteCharacter(characterDelete);
+                if(erased){
+                    uiManager.showMessage("Tavern keeper: “I’m sorry kiddo, but you have to leave.”\n");
+                    uiManager.showMessage("Character " + characterChosen.getCharacterName() + " left the Guild.\n");
+                }else{
+                    uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to fire”\n");
+                }
+
             }else{
-                uiManager.showMessage("Tavern keeper: “That player has never created a character. Come back later”\n");
+                uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to meet”\n");
             }
         }else{
-            ArrayList<Character> character = characterManager.filteredPlayers(playerName);
-            if(character.get(0) != null){
-                uiManager.showMessage("You watch as some adventurers get up from their chairs and approach you.\n");
-                while(i < character.size() ){
-                    uiManager.showMessage("\t" + (i+1) +"." + character.get(i).getCharacterName());
-                    i++;
-                }
-                uiManager.showMessage("\t\n0. Back");
-
-                int characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
-                if((characterPicked) > character.size() || (characterPicked) < 0) {
-                    while ((characterPicked) > character.size() || (characterPicked) < 1) {
-                        uiManager.showMessage("Tavern keeper: “Please choose an existing character”\n");
-                        characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
-                    }
-                }
-
-                if(characterPicked != 0){
-                    Character characterChosen = character.get(characterPicked - 1);
-
-                    int bodyChosen = characterChosen.getBody();
-                    String bodyIntToString;
-
-                    if(bodyChosen >=  0){
-                        bodyIntToString = "+" + bodyChosen;
-                    }else{
-                        bodyIntToString = String.valueOf(bodyChosen);
-                    }
-
-                    int mindChosen = characterChosen.getMind();
-                    String mindIntToString;
-
-                    if(mindChosen >=  0){
-                        mindIntToString = "+" + mindChosen;
-                    }else{
-                        mindIntToString = String.valueOf(mindChosen);
-                    }
-
-                    int spiritChosen = characterChosen.getSpirit();
-                    String spiritIntToString;
-
-                    if(spiritChosen >=  0){
-                        spiritIntToString = "+" + spiritChosen;
-                    }else{
-                        spiritIntToString = String.valueOf(spiritChosen);
-                    }
-
-                    uiManager.showMessage("Tavern keeper: “Hey" + characterChosen.getCharacterName()  + " get here; the boss wants to see you!”\n");
-                    uiManager.showMessage("* " + "Name:   " + characterChosen.getCharacterName());
-                    uiManager.showMessage("* " + "Player: " + characterChosen.getPlayerName());
-                    uiManager.showMessage("* " + "Class:  Adventurer" );
-                    uiManager.showMessage("* " + "level:  " + characterManager.revertXpToLevel(characterChosen.getCharacterLevel()));
-                    uiManager.showMessage("* " + "XP:     " + characterChosen.getCharacterLevel());
-                    uiManager.showMessage("* " + "Body:   " + bodyIntToString);
-                    uiManager.showMessage("* " + "Mind:   " + mindIntToString);
-                    uiManager.showMessage("* " + "Spirit: " + spiritIntToString);
-
-                    uiManager.showMessage("[Enter name to delete, or press enter to cancel]\n");
-                    String characterDelete = uiManager.askForString("Do you want to delete " + characterChosen.getCharacterName() + " ? ");
-
-                    boolean erased = characterManager.deleteCharacter(characterDelete);
-                    if(erased){
-                        uiManager.showMessage("\nTavern keeper: “I’m sorry kiddo, but you have to leave.”\n");
-                        uiManager.showMessage("Character " + characterChosen.getCharacterName() + " left the Guild.\n");
-                    }else{
-                        uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to fire”\n");
-                    }
-
-                }else{
-                    uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to meet”\n");
-                }
-            }else{
-                uiManager.showMessage("Tavern keeper: “That player has never created a character. Come back later”\n");
-            }
+            uiManager.showMessage("Tavern keeper: “That player has never created a character. Come back later”\n");
         }
+
 
     }
 
-    private void adventureCreation(boolean isUsingApi){
+    private void adventureCreation(boolean isUsingApi) throws IOException {
 
         int error = 0;
         int adventureEncounters = 0;
@@ -470,9 +398,7 @@ public class UIController {
         int totalMonsters = 0;
         int monsterOption;
         int monsterDeleteOption = 0;
-        int j = 0;
-        ArrayList<ArrayList<Monster>> encounterMonsters;
-        ArrayList<String> monstersQuantityAndNames = new ArrayList<String>(1);
+        boolean adventureSaved = false;
 
         uiManager.showMessage("Tavern keeper: “Planning an adventure? Good luck with that!”\n");
         String adventureName = uiManager.askForString("-> Name your adventure: ");
@@ -492,10 +418,12 @@ public class UIController {
 
         uiManager.showMessage("\nTavern keeper: “"+ adventureEncounters +" encounters? That is too much for me...”");
 
+        ArrayList<ArrayList<Monster>> encounterMonsters;
+        ArrayList<String> monstersQuantityAndNames = new ArrayList<String>(1);
+
         encounterMonsters = new ArrayList<ArrayList<Monster>>(adventureEncounters);
 
         encounterMonsters = adventureManager.initializeEncounters(encounterMonsters, adventureEncounters);
-
 
         while(auxEncounter < adventureEncounters){
             do {
@@ -614,7 +542,12 @@ public class UIController {
             }while(option != 3);
         }
 
-        boolean adventureSaved = adventureManager.createAdventure(adventureName, adventureEncounters, encounterMonsters);
+        if(isUsingApi) {
+            adventureSaved = adventureManager.createAdventureAPI(adventureName, adventureEncounters, encounterMonsters);
+        }else{
+            adventureSaved = adventureManager.createAdventure(adventureName, adventureEncounters, encounterMonsters);
+        }
+
 
         if(adventureSaved){
             uiManager.showMessage("\nTavern keeper: “Your adventure is ready whenever you want to play it”");
@@ -625,16 +558,14 @@ public class UIController {
     }
 
 
-    private void adventurePlay(boolean isUsingApi){
+    private void adventurePlay(boolean isUsingApi) throws IOException {
         int characterQuantity = 0;
         int adventureSelection = 0;
-        double average = 0;
-        int[] playersLife = {0};
-        int[] totalPlayersLife = {0};
         int defeated = 0;
         int[] saveNumber = new int[5];
         int counterEncounters = 0;
         ArrayList<String> charactersLife = new ArrayList<>(0);
+        ArrayList<Adventure> adventures = null;
 
         int monstersDefeat = 0; //number of monsters encounter defeat
         int charactersDefeat = 0; //number of characters defeat
@@ -643,8 +574,12 @@ public class UIController {
                 “Where do you fancy going?”
                 """);
         uiManager.showMessage("Available adventures:\n");
-        //listar aventuras en el JSON
-        ArrayList<Adventure> adventures = adventureManager.getAdventuresList();
+        if(isUsingApi){
+            adventures = adventureManager.getAPIAdventuresList();
+        }else{
+            //listar aventuras en el JSON
+            adventures = adventureManager.getAdventuresList();
+        }
         for(int i = 0; i < adventures.size(); i++){
             uiManager.showMessage((i+1) + ". " + adventures.get(i).getAdventureName() );
         }

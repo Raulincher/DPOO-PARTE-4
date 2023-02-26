@@ -1,6 +1,7 @@
 package persistance;
 
 import business.entities.Character;
+import business.entities.Monster;
 import com.google.gson.Gson;
 
 import javax.net.ssl.SSLContext;
@@ -15,6 +16,8 @@ import java.net.http.HttpResponse;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CharacterAPI {
     private final HttpClient client;
@@ -44,7 +47,9 @@ public class CharacterAPI {
      * @return The contents of the URL represented as text.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public Character[] getFromUrl(String url) throws IOException {
+    public ArrayList<Character> getFromUrl(String url) throws IOException {
+
+        Character[] characters = null;
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -57,7 +62,8 @@ public class CharacterAPI {
 
             // Just return the body
             Gson g = new Gson();
-            return g.fromJson(response.body(), Character[].class);
+            characters = g.fromJson(response.body(), Character[].class);
+            return new ArrayList<Character>(Arrays.asList(characters));
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);

@@ -39,7 +39,7 @@ public class MonsterManager {
      *
      * @return ArrayList con los Monsters
      */
-    public Monster[] getAPIMonsters() throws IOException {return monsterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/shared/monsters");}
+    public ArrayList<Monster> getAPIMonsters() throws IOException {return monsterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/shared/monsters");}
 
     /**
      * Esta función calcula cuanto daño causará un Monster dependiendo
