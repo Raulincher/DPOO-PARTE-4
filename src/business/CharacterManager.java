@@ -588,8 +588,12 @@ public class CharacterManager {
         }else{
 
             // Si no introduce un nombre, mostramos todos los personajes
-            filteredCharacters = getAllCharacters();
-            noCoincidence = false;
+            if(isUsingAPI) {
+                filteredCharacters = getAPICharacters();
+            }else{
+                filteredCharacters = getAllCharacters();
+            }
+           noCoincidence = false;
         }
 
         // Si no tiene ningún personaje creado, le damos una ArrayList vacía
@@ -661,6 +665,12 @@ public class CharacterManager {
         return characterDAO.deleteCharacterByName(characterName);
     }
 
+
+
+    public boolean deleteCharacterAPI (String characterName) throws IOException {
+        return characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters?name=" + characterName);
+    }
+
     /**
      * Esta función servirá para indicar que el nivel del personaje debe ser
      * actualizado desde el DAO
@@ -670,6 +680,11 @@ public class CharacterManager {
      */
     public void levelUpdate(Character character, int gainedXp){
         characterDAO.updateCharacterLevel(character,gainedXp);
+    }
+
+
+    public void levelUpdateAPI(Character character, int gainedXp) throws IOException {
+        characterAPI.updateToUrl("opera", character,gainedXp);
     }
 
 

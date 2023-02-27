@@ -99,8 +99,38 @@ public class CharacterAPI {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);
         }
+    }
 
 
+
+    /**
+     * Method that posts contents to a URL using the HTTPS protocol. Specifically, a POST request is sent.
+     * The request body is set to the corresponding parameter, and the response body is returned just in case.
+     *
+     * @param url  A String representation of the URL to post to, which will be assumed to use HTTP/HTTPS.
+     * @param character The content to post, which will be sent to the server in the request body.
+     * @return The contents of the response, in case the server sends anything back after posting the content.
+     * @throws IOException If the URL is malformed or the server can't be reached.
+     */
+    public Boolean updateToUrl(String url, Character character, int xpplus) throws IOException {
+        Gson g = new Gson();
+        String characterString = g.toJson(character);
+
+        try {
+            // Define the request
+            // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
+            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(characterString)).build();
+
+            // We could use a BodyHandler that discards the response body, but here we return the API's response
+            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response.body();
+            return true;
+
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            // Exceptions are simplified for any classes that need to catch them
+            throw new IOException(e);
+        }
     }
 
     /**
@@ -111,7 +141,7 @@ public class CharacterAPI {
      * @return The contents of the response, in case the server sends anything back after deleting the content.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public String deleteFromUrl(String url) throws IOException {
+    public boolean deleteFromUrl(String url) throws IOException {
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -121,7 +151,8 @@ public class CharacterAPI {
             // We use the default BodyHandler for Strings (so we can get the body of the response as a String)
             // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
+            response.body();
+            return true;
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Exceptions are simplified for any classes that need to catch them
             throw new IOException(e);
