@@ -35,6 +35,7 @@ public class UIController {
         int totalCharacters = 0;
         boolean serverConnect = true;
 
+        //characterManager.emergencyDelete();
         uiManager.showMessage("Welcome to Simple LSRPG.\n");
         uiManager.showDataMenu();
         option = uiManager.askForInteger("\nYour answer: ");
@@ -690,7 +691,7 @@ public class UIController {
         counterEncounters = 0;
         int adventureEncounters = adventures.get(adventureSelection - 1).getEncounters();
 
-        adventureManager.setAdventurersLifeList(characterInParty, charactersLife);
+        adventureManager.setAdventurersLifeList(characterInParty, charactersLife, isUsingApi);
 
 
         //Combat phases
@@ -867,7 +868,7 @@ public class UIController {
                                     String[] auxLife = charactersLife.get(z).split("/");
                                     actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                     if(actualLife != 0) {
-                                        damage = characterManager.characterDamageCalculator(actualName);
+                                        damage = characterManager.characterDamageCalculator(actualName, isUsingApi);
                                         auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
                                         attackedMonster = auxName[0];
                                         uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
@@ -1098,7 +1099,7 @@ public class UIController {
                                     String[] auxLife = charactersLife.get(z).split("/");
                                     actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                     if(actualLife != 0) {
-                                        damage = characterManager.characterDamageCalculator(actualName);
+                                        damage = characterManager.characterDamageCalculator(actualName, isUsingApi);
                                         auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
                                         attackedMonster = auxName[0];
                                         uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
@@ -1328,7 +1329,7 @@ public class UIController {
                                     String[] auxLife = charactersLife.get(z).split("/");
                                     actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                     if(actualLife != 0) {
-                                        damage = characterManager.characterDamageCalculator(actualName);
+                                        damage = characterManager.characterDamageCalculator(actualName, isUsingApi);
                                         auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
                                         attackedMonster = auxName[0];
                                         uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
@@ -1459,9 +1460,7 @@ public class UIController {
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
                         }
                     }
-                    characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName()));
-                    //System.out.println(characterManager.getCharacterByName(characterInParty.get(i).getCharacterName()));
-
+                    characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
                     i++;
 
                 }
@@ -1476,7 +1475,6 @@ public class UIController {
                     if(temporalLife != 0) {
                         //int healing = characterManager.BandageTime(characterNamesList[i]);
                         int diceRollHeal = characterManager.diceRollD8();
-                        System.out.println(i);
                         int characterMind = characterInParty.get(i).getMind();
                         int characterCuration = diceRollHeal + characterMind;
                         int characterBandage =  characterCuration + temporalLife;

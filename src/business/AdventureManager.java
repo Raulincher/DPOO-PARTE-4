@@ -143,13 +143,13 @@ public class AdventureManager {
         }
     }
 
-    public void setAdventurersLifeList(ArrayList<Character> characterInParty, ArrayList<String> charactersLife){
+    public void setAdventurersLifeList(ArrayList<Character> characterInParty, ArrayList<String> charactersLife, boolean isUsingApi) throws IOException {
         int z;
         int characterInitialLife = 0;
         if(charactersLife.size() == 0) {
             z = 0;
             while (z < characterInParty.size()) {
-                characterInitialLife = characterManager.initialLifeCalculator(characterInParty.get(z).getCharacterName());
+                characterInitialLife = characterManager.initialLifeCalculator(characterInParty.get(z).getCharacterName(), isUsingApi);
                 charactersLife.add(z, characterInParty.get(z).getCharacterName() + characterInitialLife + "/" + characterInitialLife);
                 z++;
             }

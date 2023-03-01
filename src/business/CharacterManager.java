@@ -155,11 +155,17 @@ public class CharacterManager {
      * @param characterName, valor que describe el nombre del personaje
      * @return spirit, devuelve el espíritu actual que tiene
      */
-    public int getCharacterSpirit(String characterName){
+    public int getCharacterSpirit(String characterName, boolean isUsingApi) throws IOException{
         int spirit = 0;
         int i = 0;
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+        ArrayList<Character> characters;
 
+        if(isUsingApi){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+
+        }else{
+            characters = characterDAO.readCharacterJSON();
+        }
         // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
         while(i < characters.size()){
             if(characterName.equals(characters.get(i).getCharacterName())){
@@ -176,11 +182,17 @@ public class CharacterManager {
      * @param characterName, valor que describe el nombre del personaje
      * @return body, devuelve el valor de body del personaje
      */
-    public int getCharacterBody(String characterName){
+    public int getCharacterBody(String characterName, boolean isUsingApi) throws IOException{
         int body = 0;
         int i = 0;
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+        ArrayList<Character> characters;
 
+        if(isUsingApi){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+
+        }else{
+            characters = characterDAO.readCharacterJSON();
+        }
         // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
         while(i < characters.size()){
             if(characterName.equals(characters.get(i).getCharacterName())){
@@ -197,10 +209,17 @@ public class CharacterManager {
      * @param characterName, valor que describe el nombre del personaje
      * @return mind, devuelve el valor de mind del personaje
      */
-    public int getCharacterMind(String characterName){
+    public int getCharacterMind(String characterName, boolean isUsingApi) throws IOException {
         int mind = 0;
         int i = 0;
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+        ArrayList<Character> characters;
+
+        if(isUsingApi){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+
+        }else{
+            characters = characterDAO.readCharacterJSON();
+        }
 
         // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
         while(i < characters.size()){
@@ -218,10 +237,18 @@ public class CharacterManager {
      * @param characterName, valor que describe el nombre del personaje
      * @return xp, devuelve el valor de xp del personaje
      */
-    public int getCharacterXp(String characterName){
+    public int getCharacterXp(String characterName, boolean isUsingApi) throws IOException {
         int xp = 0;
         int i = 0;
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+
+        ArrayList<Character> characters;
+
+        if(isUsingApi){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+
+        }else{
+            characters = characterDAO.readCharacterJSON();
+        }
 
         // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
         while(i < characters.size()){
@@ -331,9 +358,9 @@ public class CharacterManager {
      * @param characterName, valor que contendrá el nombre del personaje
      * @return damage, int que será el daño que hará el personaje
      */
-    public int characterDamageCalculator(String characterName){
+    public int characterDamageCalculator(String characterName, boolean isUsingApi) throws IOException {
         int damage = 0;
-        int body = getCharacterBody(characterName);
+        int body = getCharacterBody(characterName, isUsingApi);
 
         // Seguiremos la fórmula del enunciado para calcular el damage
         damage = diceRollD6() + body;
@@ -347,9 +374,9 @@ public class CharacterManager {
      * @param characterName, valor que contendrá el nombre del personaje
      * @return healing, int que dará la curación total del personaje
      */
-    public int BandageTime(String characterName){
+    public int BandageTime(String characterName, boolean isUsingApi) throws IOException {
         int healing = 0;
-        int mind = getCharacterMind(characterName);
+        int mind = getCharacterMind(characterName, isUsingApi);
 
         // Seguiremos la fórmula del enunciado para calcular el healing
         healing = diceRollD8() + mind;
@@ -399,11 +426,11 @@ public class CharacterManager {
      * @param characterName, valor que contendrá el nombre del personaje
      * @return life, int que será el daño que hará el personaje
      */
-    public int initialLifeCalculator(String characterName){
+    public int initialLifeCalculator(String characterName, boolean isUsingApi) throws IOException {
 
         int life;
-        int body = getCharacterBody(characterName);
-        int xp = getCharacterXp(characterName);
+        int body = getCharacterBody(characterName, isUsingApi);
+        int xp = getCharacterXp(characterName, isUsingApi);
         int level = revertXpToLevel(xp);
 
         // Calculamos la vida con la fórmula
@@ -638,20 +665,34 @@ public class CharacterManager {
      * @param characterName, valor que contendrá el nombre del personaje
      * @return filteredCharacter, personaje resultante de la búsqueda
      */
-    public Character getCharacterByName(String characterName){
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+    public Character getCharacterByName(String characterName, boolean isUsingApi) throws IOException {
         Character filteredCharacter = null;
+        if(isUsingApi){
+            ArrayList<Character> characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+            int i = 0;
 
-        int i = 0;
-
-        // A través del while buscamos si coincide el personaje deseado
-        while(i < characters.size()){
-            if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
-                filteredCharacter = characters.get(i);
-                i = characters.size();
+            // A través del while buscamos si coincide el personaje deseado
+            while(i < characters.size()){
+                if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
+                    filteredCharacter = characters.get(i);
+                    i = characters.size();
+                }
+                i++;
             }
-            i++;
+        }else{
+            ArrayList<Character> characters = characterDAO.readCharacterJSON();
+            int i = 0;
+
+            // A través del while buscamos si coincide el personaje deseado
+            while(i < characters.size()){
+                if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
+                    filteredCharacter = characters.get(i);
+                    i = characters.size();
+                }
+                i++;
+            }
         }
+
         return filteredCharacter;
     }
 
@@ -684,8 +725,10 @@ public class CharacterManager {
 
 
     public void levelUpdateAPI(Character character, int gainedXp) throws IOException {
-        characterAPI.updateToUrl("opera", character,gainedXp);
+        characterAPI.updateToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character,gainedXp);
     }
-
+    public void emergencyDelete() throws IOException {
+        characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+    }
 
 }

@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class CharacterAPI {
     private final HttpClient client;
@@ -49,7 +52,7 @@ public class CharacterAPI {
      */
     public ArrayList<Character> getFromUrl(String url) throws IOException {
 
-        Character[] characters = null;
+        Character[] characters;
         try {
             // Define the request
             // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
@@ -114,23 +117,23 @@ public class CharacterAPI {
      */
     public Boolean updateToUrl(String url, Character character, int xpplus) throws IOException {
         Gson g = new Gson();
-        String characterString = g.toJson(character);
-
-        try {
-            // Define the request
-            // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
-            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(characterString)).build();
-
-            // We could use a BodyHandler that discards the response body, but here we return the API's response
-            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            response.body();
-            return true;
-
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Exceptions are simplified for any classes that need to catch them
-            throw new IOException(e);
+        ArrayList<Character> currentCharactersList = getFromUrl(url);
+        //deleteFromUrl(url);
+        for (int i = 0; i < currentCharactersList.size(); i++) {
+            if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
+            {
+                currentCharactersList.get(i).setXp(xpplus + character.getCharacterLevel());
+                i = currentCharactersList.size();
+            }
         }
+        String characterString = g.toJson(currentCharactersList);
+        System.out.println("----------------------------------------------------");
+        System.out.println(currentCharactersList.size());
+        System.out.println("----------------------------------------------------");
+        System.out.println(characterString);
+        System.out.println("----------------------------------------------------");
+
+        return true;
     }
 
     /**
