@@ -146,7 +146,9 @@ public class CharacterManager {
      *
      */
     public void updateCharacterSpirit(){
+
         ArrayList<Character> characters = characterDAO.readCharacterJSON();
+
     }
 
     /**
@@ -446,10 +448,16 @@ public class CharacterManager {
      * @param name, valor que contendrá el posible nombre del personaje
      * @return exist, bool que dirá si el nombre está disponible o no
      */
-    public boolean characterNameDisponibility(String name){
+    public boolean characterNameDisponibility(String name, boolean isUsingApi) throws IOException {
 
         boolean exist = false;
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
+        ArrayList<Character> characters;
+        if(isUsingApi){
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
+
+        }else {
+            characters = characterDAO.readCharacterJSON();
+        }
         int i = 0;
 
         // Analizamos con un bucle si el nombre coincide en la ArrayList
@@ -723,10 +731,18 @@ public class CharacterManager {
         characterDAO.updateCharacterLevel(character,gainedXp);
     }
 
-
+    /**
+     * Esta función servirá para indicar que el nivel del personaje debe ser
+     * actualizado desde API
+     *
+     * @param character, valor que contendrá el nombre del personaje
+     * @param gainedXp, valor que contendrá toda la experiencia ganada
+     */
     public void levelUpdateAPI(Character character, int gainedXp) throws IOException {
         characterAPI.updateToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character,gainedXp);
     }
+
+
     public void emergencyDelete() throws IOException {
         characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
     }

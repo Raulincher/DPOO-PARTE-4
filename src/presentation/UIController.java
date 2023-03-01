@@ -35,7 +35,6 @@ public class UIController {
         int totalCharacters = 0;
         boolean serverConnect = true;
 
-        //characterManager.emergencyDelete();
         uiManager.showMessage("Welcome to Simple LSRPG.\n");
         uiManager.showDataMenu();
         option = uiManager.askForInteger("\nYour answer: ");
@@ -213,7 +212,7 @@ public class UIController {
                 uiManager.showMessage("\nTavern keeper: “C'mon don't fool around and tell me your real name, will ya?”");
                 uiManager.showMessage("Character name can't include numbers or special characters\n");
             }else{
-                exist = characterManager.characterNameDisponibility(characterName);
+                exist = characterManager.characterNameDisponibility(characterName, isUsingApi);
                 if(exist){
                     uiManager.showMessage("\nTavern keeper: “Sorry lad this character name already exists”\n");
                 }else{
@@ -1439,9 +1438,9 @@ public class UIController {
                 while(i < characterQuantity){
 
                     levelUp = characterManager.levelUpCheck(xpSum, characterInParty.get(i).getCharacterLevel());
+
                     if(isUsingApi){
                         if(levelUp){
-
                             characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
 

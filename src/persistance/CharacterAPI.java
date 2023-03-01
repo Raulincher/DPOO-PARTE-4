@@ -1,14 +1,11 @@
 package persistance;
 
 import business.entities.Character;
-import business.entities.Monster;
 import com.google.gson.Gson;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -87,6 +84,7 @@ public class CharacterAPI {
         Gson g = new Gson();
         String characterString = g.toJson(character);
 
+
         try {
             // Define the request
             // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
@@ -112,28 +110,35 @@ public class CharacterAPI {
      *
      * @param url  A String representation of the URL to post to, which will be assumed to use HTTP/HTTPS.
      * @param character The content to post, which will be sent to the server in the request body.
-     * @return The contents of the response, in case the server sends anything back after posting the content.
      * @throws IOException If the URL is malformed or the server can't be reached.
      */
-    public Boolean updateToUrl(String url, Character character, int xpplus) throws IOException {
+    public void updateToUrl(String url, Character character, int xpplus) throws IOException {
         Gson g = new Gson();
         ArrayList<Character> currentCharactersList = getFromUrl(url);
-        //deleteFromUrl(url);
+        deleteFromUrl(url);
         for (int i = 0; i < currentCharactersList.size(); i++) {
             if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
             {
                 currentCharactersList.get(i).setXp(xpplus + character.getCharacterLevel());
-                i = currentCharactersList.size();
+            }
+            String characterString = g.toJson(currentCharactersList.get(i));
+            try {
+                // Define the request
+                // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
+                HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(characterString)).build();
+
+                // We could use a BodyHandler that discards the response body, but here we return the API's response
+                // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                response.body();
+
+            } catch (URISyntaxException | IOException | InterruptedException e) {
+                // Exceptions are simplified for any classes that need to catch them
+                throw new IOException(e);
             }
         }
-        String characterString = g.toJson(currentCharactersList);
-        System.out.println("----------------------------------------------------");
-        System.out.println(currentCharactersList.size());
-        System.out.println("----------------------------------------------------");
-        System.out.println(characterString);
-        System.out.println("----------------------------------------------------");
 
-        return true;
+
     }
 
     /**
