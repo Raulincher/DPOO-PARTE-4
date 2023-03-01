@@ -1435,6 +1435,7 @@ public class UIController {
                     i++;
                 }
                 i = 0;
+                boolean evolved = false;
                 while(i < characterQuantity){
 
                     levelUp = characterManager.levelUpCheck(xpSum, characterInParty.get(i).getCharacterLevel());
@@ -1442,24 +1443,35 @@ public class UIController {
                     if(isUsingApi){
                         if(levelUp){
                             characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
+                            characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
 
+                            evolved = characterManager.evolution(characterInParty.get(i), isUsingApi);
+
+                            if(evolved){
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
+                            }
                         }else{
                             characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
                         }
                     }else{
                         if(levelUp){
-
                             characterManager.levelUpdate(characterInParty.get(i), xpSum);
+                            characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
 
+                            evolved = characterManager.evolution(characterInParty.get(i), isUsingApi);
+                            if(evolved){
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
+                            }
                         }else{
                             characterManager.levelUpdate(characterInParty.get(i), xpSum);
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
                         }
                     }
                     characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
+
                     i++;
 
                 }

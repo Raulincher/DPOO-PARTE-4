@@ -666,6 +666,50 @@ public class CharacterManager {
         return evolution;
     }
 
+
+
+    public boolean evolution(Character character, boolean isUsingApi) throws IOException {
+
+        boolean evolved = false;
+
+        if(character.getCharacterClass().equals("Adventurer") && character.getCharacterLevel() >= 300){
+            evolved = true;
+            if(isUsingApi){
+                updateEvolutionApi(character, "Warrior");
+            }else{
+                updateEvolutionJson(character, "Warrior");
+            }
+            character.setClass("Warrior");
+        }else if(character.getCharacterClass().equals("Warrior") && character.getCharacterLevel() >= 700){
+            evolved = true;
+            if(isUsingApi){
+                updateEvolutionApi(character, "Champion");
+            }else{
+                updateEvolutionJson(character,"Champion");
+            }
+            character.setClass("Champion");
+        }else if(character.getCharacterClass().equals("Cleric") && character.getCharacterLevel() >= 400){
+            evolved = true;
+            if(isUsingApi){
+                updateEvolutionApi(character, "Paladin");
+            }else{
+                updateEvolutionJson(character, "Paladin");
+            }
+            character.setClass("Paladin");
+
+        }
+
+        return evolved;
+    }
+
+    public void updateEvolutionJson(Character character, String newClass){
+        characterDAO.updateCharacterClass(character, newClass);
+    }
+
+    public void updateEvolutionApi(Character character, String newClass) throws IOException {
+        characterAPI.updateClassToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character, newClass);
+    }
+
     /**
      * Esta función devuelve una variable de tipo Character siguiendo el nombre
      * que se ha introducido, buscándolo por la ArrayList

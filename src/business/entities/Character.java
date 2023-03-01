@@ -103,4 +103,12 @@ public class Character {
      * @param spirit, que será el nuevo spirit del character
      */
     public void setSpirit(int spirit) {this.spirit = spirit;}
+
+
+    /**
+     * Esta función servirá para actualizar la clase del character
+     *
+     * @param newClass, que será la nueva clase del character
+     */
+    public void setClass(String newClass) {this.characterClass = newClass;}
 }

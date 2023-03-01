@@ -86,6 +86,46 @@ public class CharacterDAO {
 
     }
 
+
+
+    /**
+     * Esta función servirá para construir actualizar la clase del
+     * character en el JSON
+     *
+     * @param character, variable de tipo Character en cuestión
+     * @param newClass, clase nueva
+     */
+    public void updateCharacterClass(Character character, String newClass){
+
+        Character[] currentCharacters;
+        FileWriter writer;
+
+        // Abrimos un try & catch para leer el JSON
+        try
+        {
+            // Leemos el JSON y creamos una ArrayList para guardar los Characters
+            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            ArrayList<Character> characters = new ArrayList<>(Arrays.asList(currentCharacters));
+
+            // Abrimos bucle para buscar el Character que queremos modificar
+            for (int i = 0; i < characters.size(); i++) {
+                if (Objects.equals(character.getCharacterName(), characters.get(i).getCharacterName()))
+                {
+                    characters.get(i).setClass(newClass);
+                    i = characters.size();
+                }
+            }
+
+            // Una vez encontrado lo modificamos en el JSON
+            writer = new FileWriter(String.valueOf(characterPath));
+            gson.toJson(characters, writer);
+            writer.close();
+        }
+        // Añadimos excepción por si no puede leer el JSON
+        catch (IOException ignored) {}
+
+    }
+
     /**
      * Esta función servirá para borrar un personaje del JSON
      *

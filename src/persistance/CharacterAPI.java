@@ -137,9 +137,36 @@ public class CharacterAPI {
                 throw new IOException(e);
             }
         }
-
-
     }
+
+
+    public void updateClassToUrl(String url, Character character, String newClass) throws IOException {
+        Gson g = new Gson();
+        ArrayList<Character> currentCharactersList = getFromUrl(url);
+        deleteFromUrl(url);
+        for (int i = 0; i < currentCharactersList.size(); i++) {
+            if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
+            {
+                currentCharactersList.get(i).setClass(newClass);
+            }
+            String characterString = g.toJson(currentCharactersList.get(i));
+            try {
+                // Define the request
+                // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
+                HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(characterString)).build();
+
+                // We could use a BodyHandler that discards the response body, but here we return the API's response
+                // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                response.body();
+
+            } catch (URISyntaxException | IOException | InterruptedException e) {
+                // Exceptions are simplified for any classes that need to catch them
+                throw new IOException(e);
+            }
+        }
+    }
+
 
     /**
      * Method that removes the contents from a URL using the HTTPS protocol. Specifically, a DELETE request is sent.
