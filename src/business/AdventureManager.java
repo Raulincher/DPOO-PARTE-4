@@ -190,17 +190,36 @@ public class AdventureManager {
     }
 
 
-    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, int diceRoll, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
+    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, int diceRoll, ArrayList<Mage> magesInBattle, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
         ArrayList<String> listOfPriorities = new ArrayList<>(0);
         int i = 0;
         int z = 0;
         int characterSpirit = 0;
         int characterInitiative = 0;
+        int diceroll = 0;
         while(i < characterQuantity + monsterQuantity){
             if(i < characterInParty.size()){
-                characterSpirit = characterInParty.get(i).getSpirit();
-                characterInitiative = diceRoll + characterSpirit;
-                listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior") || characterInParty.get(i).getCharacterClass().equals("Champion")){
+                    Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                    diceroll = characterManager.diceRollD12();
+                    characterInitiative = adventurer.initiative(diceroll);
+                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                }else if(characterInParty.get(i).getCharacterClass().equals("Cleric") || characterInParty.get(i).getCharacterClass().equals("Paladin")){
+                    Cleric cleric = new Cleric(characterInParty.get(i));
+                    diceroll = characterManager.diceRollD10();
+                    characterInitiative = cleric.initiative(diceroll);
+                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                }else if(characterInParty.get(i).getCharacterClass().equals("Mage")){
+                    int b = 0;
+                    for(int a = 0; a < magesInBattle.size(); a++){
+                        if(characterInParty.get(i).getCharacterName().equals(magesInBattle.get(a).getCharacterName())){
+                            b = a;
+                        }
+                    }
+                    diceroll = characterManager.diceRollD20();
+                    characterInitiative = magesInBattle.get(b).initiative(diceroll);
+                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                }
                 z++;
             }
 

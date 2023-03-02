@@ -323,6 +323,24 @@ public class CharacterManager {
         return roll;
     }
 
+
+    /**
+     * Esta función genera un número entre el 1 y el 20 simulando tirar
+     * un dado de 8 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD20(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
+        Random rand = new Random();
+        int upperbound = 20;
+        roll = rand.nextInt(upperbound + 1);
+
+        return roll;
+    }
+
     /**
      * Esta función calcula el daño que hará el jugador con su Sword Slash
      *

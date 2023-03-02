@@ -793,7 +793,7 @@ public class UIController {
             int diceRoll = characterManager.diceRollD12();;
             int roundCounter = 0;
 
-            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, diceRoll, characterInParty, monstersInEncounter );
+            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, diceRoll, magesInBattle, characterInParty, monstersInEncounter );
 
             adventureManager.orderListOfPriorities(listOfPriorities);
 

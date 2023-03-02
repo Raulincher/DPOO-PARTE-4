@@ -3,7 +3,7 @@
     "name": "Artorias",
     "player": "Gwyn",
     "characterClass": "Warrior",
-    "xp": 336,
+    "xp": 503,
     "body": 1,
     "mind": 1,
     "spirit": 0
@@ -12,7 +12,7 @@
     "name": "Maliketh",
     "player": "Marika",
     "characterClass": "Mage",
-    "xp": 462,
+    "xp": 629,
     "body": 2,
     "mind": 1,
     "spirit": 0
@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 462,
+    "xp": 629,
     "body": 1,
     "mind": 1,
     "spirit": 1
