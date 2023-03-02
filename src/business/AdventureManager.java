@@ -1,15 +1,12 @@
 package business;
 
-import business.entities.Adventure;
-import business.entities.Monster;
+import business.entities.*;
 import business.entities.Character;
 import persistance.AdventureAPI;
 import persistance.AdventureDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Objects;
 
 public class AdventureManager {
 
@@ -149,7 +146,22 @@ public class AdventureManager {
         if(charactersLife.size() == 0) {
             z = 0;
             while (z < characterInParty.size()) {
-                characterInitialLife = characterManager.initialLifeCalculator(characterInParty.get(z).getCharacterName(), isUsingApi);
+                if(characterInParty.get(z).getCharacterClass().equals("Adventurer") || characterInParty.get(z).getCharacterClass().equals("Warrior")){
+                    Adventurer adventurer = new Adventurer(characterInParty.get(z));
+                    characterInitialLife = adventurer.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+
+                }else if(characterInParty.get(z).getCharacterClass().equals("Champion")){
+                    Champion champion = new Champion(characterInParty.get(z));
+                    characterInitialLife = champion.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+
+                }else if(characterInParty.get(z).getCharacterClass().equals("Cleric") || characterInParty.get(z).getCharacterClass().equals("Paladin")){
+                    Cleric cleric = new Cleric(characterInParty.get(z));
+                    characterInitialLife = cleric.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+
+                }else if(characterInParty.get(z).getCharacterClass().equals("Mage")){
+                    Mage mage = new Mage(characterInParty.get(z),0);
+                    characterInitialLife = mage.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+                }
                 charactersLife.add(z, characterInParty.get(z).getCharacterName() + characterInitialLife + "/" + characterInitialLife);
                 z++;
             }

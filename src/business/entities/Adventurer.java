@@ -1,15 +1,15 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 
-public class Champion extends Character {
-    public Champion(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
+public class Adventurer extends Character {
+    public Adventurer(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
-
-    public Champion(Character character) {
+    public Adventurer(Character character) {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
+
 
     @Override
     public int getBody() {
@@ -35,10 +35,11 @@ public class Champion extends Character {
         int body = getBody();
 
         // Calculamos la vida con la fórmula
-        life = ((10 + body) * level) + (body * level);
+        life = (10 + body) * level;
 
         return life;
     }
+
 
     public int initiative(int d12) {
 
@@ -50,29 +51,22 @@ public class Champion extends Character {
         return initiative;
     }
 
-    public void MotivationalSpeech(Character character){
-        character.setSpirit(character.getSpirit() + 1);
+    public void selfMotivated(){
+        setSpirit(getSpirit() + 1);
     }
 
-    public int improvedSwordSlash(int d10){
+    public int swordSlash(int d6){
         int body = getBody();
 
-        return d10 + body;
+        return d6 + body;
     }
 
-    public int improvedBandageTime(int totalLife, int leftLife){
 
-       int healing = totalLife - leftLife;
+    public int bandageTime(int d8){
+        int mind = getMind();
 
-        if(healing < 0){
-            healing = -1 * healing;
-        }
-
-        return healing;
+        return mind + d8;
     }
-
-    public int passive(int dmg){
-        return dmg / 2;
-    }
-
 }
+
+

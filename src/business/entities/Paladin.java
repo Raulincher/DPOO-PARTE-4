@@ -1,4 +1,4 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 
@@ -12,7 +12,7 @@ public class Paladin extends Character {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
 
-    public int setInitialLife(int level){
+    public int initialLifeCalculator(int level){
         int body = getBody();
         return (10 + body) * level;
     }

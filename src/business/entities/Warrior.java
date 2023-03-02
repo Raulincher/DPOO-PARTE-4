@@ -1,15 +1,15 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 
-public class Adventurer extends Character {
-    public Adventurer(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
+public class Warrior extends Character {
+    public Warrior(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
-    public Adventurer(Character character) {
+
+    public Warrior(Character character) {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
-
 
     @Override
     public int getBody() {
@@ -55,18 +55,19 @@ public class Adventurer extends Character {
         setSpirit(getSpirit() + 1);
     }
 
-    public int swordSlash(int d6){
+    public int improvedSwordSlash(int d10){
         int body = getBody();
 
-        return d6 + body;
+        return d10 + body;
     }
-
 
     public int bandageTime(int d8){
         int mind = getMind();
 
         return mind + d8;
     }
+
+    public int passive(int dmg){
+        return dmg / 2;
+    }
 }
-
-

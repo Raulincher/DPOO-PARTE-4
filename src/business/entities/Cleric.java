@@ -1,4 +1,4 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 
@@ -32,7 +32,7 @@ public class Cleric extends Character {
         super.setMind(mind);
     }
 
-    public int setInitialLife(int level){
+    public int initialLifeCalculator(int level){
         int body = getBody();
         return (10 + body) * level;
     }

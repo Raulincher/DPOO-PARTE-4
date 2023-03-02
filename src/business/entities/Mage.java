@@ -1,4 +1,4 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 

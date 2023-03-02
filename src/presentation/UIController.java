@@ -1,9 +1,8 @@
 package presentation;
 
 import business.*;
-import business.entities.Adventure;
+import business.entities.*;
 import business.entities.Character;
-import business.entities.Monster;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,13 +1,13 @@
-package business;
+package business.entities;
 
 import business.entities.Character;
 
-public class Warrior extends Character {
-    public Warrior(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
+public class Champion extends Character {
+    public Champion(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
 
-    public Warrior(Character character) {
+    public Champion(Character character) {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
 
@@ -35,11 +35,10 @@ public class Warrior extends Character {
         int body = getBody();
 
         // Calculamos la vida con la fórmula
-        life = (10 + body) * level;
+        life = ((10 + body) * level) + (body * level);
 
         return life;
     }
-
 
     public int initiative(int d12) {
 
@@ -51,8 +50,8 @@ public class Warrior extends Character {
         return initiative;
     }
 
-    public void selfMotivated(){
-        setSpirit(getSpirit() + 1);
+    public void MotivationalSpeech(Character character){
+        character.setSpirit(character.getSpirit() + 1);
     }
 
     public int improvedSwordSlash(int d10){
@@ -61,13 +60,19 @@ public class Warrior extends Character {
         return d10 + body;
     }
 
-    public int bandageTime(int d8){
-        int mind = getMind();
+    public int improvedBandageTime(int totalLife, int leftLife){
 
-        return mind + d8;
+       int healing = totalLife - leftLife;
+
+        if(healing < 0){
+            healing = -1 * healing;
+        }
+
+        return healing;
     }
 
     public int passive(int dmg){
         return dmg / 2;
     }
+
 }

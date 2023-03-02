@@ -1,5 +1,6 @@
 package business;
 
+import business.entities.*;
 import business.entities.Character;
 import persistance.CharacterAPI;
 import persistance.CharacterDAO;
