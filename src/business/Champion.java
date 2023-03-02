@@ -7,6 +7,10 @@ public class Champion extends Character {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
 
+    public Champion(Character character) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+    }
+
     @Override
     public int getBody() {
         return super.getBody();
@@ -47,7 +51,7 @@ public class Champion extends Character {
     }
 
     public void MotivationalSpeech(Character character){
-        setSpirit(character.getSpirit() + 1);
+        character.setSpirit(character.getSpirit() + 1);
     }
 
     public int improvedSwordSlash(int d10){

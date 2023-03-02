@@ -6,8 +6,13 @@ public class Mage extends Character {
 
     int shield;
 
-    Mage(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int shield) {
+    public Mage(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int shield) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
+        this.shield = shield;
+    }
+
+    public Mage(Character character, int shield) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
         this.shield = shield;
     }
 
@@ -23,6 +28,10 @@ public class Mage extends Character {
 
     public void setShield(int shield){
         this.shield = shield;
+    }
+
+    public int getShield() {
+        return shield;
     }
 
     public int initialLifeCalculator(int level){

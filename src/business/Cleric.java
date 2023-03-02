@@ -7,6 +7,11 @@ public class Cleric extends Character {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
 
+    public Cleric(Character character) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+    }
+
+
     @Override
     public int getBody() {
         return super.getBody();
@@ -38,7 +43,7 @@ public class Cleric extends Character {
     }
 
     public void prayerOfGoodLuck(Character character){
-        setMind(character.getMind() + 1);
+        character.setMind(character.getMind() + 1);
     }
 
     public int prayerOfHealing(int d10){

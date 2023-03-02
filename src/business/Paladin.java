@@ -8,20 +8,8 @@ public class Paladin extends Character {
     public Paladin(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
-
-    @Override
-    public int getBody() {
-        return super.getBody();
-    }
-
-    @Override
-    public int getSpirit() {
-        return super.getSpirit();
-    }
-
-    @Override
-    public int getMind() {
-        return super.getMind();
+    public Paladin(Character character) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
 
     public int setInitialLife(int level){
@@ -34,15 +22,8 @@ public class Paladin extends Character {
         return d10 + spirit;
     }
 
-    public int blessOfGoodLuck(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 3
-        Random rand = new Random();
-        int upperbound = 3;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
+    public void blessOfGoodLuck(int roll, Character character){
+        character.setMind(character.getMind() + roll);
     }
 
     public int prayerOfMassHealing(int d10){

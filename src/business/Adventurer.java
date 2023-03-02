@@ -6,6 +6,10 @@ public class Adventurer extends Character {
     public Adventurer(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
+    public Adventurer(Character character) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+    }
+
 
     @Override
     public int getBody() {

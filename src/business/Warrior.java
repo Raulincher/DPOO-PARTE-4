@@ -7,6 +7,10 @@ public class Warrior extends Character {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
     }
 
+    public Warrior(Character character) {
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+    }
+
     @Override
     public int getBody() {
         return super.getBody();

@@ -3,7 +3,7 @@
     "name": "Artorias",
     "player": "Gwyn",
     "characterClass": "Warrior",
-    "xp": 317,
+    "xp": 336,
     "body": 1,
     "mind": 1,
     "spirit": 0
@@ -12,7 +12,7 @@
     "name": "Maliketh",
     "player": "Marika",
     "characterClass": "Mage",
-    "xp": 276,
+    "xp": 462,
     "body": 2,
     "mind": 1,
     "spirit": 0
@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 276,
+    "xp": 462,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -30,7 +30,7 @@
     "name": "Gwynnevere",
     "player": "Gwyn",
     "characterClass": "Warrior",
-    "xp": 317,
+    "xp": 503,
     "body": 1,
     "mind": 0,
     "spirit": 0
@@ -39,9 +39,63 @@
     "name": "Hdjksd",
     "player": "dfsdf",
     "characterClass": "Mage",
-    "xp": 400,
+    "xp": 567,
     "body": 1,
     "mind": 2,
+    "spirit": 1
+  },
+  {
+    "name": "Paladin",
+    "player": "prueba",
+    "characterClass": "Paladin",
+    "xp": 1959,
+    "body": 1,
+    "mind": 0,
+    "spirit": 0
+  },
+  {
+    "name": "Mago",
+    "player": "prueba",
+    "characterClass": "Mage",
+    "xp": 2126,
+    "body": 1,
+    "mind": 2,
+    "spirit": 0
+  },
+  {
+    "name": "Clerigo",
+    "player": "prueba",
+    "characterClass": "Paladin",
+    "xp": 892,
+    "body": 1,
+    "mind": 2,
+    "spirit": 1
+  },
+  {
+    "name": "Horaloux",
+    "player": "prueba",
+    "characterClass": "Champion",
+    "xp": 734,
+    "body": 0,
+    "mind": 1,
+    "spirit": 1
+  },
+  {
+    "name": "Champ",
+    "player": "prueba",
+    "characterClass": "Champion",
+    "xp": 1234,
+    "body": 1,
+    "mind": 2,
+    "spirit": 0
+  },
+  {
+    "name": "Warrior",
+    "player": "prueba",
+    "characterClass": "Warrior",
+    "xp": 567,
+    "body": 1,
+    "mind": 1,
     "spirit": 1
   }
 ]

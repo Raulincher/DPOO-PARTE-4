@@ -1,8 +1,6 @@
 package presentation;
 
-import business.AdventureManager;
-import business.CharacterManager;
-import business.MonsterManager;
+import business.*;
 import business.entities.Adventure;
 import business.entities.Character;
 import business.entities.Monster;
@@ -694,6 +692,7 @@ public class UIController {
 
         do{
             ArrayList<String> monstersLife = new ArrayList<>(0);
+            ArrayList<Mage> magesInBattle = new ArrayList<>(0);
 
             uiManager.showMessage("---------------------");
             uiManager.showMessage("Starting Encounter "+ (counterEncounters + 1) +":");
@@ -710,6 +709,13 @@ public class UIController {
                 uiManager.showMessage("\t- "+ count + "x " + storedName.get(i));
                 i++;
             }
+            int z = 0;
+            for(int a = 0; a < characterInParty.size(); a++){
+                if(characterInParty.get(a).getCharacterClass().equals("Mage")){
+                    magesInBattle.add(z, new Mage(characterInParty.get(a), 0));
+                    z++;
+                }
+            }
 
             uiManager.showMessage("---------------------");
 
@@ -720,17 +726,69 @@ public class UIController {
             uiManager.showMessage("-------------------------\n");
             i = 0;
             while(i < characterQuantity){
-                //get characterName from party
-                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
-                //update character spirit +1
-                int temporalSpirit = characterInParty.get(i).getSpirit();
-                temporalSpirit = temporalSpirit + 1;
-                characterInParty.get(i).setSpirit(temporalSpirit);
+                if(characterInParty.get(i).getCharacterClass().equals("Adventurer")){
+                    Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
+                    //update character spirit +1
+                    adventurer.selfMotivated();
+                    characterInParty.set(i,adventurer);
+                }else if(characterInParty.get(i).getCharacterClass().equals("Warrior")){
+                    Warrior warrior = new Warrior(characterInParty.get(i));
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
+                    warrior.selfMotivated();
+                    characterInParty.set(i,warrior);
+                }else if(characterInParty.get(i).getCharacterClass().equals("Champion")){
+                    Champion champion = new Champion(characterInParty.get(i));
+
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Motivational speech. Everyone’s Spirit increases in +1");
+                    //update character spirit +1
+                    for(int a = 0; a < characterQuantity; a++){
+                        champion.MotivationalSpeech(characterInParty.get(a));
+                    }
+                }else if(characterInParty.get(i).getCharacterClass().equals("Cleric")){
+                    Cleric cleric = new Cleric(characterInParty.get(i));
+
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of good luck. Everyone’s Mind increases in +1");
+                    //update character mind +1
+                    for(int a = 0; a < characterQuantity; a++){
+                        cleric.prayerOfGoodLuck(characterInParty.get(a));
+                    }
+
+                }else if(characterInParty.get(i).getCharacterClass().equals("Paladin")){
+
+                    Paladin paladin = new Paladin(characterInParty.get(i));
+                    int roll = characterManager.diceRollD3();
+
+                    //update character mind +x
+                    for(int a = 0; a < characterQuantity; a++){
+                        paladin.blessOfGoodLuck(roll,characterInParty.get(a));
+                    }
+
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll);
+
+                }else if(characterInParty.get(i).getCharacterClass().equals("Mage")){
+                    int b = 0;
+                    int diceRoll = characterManager.diceRollD6();
+                    int characterLevel = characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel());
+                    for(int a = 0; a<magesInBattle.size(); a++){
+                        if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(i).getCharacterName())){
+                            magesInBattle.get(a).shieldSetUp(diceRoll, characterLevel);
+                            b = a;
+                        }
+                    }
+                    //get characterName from party
+                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Mage shield. Shield recharges " + magesInBattle.get(b).getShield());
+                }
                 i++;
             }
 
             uiManager.showMessage("Rolling initiative...\n");
-            int z;
+            z = 0;
             int monsterQuantity = monstersInEncounter.size();
             int diceRoll = characterManager.diceRollD12();;
             int roundCounter = 0;
@@ -1480,23 +1538,94 @@ public class UIController {
                     String[] parts = charactersLife.get(i).split("/");
                     int temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
                     int restLife =  Integer.parseInt(parts[1]);
-                    if(temporalLife != 0) {
-                        //int healing = characterManager.BandageTime(characterNamesList[i]);
-                        int diceRollHeal = characterManager.diceRollD8();
-                        int characterMind = characterInParty.get(i).getMind();
-                        int characterCuration = diceRollHeal + characterMind;
-                        int characterBandage =  characterCuration + temporalLife;
+                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer")){
+                        if(temporalLife != 0) {
+                            Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD8();
+                            int characterCuration = adventurer.bandageTime(diceRollHeal);
+                            int characterBandage =  characterCuration + temporalLife;
 
-                        if(characterBandage > restLife) {
-                            characterBandage = restLife;
+                            if(characterBandage > restLife) {
+                                characterBandage = restLife;
+                            }
+
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                        }else{
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
                         }
 
-                        charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+                    }else if(characterInParty.get(i).getCharacterClass().equals("Warrior")){
+                        if(temporalLife != 0) {
+                            Warrior warrior = new Warrior(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD8();
+                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            int characterBandage =  characterCuration + temporalLife;
 
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
-                    }else{
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                            if(characterBandage > restLife) {
+                                characterBandage = restLife;
+                            }
+
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                        }else{
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                        }
+                    }else if(characterInParty.get(i).getCharacterClass().equals("Champion")){
+                        if(temporalLife != 0) {
+                            Warrior warrior = new Warrior(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD8();
+                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            int characterBandage =  characterCuration + temporalLife;
+
+                            if(characterBandage > restLife) {
+                                characterBandage = restLife;
+                            }
+
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                        }else{
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                        }
+                    }else if(characterInParty.get(i).getCharacterClass().equals("Cleric")){
+                        if(temporalLife != 0) {
+                            Warrior warrior = new Warrior(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD8();
+                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            int characterBandage =  characterCuration + temporalLife;
+
+                            if(characterBandage > restLife) {
+                                characterBandage = restLife;
+                            }
+
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                        }else{
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                        }
+                    }else if(characterInParty.get(i).getCharacterClass().equals("Paladin")){
+                        if(temporalLife != 0) {
+                            Warrior warrior = new Warrior(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD8();
+                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            int characterBandage =  characterCuration + temporalLife;
+
+                            if(characterBandage > restLife) {
+                                characterBandage = restLife;
+                            }
+
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                        }else{
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                        }
                     }
+
                     i++;
                 }
             }else{

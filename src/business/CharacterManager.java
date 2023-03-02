@@ -196,34 +196,6 @@ public class CharacterManager {
     }
 
     /**
-     * Función que servirá para recibir el valor actual de mind que tiene el personaje
-     *
-     * @param characterName, valor que describe el nombre del personaje
-     * @return mind, devuelve el valor de mind del personaje
-     */
-    public int getCharacterMind(String characterName, boolean isUsingApi) throws IOException {
-        int mind = 0;
-        int i = 0;
-        ArrayList<Character> characters;
-
-        if(isUsingApi){
-            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-
-        }else{
-            characters = characterDAO.readCharacterJSON();
-        }
-
-        // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
-        while(i < characters.size()){
-            if(characterName.equals(characters.get(i).getCharacterName())){
-                mind = characters.get(i).getMind();
-            }
-            i++;
-        }
-        return mind;
-    }
-
-    /**
      * Función que servirá para recibir el valor actual de xp que tiene el personaje
      *
      * @param characterName, valor que describe el nombre del personaje
@@ -252,17 +224,6 @@ public class CharacterManager {
         return xp;
     }
 
-    /*public int initiativeCalculator(String characterName){
-
-        int roll = diceRollD12();
-        int initiative = 0;
-        int spirit = getCharacterSpirit(characterName);
-
-        initiative = roll + spirit;
-
-        return initiative;
-    }*/
-
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
@@ -279,6 +240,24 @@ public class CharacterManager {
 
         return roll;
     }
+    /**
+     * Esta función genera un número entre el 1 y el 12 simulando tirar
+     * un dado de 12 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD3(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
+        Random rand = new Random();
+        int upperbound = 3;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+
 
     /**
      * Esta función genera un número entre el 1 y el 10 simulando tirar
@@ -358,22 +337,6 @@ public class CharacterManager {
         damage = diceRollD6() + body;
 
         return damage;
-    }
-
-    /**
-     * Esta función calcula la curación que recibirá el jugador
-     *
-     * @param characterName, valor que contendrá el nombre del personaje
-     * @return healing, int que dará la curación total del personaje
-     */
-    public int BandageTime(String characterName, boolean isUsingApi) throws IOException {
-        int healing = 0;
-        int mind = getCharacterMind(characterName, isUsingApi);
-
-        // Seguiremos la fórmula del enunciado para calcular el healing
-        healing = diceRollD8() + mind;
-
-        return healing;
     }
 
     /**
