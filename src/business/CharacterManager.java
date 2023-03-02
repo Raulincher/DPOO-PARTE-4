@@ -358,22 +358,6 @@ public class CharacterManager {
     }
 
     /**
-     * Esta función calcula el daño que hará el jugador con su Sword Slash
-     *
-     * @param characterName, valor que contendrá el nombre del personaje
-     * @return damage, int que será el daño que hará el personaje
-     */
-    public int characterDamageCalculator(String characterName, boolean isUsingApi) throws IOException {
-        int damage = 0;
-        int body = getCharacterBody(characterName, isUsingApi);
-
-        // Seguiremos la fórmula del enunciado para calcular el damage
-        damage = diceRollD6() + body;
-
-        return damage;
-    }
-
-    /**
      * Esta función calcula el nivel que tendrá el jugador tras recibir la experiencia
      *
      * @param xp, valor que contendrá la experiencia que ganará el jugador
@@ -406,26 +390,6 @@ public class CharacterManager {
         }
 
         return level;
-    }
-
-    /**
-     * Esta función calcula la vida que tendrá el jugador una vez se haya modificado
-     * al ganar experiencia y subir de nivel
-     *
-     * @param characterName, valor que contendrá el nombre del personaje
-     * @return life, int que será el daño que hará el personaje
-     */
-    public int initialLifeCalculator(String characterName, boolean isUsingApi) throws IOException {
-
-        int life;
-        int body = getCharacterBody(characterName, isUsingApi);
-        int xp = getCharacterXp(characterName, isUsingApi);
-        int level = revertXpToLevel(xp);
-
-        // Calculamos la vida con la fórmula
-        life = (10 + body) * level;
-
-        return life;
     }
 
     /**

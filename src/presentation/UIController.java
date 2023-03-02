@@ -24,23 +24,20 @@ public class UIController {
 
     public void run() throws IOException {
         int option;
-        boolean isUsingApi = false;
         int i = 0;
         int totalCharacters = 0;
-        boolean serverConnect = true;
 
         uiManager.showMessage("Welcome to Simple LSRPG.\n");
         uiManager.showDataMenu();
         option = uiManager.askForInteger("\nYour answer: ");
         uiManager.showMessage("\nLoading data...");
         if(option == 1){
-            isUsingApi = false;
             ArrayList<Monster> monsters = monsterManager.getAllMonsters();
             if(monsters.size() > 0){
                 uiManager.showMessage("Data was successfully loaded.\n\n\n");
                 do {
                     ArrayList<Character> characters = characterManager.getAllCharacters();
-                    for (Character character: characters) {
+                    for (Character ignored : characters) {
                         i++;
                         totalCharacters = i;
                     }
@@ -50,7 +47,7 @@ public class UIController {
                         uiManager.showMainMenuDissabled();
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
-                            executeOption(option, isUsingApi);
+                            executeOption(option, false);
                         }else{
                             uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                         }
@@ -58,14 +55,14 @@ public class UIController {
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
-                            executeOption(option, isUsingApi);
+                            executeOption(option, false);
                         }else{
                             uiManager.showMessage("\nYou need to create an adventure before playing one.\n");
                         }
                     }else{
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
-                        executeOption(option, isUsingApi);
+                        executeOption(option, false);
                     }
                 } while(option != 5);
             }else{
@@ -74,7 +71,6 @@ public class UIController {
         }else if(option == 2){
 
             ArrayList<Monster> getMonstersFromApi = monsterManager.getAPIMonsters();
-            isUsingApi = true;
 
             if(getMonstersFromApi != null){
                 uiManager.showMessage("Data was successfully loaded.\n\n\n");
@@ -91,7 +87,7 @@ public class UIController {
                         uiManager.showMainMenuDissabled();
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
-                            executeOption(option, isUsingApi);
+                            executeOption(option, true);
                         }else{
                             uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                         }
@@ -99,14 +95,14 @@ public class UIController {
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
                         if(option != 4){
-                            executeOption(option, isUsingApi);
+                            executeOption(option, true);
                         }else{
                             uiManager.showMessage("\nYou need to create an adventure before playing one.\n");
                         }
                     }else{
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
-                        executeOption(option, isUsingApi);
+                        executeOption(option, true);
                     }
                 } while(option != 5);
 
@@ -114,7 +110,6 @@ public class UIController {
             }else{
                 uiManager.showMessage("Couldn’t connect to the remote server.\n");
                 uiManager.showMessage("Reverting to local data.");
-                isUsingApi = false;
 
                 ArrayList<Monster> monsters = monsterManager.getAllMonsters();
                 if(monsters.size() > 0){
@@ -133,7 +128,7 @@ public class UIController {
                             uiManager.showMainMenuDissabled();
                             option = uiManager.askForInteger("\nYour answer: ");
                             if(option != 4){
-                                executeOption(option, isUsingApi);
+                                executeOption(option, false);
                             }else{
                                 uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                             }
@@ -141,14 +136,14 @@ public class UIController {
                             uiManager.showMainMenu();
                             option = uiManager.askForInteger("\nYour answer: ");
                             if(option != 4){
-                                executeOption(option, isUsingApi);
+                                executeOption(option, false);
                             }else{
                                 uiManager.showMessage("\nYou need to create an adventure before playing one.\n");
                             }
                         }else{
                             uiManager.showMainMenu();
                             option = uiManager.askForInteger("\nYour answer: ");
-                            executeOption(option, isUsingApi);
+                            executeOption(option, false);
                         }
                     } while(option != 5);
                 }else{
@@ -164,35 +159,25 @@ public class UIController {
     private void executeOption(int option, boolean isUsingApi) throws IOException {
         uiManager.showMessage("");
         switch (option) {
-            case 1:
-                characterCreation(isUsingApi);
-                break;
-            case 2:
-                listCharacters(isUsingApi);
-                break;
-            case 3:
-                adventureCreation(isUsingApi);
-                break;
-            case 4:
-                adventurePlay(isUsingApi);
-                break;
-            case 5:
-                uiManager.showMessage("\nTavern keeper: “Are you leaving already? See you soon, adventurer.”\n");
-                break;
-            default:
+            case 1 -> characterCreation(isUsingApi);
+            case 2 -> listCharacters(isUsingApi);
+            case 3 -> adventureCreation(isUsingApi);
+            case 4 -> adventurePlay(isUsingApi);
+            case 5 -> uiManager.showMessage("\nTavern keeper: “Are you leaving already? See you soon, adventurer.”\n");
+            default -> {
                 uiManager.showMessage("\nTavern keeper: “I can't understand you, could you repeat it to me, please?”");
                 uiManager.showMessage("\nValid options are between 1 to 5 (including them)”");
-                break;
+            }
         }
     }
 
     private void characterCreation(boolean isUsingApi) throws IOException {
         int error = 0;
         String characterName = "NoCharacterName";
-        String playerName = "NoPlayerName";
+        String playerName;
         int characterLevel = 0;
-        boolean saved = false;
-        boolean exist = false;
+        boolean saved;
+        boolean exist;
         uiManager.showMessage("""
                 Tavern keeper: “Oh, so you are new to this land.”
                 “What’s your name?”
@@ -268,7 +253,7 @@ public class UIController {
         uiManager.showMessage("\nTavern keeper: “Looking good!”");
         uiManager.showMessage("“And, lastly, ?”\n");
 
-        String characterClass = " ";
+        String characterClass;
 
         do{
             characterClass = uiManager.askForString("-> Enter the character’s initial class [Adventurer, Cleric, Mage]: ");
@@ -423,9 +408,9 @@ public class UIController {
         uiManager.showMessage("\nTavern keeper: “"+ adventureEncounters +" encounters? That is too much for me...”");
 
         ArrayList<ArrayList<Monster>> encounterMonsters;
-        ArrayList<String> monstersQuantityAndNames = new ArrayList<String>(1);
+        ArrayList<String> monstersQuantityAndNames = new ArrayList<>(1);
 
-        encounterMonsters = new ArrayList<ArrayList<Monster>>(adventureEncounters);
+        encounterMonsters = new ArrayList<>(adventureEncounters);
 
         encounterMonsters = adventureManager.initializeEncounters(encounterMonsters, adventureEncounters);
 
@@ -433,7 +418,6 @@ public class UIController {
             do {
                 uiManager.showMessage("\n\n* Encounter " + (auxEncounter + 1) + " / " + adventureEncounters + "");
                 uiManager.showMessage("* Monsters in encounter");
-                i = 0;
                 boolean exist = false;
 
                 if(encounterMonsters.get(auxEncounter).get(0) != null){
@@ -519,7 +503,7 @@ public class UIController {
                             }
                         }
 
-                        int removedCounter = 0;
+                        int removedCounter;
                         String monsterToBeErased = monstersQuantityAndNames.get(monsterDeleteOption - 1);
 
                         removedCounter = adventureManager.removeMonsterFromEncounter(encounterMonsters, monstersQuantityAndNames, monsterDeleteOption, lastQuantity, monsterQuantity, auxEncounter);
@@ -538,7 +522,7 @@ public class UIController {
                             auxEncounter++;
                             monsterQuantity = 0;
                             lastQuantity = 0;
-                            monstersQuantityAndNames = new ArrayList<String>(1);
+                            monstersQuantityAndNames = new ArrayList<>(1);
                         }
                     }
                     default -> {
@@ -573,7 +557,7 @@ public class UIController {
         ArrayList<String> charactersLife = new ArrayList<>(0);
         ArrayList<Adventure> adventures;
 
-        int monstersDefeat = 0; //number of monsters encounter defeat
+        int monstersDefeat; //number of monsters encounter defeat
         int charactersDefeat = 0; //number of characters defeat
         uiManager.showMessage("""
                 Tavern keeper: “So, you are looking to go on an adventure?”
@@ -609,7 +593,7 @@ public class UIController {
         }
         uiManager.showMessage("Tavern keeper: “Great, " + characterQuantity + " it is.”\n" + "“Who among these lads shall join you?”");
 
-        int i = 0, j = 0;
+        int i, j = 0;
         ArrayList<Character> characterInParty = new ArrayList<>(characterQuantity);
 
         for(i = 0; i < characterQuantity; i++){
@@ -701,14 +685,14 @@ public class UIController {
 
             adventureManager.countSameMonstersInEncounter(storedName, monstersInEncounter);
             i = 0;
-            long count = 0;
+            long count;
             while(i < storedName.size()){
                 int finalI1 = i;
                 count = monstersInEncounter.stream().filter(m -> m.getMonsterName().equals(storedName.get(finalI1))).count();
                 uiManager.showMessage("\t- "+ count + "x " + storedName.get(i));
                 i++;
             }
-            int z = 0;
+            int z;
             adventureManager.setMagesForAdventure(characterInParty, magesInBattle);
             uiManager.showMessage("---------------------");
 
@@ -719,69 +703,72 @@ public class UIController {
             uiManager.showMessage("-------------------------\n");
             i = 0;
             while(i < characterQuantity){
-                if(characterInParty.get(i).getCharacterClass().equals("Adventurer")){
-                    Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
-                    //update character spirit +1
-                    adventurer.selfMotivated();
-                    characterInParty.set(i,adventurer);
-                }else if(characterInParty.get(i).getCharacterClass().equals("Warrior")){
-                    Warrior warrior = new Warrior(characterInParty.get(i));
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
-                    warrior.selfMotivated();
-                    characterInParty.set(i,warrior);
-                }else if(characterInParty.get(i).getCharacterClass().equals("Champion")){
-                    Champion champion = new Champion(characterInParty.get(i));
-
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Motivational speech. Everyone’s Spirit increases in +1");
-                    //update character spirit +1
-                    for(int a = 0; a < characterQuantity; a++){
-                        champion.MotivationalSpeech(characterInParty.get(a));
+                switch (characterInParty.get(i).getCharacterClass()) {
+                    case "Adventurer" -> {
+                        Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
+                        //update character spirit +1
+                        adventurer.selfMotivated();
+                        characterInParty.set(i, adventurer);
                     }
-                }else if(characterInParty.get(i).getCharacterClass().equals("Cleric")){
-                    Cleric cleric = new Cleric(characterInParty.get(i));
-
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of good luck. Everyone’s Mind increases in +1");
-                    //update character mind +1
-                    for(int a = 0; a < characterQuantity; a++){
-                        cleric.prayerOfGoodLuck(characterInParty.get(a));
+                    case "Warrior" -> {
+                        Warrior warrior = new Warrior(characterInParty.get(i));
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
+                        warrior.selfMotivated();
+                        characterInParty.set(i, warrior);
                     }
+                    case "Champion" -> {
+                        Champion champion = new Champion(characterInParty.get(i));
 
-                }else if(characterInParty.get(i).getCharacterClass().equals("Paladin")){
-
-                    Paladin paladin = new Paladin(characterInParty.get(i));
-                    int roll = characterManager.diceRollD3();
-
-                    //update character mind +x
-                    for(int a = 0; a < characterQuantity; a++){
-                        paladin.blessOfGoodLuck(roll,characterInParty.get(a));
-                    }
-
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll);
-
-                }else if(characterInParty.get(i).getCharacterClass().equals("Mage")){
-                    int b = 0;
-                    int diceRoll = characterManager.diceRollD6();
-                    int characterLevel = characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel());
-                    for(int a = 0; a<magesInBattle.size(); a++){
-                        if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(i).getCharacterName())){
-                            magesInBattle.get(a).shieldSetUp(diceRoll, characterLevel);
-                            b = a;
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Motivational speech. Everyone’s Spirit increases in +1");
+                        //update character spirit +1
+                        for (int a = 0; a < characterQuantity; a++) {
+                            champion.MotivationalSpeech(characterInParty.get(a));
                         }
                     }
-                    //get characterName from party
-                    uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Mage shield. Shield recharges " + magesInBattle.get(b).getShield());
+                    case "Cleric" -> {
+                        Cleric cleric = new Cleric(characterInParty.get(i));
+
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of good luck. Everyone’s Mind increases in +1");
+                        //update character mind +1
+                        for (int a = 0; a < characterQuantity; a++) {
+                            cleric.prayerOfGoodLuck(characterInParty.get(a));
+                        }
+                    }
+                    case "Paladin" -> {
+                        Paladin paladin = new Paladin(characterInParty.get(i));
+                        int roll = characterManager.diceRollD3();
+
+                        //update character mind +x
+                        for (int a = 0; a < characterQuantity; a++) {
+                            paladin.blessOfGoodLuck(roll, characterInParty.get(a));
+                        }
+
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll);
+                    }
+                    case "Mage" -> {
+                        int b = 0;
+                        int diceRoll = characterManager.diceRollD6();
+                        int characterLevel = characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel());
+                        for (int a = 0; a < magesInBattle.size(); a++) {
+                            if (magesInBattle.get(a).getCharacterName().equals(characterInParty.get(i).getCharacterName())) {
+                                magesInBattle.get(a).shieldSetUp(diceRoll, characterLevel);
+                                b = a;
+                            }
+                        }
+                        //get characterName from party
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Mage shield. Shield recharges " + magesInBattle.get(b).getShield());
+                    }
                 }
                 i++;
             }
 
             uiManager.showMessage("Rolling initiative...\n");
-            z = 0;
             int monsterQuantity = monstersInEncounter.size();
             int roundCounter = 0;
 
@@ -808,12 +795,12 @@ public class UIController {
 
             do{
                 int q = 0;
-                int damage = 0;
+                int damage;
                 String[] auxName;
                 String actualName;
-                int isCrit = 0;
-                int totalLife = 0;
-                int actualLife = 0;
+                int isCrit;
+                int totalLife;
+                int actualLife;
                 boolean isBoss = false;
                 int highestMonsterIndex;
                 int smallestMonsterIndex;
@@ -869,79 +856,85 @@ public class UIController {
                                 String[] auxLife = charactersLife.get(z).split("/");
                                 actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                 if(actualLife != 0) {
-                                    if(characterInParty.get(z).getCharacterClass().equals("Adventurer")){
-                                        Adventurer adventurer = new Adventurer(characterInParty.get(z));
-                                        damage = adventurer.swordSlash(characterManager.diceRollD6());
-                                        auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
-                                        attackedMonster = auxName[0];
-                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
-                                    }else if(characterInParty.get(z).getCharacterClass().equals("Warrior") || characterInParty.get(z).getCharacterClass().equals("Champion")){
-                                        Warrior warrior = new Warrior(characterInParty.get(z));
-                                        damage = warrior.improvedSwordSlash(characterManager.diceRollD10());
-                                        auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
-                                        attackedMonster = auxName[0];
-                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.");
-                                    }else if(characterInParty.get(z).getCharacterClass().equals("Cleric")){
-                                        Cleric cleric = new Cleric(characterInParty.get(z));
-                                        int heal = 0;
-                                        auxLife = charactersLife.get(smallestCharacterIndex).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
-                                        if((totalLife / 2)  >= actualLife){
-                                            heal = cleric.prayerOfHealing(characterManager.diceRollD10());
-                                            auxName = charactersLife.get(smallestCharacterIndex).split("\\d+");
-                                            String healedCharacter = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to " + healedCharacter);
-                                            int newLife = heal + actualLife;
-                                            charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife );
-                                        }else{
-                                            damage = cleric.notOnMyWatch(characterManager.diceRollD4());
+                                    switch (characterInParty.get(z).getCharacterClass()) {
+                                        case "Adventurer" -> {
+                                            Adventurer adventurer = new Adventurer(characterInParty.get(z));
+                                            damage = adventurer.swordSlash(characterManager.diceRollD6());
                                             auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
                                             attackedMonster = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Not on my watch.");
+                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
                                         }
-                                    }else if(characterInParty.get(z).getCharacterClass().equals("Paladin")){
-                                        Paladin paladin = new Paladin(characterInParty.get(z));
-                                        int heal = 0;
-                                        auxLife = charactersLife.get(smallestCharacterIndex).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
-                                        int diceRoll = characterManager.diceRollD10();
-                                        if((totalLife / 2)  >= actualLife){
-                                            heal = paladin.prayerOfMassHealing(diceRoll);
-                                            for(int a = 0; a < characterInParty.size(); a++){
-                                                auxLife = charactersLife.get(a).split("/");
-                                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                                if(actualLife != 0){
-                                                    auxName = charactersLife.get(a).split("\\d+");
-                                                    String healedCharacter = auxName[0];
-                                                    int newLife = heal + actualLife;
-                                                    charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife );
+                                        case "Warrior", "Champion" -> {
+                                            Warrior warrior = new Warrior(characterInParty.get(z));
+                                            damage = warrior.improvedSwordSlash(characterManager.diceRollD10());
+                                            auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                            attackedMonster = auxName[0];
+                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.");
+                                        }
+                                        case "Cleric" -> {
+                                            Cleric cleric = new Cleric(characterInParty.get(z));
+                                            int heal;
+                                            auxLife = charactersLife.get(smallestCharacterIndex).split("/");
+                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                            totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
+                                            if ((totalLife / 2) >= actualLife) {
+                                                heal = cleric.prayerOfHealing(characterManager.diceRollD10());
+                                                auxName = charactersLife.get(smallestCharacterIndex).split("\\d+");
+                                                String healedCharacter = auxName[0];
+                                                uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to " + healedCharacter);
+                                                int newLife = heal + actualLife;
+                                                charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife);
+                                            } else {
+                                                damage = cleric.notOnMyWatch(characterManager.diceRollD4());
+                                                auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                                attackedMonster = auxName[0];
+                                                uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Not on my watch.");
+                                            }
+                                        }
+                                        case "Paladin" -> {
+                                            Paladin paladin = new Paladin(characterInParty.get(z));
+                                            int heal;
+                                            auxLife = charactersLife.get(smallestCharacterIndex).split("/");
+                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                            totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
+                                            int diceRoll = characterManager.diceRollD10();
+                                            if ((totalLife / 2) >= actualLife) {
+                                                heal = paladin.prayerOfMassHealing(diceRoll);
+                                                for (int a = 0; a < characterInParty.size(); a++) {
+                                                    auxLife = charactersLife.get(a).split("/");
+                                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                                    if (actualLife != 0) {
+                                                        auxName = charactersLife.get(a).split("\\d+");
+                                                        String healedCharacter = auxName[0];
+                                                        int newLife = heal + actualLife;
+                                                        charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife);
+                                                    }
+                                                }
+                                                uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to all conscious party");
+
+                                            } else {
+                                                damage = paladin.neverOnMyWatch(characterManager.diceRollD8());
+                                                auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                                attackedMonster = auxName[0];
+                                                uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Never on my watch.");
+                                            }
+                                        }
+                                        case "Mage" -> {
+                                            int auxMage = 0;
+                                            for (int a = 0; a < magesInBattle.size(); a++) {
+                                                if (magesInBattle.get(a).getCharacterName().equals(characterInParty.get(z).getCharacterClass())) {
+                                                    auxMage = a;
                                                 }
                                             }
-                                            uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to all conscious party" );
-
-                                        }else{
-                                            damage = paladin.neverOnMyWatch(characterManager.diceRollD8());
-                                            auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
-                                            attackedMonster = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Never on my watch.");
-                                        }
-                                    }else if(characterInParty.get(z).getCharacterClass().equals("Mage")){
-                                        int auxMage = 0;
-                                        for(int a = 0; a < magesInBattle.size(); a++){
-                                            if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(z).getCharacterClass())){
-                                                auxMage = a;
+                                            if (monstersLife.size() >= 3) {
+                                                damage = magesInBattle.get(auxMage).fireball(characterManager.diceRollD4());
+                                                uiManager.showMessage("\n" + actualName + " uses Fireball. Hits to all alive monsters");
+                                            } else {
+                                                damage = magesInBattle.get(auxMage).arcane_missile(characterManager.diceRollD6());
+                                                auxName = monstersLife.get(highestMonsterIndex).split("\\d+");
+                                                attackedMonster = auxName[0];
+                                                uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Arcane missile.");
                                             }
-                                        }
-                                        if(monstersLife.size() >= 3){
-                                            damage = magesInBattle.get(auxMage).fireball(characterManager.diceRollD4());
-                                            uiManager.showMessage("\n" + actualName + " uses Fireball. Hits to all alive monsters" );
-                                        }else{
-                                            damage = magesInBattle.get(auxMage).arcane_missile(characterManager.diceRollD6());
-                                            auxName = monstersLife.get(highestMonsterIndex).split("\\d+");
-                                            attackedMonster = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster +" with Arcane missile.");
                                         }
                                     }
 
@@ -1142,7 +1135,6 @@ public class UIController {
                                                 totalLife = Integer.parseInt(auxLife[1]);
                                                 auxName = monstersLife.get(c).split("\\d+");
                                                 attackedMonster = auxName[0];
-                                                int auxIndex = 0;
                                                 if(isCrit == 2){
                                                     total = actualLife - (damage*2);
                                                     if(total < 0){
@@ -1305,34 +1297,21 @@ public class UIController {
                     levelUp = characterManager.levelUpCheck(xpSum, characterInParty.get(i).getCharacterLevel());
 
                     if(isUsingApi){
-                        if(levelUp){
-                            characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
-                            characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
+                        characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
+                    }else{
+                        characterManager.levelUpdate(characterInParty.get(i), xpSum);
+                    }
+                    if(levelUp){
+                        characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
 
-                            evolved = characterManager.evolution(characterInParty.get(i), isUsingApi);
+                        evolved = characterManager.evolution(characterInParty.get(i), isUsingApi);
 
-                            if(evolved){
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
-                            }
-                        }else{
-                            characterManager.levelUpdateAPI(characterInParty.get(i), xpSum);
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
+                        if(evolved){
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
                         }
                     }else{
-                        if(levelUp){
-                            characterManager.levelUpdate(characterInParty.get(i), xpSum);
-                            characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
-
-                            evolved = characterManager.evolution(characterInParty.get(i), isUsingApi);
-                            if(evolved){
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
-                            }
-                        }else{
-                            characterManager.levelUpdate(characterInParty.get(i), xpSum);
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
-                        }
+                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
                     }
                     characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
 
@@ -1347,81 +1326,87 @@ public class UIController {
                     String[] parts = charactersLife.get(i).split("/");
                     int temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
                     int restLife =  Integer.parseInt(parts[1]);
-                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior")){
-                        if(temporalLife != 0) {
-                            Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD8();
-                            int characterCuration = adventurer.bandageTime(diceRollHeal);
-                            int characterBandage =  characterCuration + temporalLife;
+                    switch (characterInParty.get(i).getCharacterClass()) {
+                        case "Adventurer":
+                        case "Warrior":
+                            if (temporalLife != 0) {
+                                Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                                int diceRollHeal = characterManager.diceRollD8();
+                                int characterCuration = adventurer.bandageTime(diceRollHeal);
+                                int characterBandage = characterCuration + temporalLife;
 
-                            if(characterBandage > restLife) {
-                                characterBandage = restLife;
-                            }
-
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
-
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
-                        }else{
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                        }
-
-                    }else if(characterInParty.get(i).getCharacterClass().equals("Champion")){
-                        if(temporalLife != 0) {
-                            Champion champion = new Champion(characterInParty.get(i));
-
-                            int characterCuration = champion.improvedBandageTime(restLife, temporalLife);
-                            int characterBandage =  characterCuration + temporalLife;
-
-                            if(characterBandage > restLife) {
-                                characterBandage = restLife;
-                            }
-
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
-
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Improved bandage time. Heals " + characterCuration + " hit points");
-                        }else{
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                        }
-                    }else if(characterInParty.get(i).getCharacterClass().equals("Cleric")){
-                        if(temporalLife != 0) {
-                            Cleric cleric = new Cleric(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD10();
-                            int characterCuration = cleric.prayerOfSelfHealing(diceRollHeal);
-                            int characterHeal =  characterCuration + temporalLife;
-
-                            if(characterHeal > restLife) {
-                                characterHeal = restLife;
-                            }
-
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterHeal + "/" + restLife);
-
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Payer of self-healing. Heals " + characterCuration + " hit points");
-                        }else{
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                        }
-                    }else if(characterInParty.get(i).getCharacterClass().equals("Paladin")){
-                        if(temporalLife != 0) {
-                            Paladin paladin = new Paladin(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD10();
-                            int characterCuration = paladin.prayerOfMassHealing(diceRollHeal);
-                            int characterBandage =  characterCuration + temporalLife;
-
-                            if(characterBandage > restLife) {
-                                characterBandage = restLife;
-                            }
-                            for(int a = 0; a < characterInParty.size(); a++){
-                                parts = charactersLife.get(a).split("/");
-                                temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
-                                restLife =  Integer.parseInt(parts[1]);
-                                if(temporalLife != 0){
-                                    charactersLife.set(a, characterInParty.get(a).getCharacterName() + characterBandage + "/" + restLife);
+                                if (characterBandage > restLife) {
+                                    characterBandage = restLife;
                                 }
+
+                                charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                            } else {
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
                             }
 
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of mass healing. Heals " + characterCuration + " hit points to all the conscious party");
-                        }else{
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                        }
+                            break;
+                        case "Champion":
+                            if (temporalLife != 0) {
+                                Champion champion = new Champion(characterInParty.get(i));
+
+                                int characterCuration = champion.improvedBandageTime(restLife, temporalLife);
+                                int characterBandage = characterCuration + temporalLife;
+
+                                if (characterBandage > restLife) {
+                                    characterBandage = restLife;
+                                }
+
+                                charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Improved bandage time. Heals " + characterCuration + " hit points");
+                            } else {
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                            }
+                            break;
+                        case "Cleric":
+                            if (temporalLife != 0) {
+                                Cleric cleric = new Cleric(characterInParty.get(i));
+                                int diceRollHeal = characterManager.diceRollD10();
+                                int characterCuration = cleric.prayerOfSelfHealing(diceRollHeal);
+                                int characterHeal = characterCuration + temporalLife;
+
+                                if (characterHeal > restLife) {
+                                    characterHeal = restLife;
+                                }
+
+                                charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterHeal + "/" + restLife);
+
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Payer of self-healing. Heals " + characterCuration + " hit points");
+                            } else {
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                            }
+                            break;
+                        case "Paladin":
+                            if (temporalLife != 0) {
+                                Paladin paladin = new Paladin(characterInParty.get(i));
+                                int diceRollHeal = characterManager.diceRollD10();
+                                int characterCuration = paladin.prayerOfMassHealing(diceRollHeal);
+                                int characterBandage = characterCuration + temporalLife;
+
+                                if (characterBandage > restLife) {
+                                    characterBandage = restLife;
+                                }
+                                for (int a = 0; a < characterInParty.size(); a++) {
+                                    parts = charactersLife.get(a).split("/");
+                                    temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
+                                    restLife = Integer.parseInt(parts[1]);
+                                    if (temporalLife != 0) {
+                                        charactersLife.set(a, characterInParty.get(a).getCharacterName() + characterBandage + "/" + restLife);
+                                    }
+                                }
+
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of mass healing. Heals " + characterCuration + " hit points to all the conscious party");
+                            } else {
+                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
+                            }
+                            break;
                     }
 
                     i++;
