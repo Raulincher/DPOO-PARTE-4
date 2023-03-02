@@ -156,6 +156,112 @@ public class AdventureManager {
         }
     }
 
+    public int countDeadCharacters(ArrayList<String> charactersLife){
+        int deadCounter = 0;
+
+        for(int a = 0; a < charactersLife.size(); a++){
+            String[] auxLife = charactersLife.get(a).split("/");
+            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+            if(actualLife == 0){
+                deadCounter++;
+            }
+        }
+
+        return deadCounter;
+    }
+
+    public int smallestCharacterLife(ArrayList<String> charactersLife){
+        int z = 0;
+        int flag = 0;
+        int index = 0;
+        int smallerCharacterLife = 0;
+        while(z < charactersLife.size()){
+            String[] auxLife = charactersLife.get(z).split("/");
+            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+
+            if(actualLife != 0){
+                if(flag == 0){
+                    smallerCharacterLife = actualLife;
+                    index = z;
+                    flag = 1;
+                }else{
+                    if(smallerCharacterLife > actualLife){
+                        smallerCharacterLife = actualLife;
+                        index = z;
+                    }
+                }
+            }
+            z++;
+        }
+        return index;
+    }
+
+    public int highestEnemyLife(ArrayList<String> monstersLife){
+        int index = 0;
+        int z = 0;
+        int biggerMonsterLife = 0;
+        int flag = 0;
+
+        while(z < monstersLife.size()){
+            String[] auxLife = monstersLife.get(z).split("/");
+            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+            if (actualLife != 0) {
+                if (flag == 0) {
+                    biggerMonsterLife = actualLife;
+                    index = z;
+                    flag = 1;
+                } else {
+                    if (biggerMonsterLife < actualLife) {
+                        biggerMonsterLife = actualLife;
+                        index = z;
+                    }
+                }
+            }
+            z++;
+        }
+
+        return index;
+    }
+
+
+    public int smallestEnemyLife(ArrayList<String> monstersLife){
+        int index = 0;
+        int z = 0;
+        int smallerMonsterLife = 0;
+        int flag = 0;
+
+        while(z < monstersLife.size()){
+            String[] auxLife = monstersLife.get(z).split("/");
+            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+            if (actualLife != 0) {
+                if (flag == 0) {
+                    smallerMonsterLife = actualLife;
+                    index = z;
+                    flag = 1;
+                } else {
+                    if (smallerMonsterLife > actualLife) {
+                        smallerMonsterLife = actualLife;
+                        index = z;
+                    }
+                }
+            }
+            z++;
+        }
+
+        return index;
+    }
+
+
+    public void setMagesForAdventure(ArrayList<Character> characterInParty, ArrayList<Mage> magesInBattle){
+        int z = 0;
+
+        for(int a = 0; a < characterInParty.size(); a++){
+            if(characterInParty.get(a).getCharacterClass().equals("Mage")){
+                magesInBattle.add(z, new Mage(characterInParty.get(a), 0));
+                z++;
+            }
+        }
+    }
 
     public void orderListOfPriorities(ArrayList<String> listOfPriorities){
         int i = 0;

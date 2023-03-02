@@ -710,13 +710,7 @@ public class UIController {
                 i++;
             }
             int z = 0;
-            for(int a = 0; a < characterInParty.size(); a++){
-                if(characterInParty.get(a).getCharacterClass().equals("Mage")){
-                    magesInBattle.add(z, new Mage(characterInParty.get(a), 0));
-                    z++;
-                }
-            }
-
+            adventureManager.setMagesForAdventure(characterInParty, magesInBattle);
             uiManager.showMessage("---------------------");
 
             //preparation phase
@@ -819,17 +813,19 @@ public class UIController {
                 String[] auxName;
                 String actualName;
                 int isCrit = 0;
-                int smallerCharacterLife = 0;
-                int smallerMonsterLife = 0;
-                int lastMonsterIndex = 0;
-                int lastCharacterIndex = 0;
                 int totalLife = 0;
                 int actualLife = 0;
-                int flag = 0;
+                boolean isBoss = false;
+                int highestMonsterIndex;
+                int smallestMonsterIndex;
+                int smallestCharacterIndex ;
+                int total = 0;
+                boolean fail;
                 ArrayList<Integer> consciousPosition = new ArrayList<>(0);
                 String attackedMonster;
                 String compareName;
                 String actualDice = null;
+                String typeOfDamage;
                 ArrayList<String> monstersDamage = new ArrayList<>(0);
 
                uiManager.showMessage("Round "+  (roundCounter + 1) + ":");
@@ -855,236 +851,202 @@ public class UIController {
 
                 //battling
                 while(q < listOfPriorities.size()){
+                    fail = false;
                     isCrit = characterManager.diceRollD10();
-                    boolean isBoss = false;
-                    charactersDefeat = 0;
-                    lastCharacterIndex = 0;
-                    flag = 0;
-                    if(isCrit == 2){
+                    highestMonsterIndex = adventureManager.highestEnemyLife(monstersLife);
+                    smallestMonsterIndex = adventureManager.smallestEnemyLife(monstersLife);
+                    smallestCharacterIndex = adventureManager.smallestCharacterLife(charactersLife);
+                    charactersDefeat = adventureManager.countDeadCharacters(charactersLife);
+                    auxName = listOfPriorities.get(q).split("\\d+");
+                    actualName = auxName[0];
+                    damage = 0;
 
-                        auxName = listOfPriorities.get(q).split("\\d+");
-                        actualName = auxName[0];
+                    monstersDefeat = monstersInEncounter.size() - monstersLife.size();
+
+                    if(charactersDefeat < characterInParty.size() && monstersLife.size() != 0) {
                         z = 0;
-                        while(z < characterInParty.size()){
-                            String[] auxLife = charactersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
-                            if(actualLife != 0){
-                                if(flag == 0){
-                                    smallerCharacterLife = actualLife;
-                                    lastCharacterIndex = z;
-                                    flag = 1;
-                                }else{
-                                    if(smallerCharacterLife > actualLife){
-                                        smallerCharacterLife = actualLife;
-                                        lastCharacterIndex = z;
-                                    }
-                                }
-
-                            }else{
-                                charactersDefeat++;
-                                flag = 0;
-                            }
-
-                            z++;
-                        }
-                        z = 0;
-                        monstersDefeat = 0;
-                        lastMonsterIndex = 0;
-                        flag = 0;
-
-                        while(z < monstersLife.size()){
-                            String[] auxLife = monstersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                            if (actualLife != 0) {
-                                if (flag == 0) {
-                                    smallerMonsterLife = actualLife;
-                                    lastMonsterIndex = z;
-                                    flag = 1;
-                                } else {
-                                    if (smallerMonsterLife > actualLife) {
-                                        smallerMonsterLife = actualLife;
-                                        lastMonsterIndex = z;
-                                    }
-                                }
-                            }
-                            z++;
-                        }
-
-                        monstersDefeat = monstersInEncounter.size() - monstersLife.size();
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()) {
-                            z = 0;
-
-                            while (z < characterInParty.size()) {
-                                if (actualName.equals(characterInParty.get(z).getCharacterName())) {
-                                    String[] auxLife = charactersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    if(actualLife != 0) {
-                                        if(characterInParty.get(z).getCharacterClass().equals("Adventurer")){
-                                            Adventurer adventurer = new Adventurer(characterInParty.get(z));
-                                            damage = adventurer.swordSlash(characterManager.diceRollD6());
-                                            auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
+                        while (z < characterInParty.size()) {
+                            if (actualName.equals(characterInParty.get(z).getCharacterName())) {
+                                String[] auxLife = charactersLife.get(z).split("/");
+                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                if(actualLife != 0) {
+                                    if(characterInParty.get(z).getCharacterClass().equals("Adventurer")){
+                                        Adventurer adventurer = new Adventurer(characterInParty.get(z));
+                                        damage = adventurer.swordSlash(characterManager.diceRollD6());
+                                        auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                        attackedMonster = auxName[0];
+                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
+                                    }else if(characterInParty.get(z).getCharacterClass().equals("Warrior") || characterInParty.get(z).getCharacterClass().equals("Champion")){
+                                        Warrior warrior = new Warrior(characterInParty.get(z));
+                                        damage = warrior.improvedSwordSlash(characterManager.diceRollD10());
+                                        auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                        attackedMonster = auxName[0];
+                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.");
+                                    }else if(characterInParty.get(z).getCharacterClass().equals("Cleric")){
+                                        Cleric cleric = new Cleric(characterInParty.get(z));
+                                        int heal = 0;
+                                        auxLife = charactersLife.get(smallestCharacterIndex).split("/");
+                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                        totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
+                                        if((totalLife / 2)  >= actualLife){
+                                            heal = cleric.prayerOfHealing(characterManager.diceRollD10());
+                                            auxName = charactersLife.get(smallestCharacterIndex).split("\\d+");
+                                            String healedCharacter = auxName[0];
+                                            uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to " + healedCharacter);
+                                            int newLife = heal + actualLife;
+                                            charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife );
+                                        }else{
+                                            damage = cleric.notOnMyWatch(characterManager.diceRollD4());
+                                            auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
                                             attackedMonster = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
-                                        }else if(characterInParty.get(z).getCharacterClass().equals("Warrior") || characterInParty.get(z).getCharacterClass().equals("Champion")){
-                                            Warrior warrior = new Warrior(characterInParty.get(z));
-                                            damage = warrior.improvedSwordSlash(characterManager.diceRollD10());
-                                            auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                            attackedMonster = auxName[0];
-                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.");
-                                        }else if(characterInParty.get(z).getCharacterClass().equals("Cleric")){
-                                            Cleric cleric = new Cleric(characterInParty.get(z));
-                                            int heal = 0;
-                                            auxLife = charactersLife.get(lastCharacterIndex).split("/");
-                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                            totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
-                                            if((totalLife / 2)  >= actualLife){
-                                                heal = cleric.prayerOfHealing(characterManager.diceRollD10());
-                                                auxName = charactersLife.get(lastCharacterIndex).split("\\d+");
-                                                String healedCharacter = auxName[0];
-                                                uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to " + healedCharacter);
-                                                int newLife = heal + actualLife;
-                                                charactersLife.set(lastCharacterIndex, healedCharacter + newLife + "/" + totalLife );
-                                            }else{
-                                                damage = cleric.notOnMyWatch(characterManager.diceRollD4());
-                                                auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                                attackedMonster = auxName[0];
-                                                uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Not on my watch.");
-                                            }
-
-                                        }else if(characterInParty.get(z).getCharacterClass().equals("Paladin")){
-                                            Paladin paladin = new Paladin(characterInParty.get(z));
-                                            int heal = 0;
-                                            auxLife = charactersLife.get(lastCharacterIndex).split("/");
-                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                            totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
-                                            int diceRoll = characterManager.diceRollD10();
-                                            if((totalLife / 2)  >= actualLife){
-                                                heal = paladin.prayerOfMassHealing(diceRoll);
-                                                for(int a = 0; a < characterInParty.size(); a++){
-                                                    auxLife = charactersLife.get(a).split("/");
-                                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                                    if(actualLife != 0){
-                                                        auxName = charactersLife.get(a).split("\\d+");
-                                                        String healedCharacter = auxName[0];
-                                                        int newLife = heal + actualLife;
-                                                        charactersLife.set(lastCharacterIndex, healedCharacter + newLife + "/" + totalLife );
-                                                    }
-                                                }
-                                                uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to all conscious party" );
-
-                                            }else{
-                                                damage = paladin.neverOnMyWatch(characterManager.diceRollD8());
-                                                auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                                attackedMonster = auxName[0];
-                                                uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Never on my watch.");
-                                            }
-                                        }else if(characterInParty.get(z).getCharacterClass().equals("Mage")){
-                                            int auxMage = 0;
-                                            for(int a = 0; a < magesInBattle.size(); a++){
-                                                if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(z).getCharacterClass())){
-                                                    auxMage = a;
-                                                }
-                                            }
-                                            if(monstersLife.size() >= 3){
-                                                damage = magesInBattle.get(auxMage).fireball(characterManager.diceRollD4());
-                                                uiManager.showMessage("\n" + actualName + " uses Fireball. Hits "+ damage + " to all alive monsters" );
-                                            }else{
-                                                damage = magesInBattle.get(auxMage).arcane_missile(characterManager.diceRollD6());
-                                                uiManager.showMessage("\n" + actualName + " uses Arcane missile." );
-                                            }
+                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Not on my watch.");
                                         }
-
-                                    }
-                                    z = characterInParty.size();
-                                }
-                                z++;
-                            }
-                        }
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()){
-                            z = 0;
-
-                            while(z < monstersLife.size()){
-                                auxName = monstersLife.get(z).split("\\d+");
-                                compareName = auxName[0];
-                                if(actualName.equals(compareName)){
-                                    String[] auxLife = monstersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    i = 0;
-                                    while(i < monstersDamage.size()){
-                                        String[] auxDice = monstersDamage.get(i).split(" ");
-                                        compareName = auxDice[0];
-                                        if(actualName.equals(compareName)){
-                                            actualDice = auxDice[1];
-                                        }
-                                        i++;
-                                    }
-                                    if(actualLife != 0) {
-                                        damage = monsterManager.monsterDamageCalculator(actualDice);
-                                        if(monstersInEncounter.get(z).getMonsterChallenge().equals("Boss")){
-                                            isBoss = true;
-                                            int a = 0;
-                                            if(consciousPosition.size() != 0){
-                                                for(int b = 0; b < consciousPosition.size(); b++){
-                                                    consciousPosition.remove(b);
-                                                    b--;
-                                                }
-                                            }
-                                            for(int b = 0; b < charactersLife.size(); b++){
-                                                auxLife = charactersLife.get(b).split("/");
+                                    }else if(characterInParty.get(z).getCharacterClass().equals("Paladin")){
+                                        Paladin paladin = new Paladin(characterInParty.get(z));
+                                        int heal = 0;
+                                        auxLife = charactersLife.get(smallestCharacterIndex).split("/");
+                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                        totalLife = Integer.parseInt(auxLife[1].replaceAll("[^0-9]", ""));
+                                        int diceRoll = characterManager.diceRollD10();
+                                        if((totalLife / 2)  >= actualLife){
+                                            heal = paladin.prayerOfMassHealing(diceRoll);
+                                            for(int a = 0; a < characterInParty.size(); a++){
+                                                auxLife = charactersLife.get(a).split("/");
                                                 actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                                 if(actualLife != 0){
-                                                    consciousPosition.add(a,b);
-                                                    a++;
+                                                    auxName = charactersLife.get(a).split("\\d+");
+                                                    String healedCharacter = auxName[0];
+                                                    int newLife = heal + actualLife;
+                                                    charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife );
                                                 }
                                             }
+                                            uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals "+ heal + " hit points to all conscious party" );
 
-                                            if(consciousPosition.size() == 1){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 2){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 3){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 4){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + ".");
-                                            }else{
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(4)).getCharacterName() + ".");
-                                            }
                                         }else{
-                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(lastCharacterIndex).getCharacterName());
+                                            damage = paladin.neverOnMyWatch(characterManager.diceRollD8());
+                                            auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                            attackedMonster = auxName[0];
+                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Never on my watch.");
                                         }
-                                        z = monstersInEncounter.size();
+                                    }else if(characterInParty.get(z).getCharacterClass().equals("Mage")){
+                                        int auxMage = 0;
+                                        for(int a = 0; a < magesInBattle.size(); a++){
+                                            if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(z).getCharacterClass())){
+                                                auxMage = a;
+                                            }
+                                        }
+                                        if(monstersLife.size() >= 3){
+                                            damage = magesInBattle.get(auxMage).fireball(characterManager.diceRollD4());
+                                            uiManager.showMessage("\n" + actualName + " uses Fireball. Hits to all alive monsters" );
+                                        }else{
+                                            damage = magesInBattle.get(auxMage).arcane_missile(characterManager.diceRollD6());
+                                            auxName = monstersLife.get(highestMonsterIndex).split("\\d+");
+                                            attackedMonster = auxName[0];
+                                            uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster +" with Arcane missile.");
+                                        }
                                     }
+
                                 }
-                                z++;
+                                z = characterInParty.size();
                             }
+                            z++;
                         }
+                    }
 
+                    if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()){
                         z = 0;
-                        j = 0;
-                        i = 0;
-                        if(monstersDefeat < monstersInEncounter.size() && charactersDefeat < characterInParty.size() ){
-                            while(z < listOfPriorities.size()){
-                                while (j < monstersLife.size()) {
-                                    auxName = monstersLife.get(j).split("\\d+");
-                                    compareName = auxName[0];
-                                    if (actualName.equals(compareName)) {
-                                        String[] auxLife = charactersLife.get(lastCharacterIndex).split("/");
 
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1]);
-
-                                        int total = actualLife - (damage*2);
-                                        if(total < 0){
-                                            total = 0;
+                        while(z < monstersLife.size()){
+                            auxName = monstersLife.get(z).split("\\d+");
+                            compareName = auxName[0];
+                            if(actualName.equals(compareName)){
+                                String[] auxLife = monstersLife.get(z).split("/");
+                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                i = 0;
+                                while(i < monstersDamage.size()){
+                                    String[] auxDice = monstersDamage.get(i).split(" ");
+                                    compareName = auxDice[0];
+                                    if(actualName.equals(compareName)){
+                                        actualDice = auxDice[1];
+                                    }
+                                    i++;
+                                }
+                                if(actualLife != 0) {
+                                    damage = monsterManager.monsterDamageCalculator(actualDice);
+                                    if(monstersInEncounter.get(z).getMonsterChallenge().equals("Boss")){
+                                        isBoss = true;
+                                        int a = 0;
+                                        if(consciousPosition.size() != 0){
+                                            for(int b = 0; b < consciousPosition.size(); b++){
+                                                consciousPosition.remove(b);
+                                                b--;
+                                            }
+                                        }
+                                        for(int b = 0; b < charactersLife.size(); b++){
+                                            auxLife = charactersLife.get(b).split("/");
+                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                            if(actualLife != 0){
+                                                consciousPosition.add(a,b);
+                                                a++;
+                                            }
                                         }
 
+                                        if(consciousPosition.size() == 1){
+                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ".");
+                                        }else if(consciousPosition.size() == 2){
+                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ".");
+                                        }else if(consciousPosition.size() == 3){
+                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ".");
+                                        }else if(consciousPosition.size() == 4){
+                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + ".");
+                                        }else{
+                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(4)).getCharacterName() + ".");
+                                        }
+                                    }else{
+                                        uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(smallestCharacterIndex).getCharacterName());
+                                    }
+                                    z = monstersInEncounter.size();
+                                }
+                            }
+                            z++;
+                        }
+                    }
+                    z = 0;
+                    j = 0;
+                    i = 0;
+                    if(monstersLife.size() != 0 && charactersDefeat < characterInParty.size() ){
+                        while(z < listOfPriorities.size()){
+                            while (j < monstersLife.size()) {
 
-                                        uiManager.showMessage("Critical hit and deals " + (damage * 2) + " physical damage.");
+                                auxName = monstersLife.get(j).split("\\d+");
+                                compareName = auxName[0];
 
-                                        if(isBoss){
+                                if (actualName.equals(compareName)) {
+
+                                    String[] auxLife = charactersLife.get(smallestCharacterIndex).split("/");
+                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                    totalLife = Integer.parseInt(auxLife[1]);
+
+                                    typeOfDamage = monstersInEncounter.get(j).getDamageType();
+
+                                    if(isBoss){
+                                        if(isCrit == 2){
+                                            total = actualLife - (damage*2);
+                                            if(total < 0){
+                                                total = 0;
+                                            }
+                                            uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
+                                        }else if(isCrit == 1){
+                                            total = actualLife - (damage);
+                                            if(total < 0){
+                                                total = 0;
+                                            }
+                                            uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
+                                        }else{
+                                            uiManager.showMessage("Fails and deals 0 damage.");
+                                            fail = true;
+                                        }
+                                        if(!fail){
                                             for(int a = 0; a < characterInParty.size(); a++){
                                                 auxLife = charactersLife.get(a).split("/");
 
@@ -1104,433 +1066,211 @@ public class UIController {
                                                     }
                                                 }
                                             }
-                                        }else {
-                                            charactersLife.set(lastCharacterIndex, characterInParty.get(lastCharacterIndex).getCharacterName() + total + "/" + totalLife);
-                                            if (total == 0) {
-                                                uiManager.showMessage(characterInParty.get(lastCharacterIndex).getCharacterName() + " falls unconscious.");
-                                            }
                                         }
 
-                                        z = listOfPriorities.size();
-                                        j = monstersInEncounter.size();
+                                    }else {
 
-
-                                    }
-                                    j++;
-                                }
-
-                                while(i < characterInParty.size()) {
-                                    if(actualName.equals(characterInParty.get(i).getCharacterName())) {
-
-                                        String[] auxLife = monstersLife.get(lastMonsterIndex).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1]);
-
-                                        int total = actualLife - (damage*2);
-                                        if(total < 0){
-                                            total = 0;
+                                        if(typeOfDamage.equals("Magical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
+                                            damage = damage/2;
+                                        }else if(typeOfDamage.equals("Physical") && (characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Warrior") || characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Champion"))){
+                                            damage = damage/2;
+                                        }else if(typeOfDamage.equals("Psychical") && (characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Cleric") || characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Paladin"))){
+                                            damage = damage/2;
                                         }
-                                        auxLife = charactersLife.get(i).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
 
-                                        if(actualLife != 0) {
-                                            uiManager.showMessage("Critical hit and deals " + (damage*2) + " physical damage.");
-                                            auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                            attackedMonster = auxName[0];
-                                            if (total == 0) {
-                                                uiManager.showMessage(attackedMonster + " dies.");
-                                                for(int a = 0; a < listOfPriorities.size(); a++){
-                                                    auxName = listOfPriorities.get(a).split("\\d+");
-                                                    actualName = auxName[0];
-                                                    if(actualName.equals(attackedMonster)){
-                                                        listOfPriorities.remove(a);
-                                                        monstersLife.remove(lastMonsterIndex);
-                                                        a = listOfPriorities.size();
-                                                    }
-                                                }
-
-                                            }else{
-                                                monstersLife.set(lastMonsterIndex, attackedMonster + total + "/" + totalLife);
+                                        if(isCrit == 2){
+                                            total = actualLife - (damage*2);
+                                            if(total < 0){
+                                                total = 0;
                                             }
-                                            z = listOfPriorities.size();
-                                            i = characterInParty.size();
-                                        }
-                                    }
-                                    i++;
-                                }
-
-                                z++;
-                            }
-                        }
-                    }else if(isCrit == 1){
-
-                        auxName = listOfPriorities.get(q).split("\\d+");
-                        actualName = auxName[0];
-                        z = 0;
-                        while(z < characterInParty.size()){
-                            String[] auxLife = charactersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
-                            if(actualLife != 0){
-                                if(flag == 0){
-                                    smallerCharacterLife = actualLife;
-                                    lastCharacterIndex = z;
-                                    flag = 1;
-                                }else{
-                                    if(smallerCharacterLife > actualLife){
-                                        smallerCharacterLife = actualLife;
-                                        lastCharacterIndex = z;
-                                    }
-                                }
-
-                            }else{
-                                charactersDefeat++;
-                                flag = 0;
-                            }
-
-                            z++;
-                        }
-                        z = 0;
-                        monstersDefeat = 0;
-                        lastMonsterIndex = 0;
-                        flag = 0;
-
-                        while(z < monstersLife.size()){
-                            String[] auxLife = monstersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                            if (actualLife != 0) {
-                                if (flag == 0) {
-                                    smallerMonsterLife = actualLife;
-                                    lastMonsterIndex = z;
-                                    flag = 1;
-                                } else {
-                                    if (smallerMonsterLife > actualLife) {
-                                        smallerMonsterLife = actualLife;
-                                        lastMonsterIndex = z;
-                                    }
-                                }
-                            }
-                            z++;
-                        }
-
-                        monstersDefeat = monstersInEncounter.size() - monstersLife.size();
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()) {
-                            z = 0;
-
-                            while (z < characterInParty.size()) {
-                                if (actualName.equals(characterInParty.get(z).getCharacterName())) {
-                                    String[] auxLife = charactersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    if(actualLife != 0) {
-                                        damage = characterManager.characterDamageCalculator(actualName, isUsingApi);
-                                        auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                        attackedMonster = auxName[0];
-                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
-                                    }
-                                    z = characterInParty.size();
-                                }
-                                z++;
-                            }
-                        }
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()){
-                            z = 0;
-
-                            while(z < monstersLife.size()){
-                                auxName = monstersLife.get(z).split("\\d+");
-                                compareName = auxName[0];
-                                if(actualName.equals(compareName)){
-                                    String[] auxLife = monstersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    i = 0;
-                                    while(i < monstersDamage.size()){
-                                        String[] auxDice = monstersDamage.get(i).split(" ");
-                                        compareName = auxDice[0];
-                                        if(actualName.equals(compareName)){
-                                            actualDice = auxDice[1];
-                                        }
-                                        i++;
-                                    }
-                                    if(actualLife != 0) {
-                                        damage = monsterManager.monsterDamageCalculator(actualDice);
-                                        if(monstersInEncounter.get(z).getMonsterChallenge().equals("Boss")){
-                                            isBoss = true;
-                                            int a = 0;
-                                            if(consciousPosition.size() != 0){
-                                                for(int b = 0; b < consciousPosition.size(); b++){
-                                                    consciousPosition.remove(b);
-                                                    b--;
-                                                }
+                                            uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
+                                        }else if(isCrit == 1){
+                                            total = actualLife - (damage);
+                                            if(total < 0){
+                                                total = 0;
                                             }
-                                            for(int b = 0; b < charactersLife.size(); b++){
-                                                auxLife = charactersLife.get(b).split("/");
-                                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                                if(actualLife != 0){
-                                                    consciousPosition.add(a,b);
-                                                    a++;
-                                                }
-                                            }
-
-                                            if(consciousPosition.size() == 1){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 2){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 3){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 4){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + ".");
-                                            }else{
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(4)).getCharacterName() + ".");
-                                            }
+                                            uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
                                         }else{
-                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(lastCharacterIndex).getCharacterName());
+                                            uiManager.showMessage("Fails and deals 0 damage.");
+                                            fail = true;
                                         }
-                                        z = monstersInEncounter.size();
+
+                                        if(!fail){
+                                            charactersLife.set(smallestCharacterIndex, characterInParty.get(smallestCharacterIndex).getCharacterName() + total + "/" + totalLife);
+                                            if (total == 0) {
+                                                uiManager.showMessage(characterInParty.get(smallestCharacterIndex).getCharacterName() + " falls unconscious.");
+                                            }
+                                        }
+
                                     }
+
+                                    z = listOfPriorities.size();
+                                    j = monstersInEncounter.size();
+
+
                                 }
-                                z++;
+                                j++;
                             }
-                        }
 
-                        z = 0;
-                        j = 0;
-                        i = 0;
-                        if(monstersDefeat < monstersInEncounter.size() && charactersDefeat < characterInParty.size() ){
-                            while(z < listOfPriorities.size()){
-                                while (j < monstersLife.size()) {
-                                    auxName = monstersLife.get(j).split("\\d+");
-                                    compareName = auxName[0];
-                                    if (actualName.equals(compareName)) {
-                                        String[] auxLife = charactersLife.get(lastCharacterIndex).split("/");
+                            while(i < characterInParty.size()) {
+                                if(actualName.equals(characterInParty.get(i).getCharacterName())) {
 
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1]);
+                                    String[] auxLife = charactersLife.get(i).split("/");
+                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
 
-                                        int total = actualLife - (damage);
-                                        if(total < 0){
-                                            total = 0;
-                                        }
+                                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior") || characterInParty.get(i).getCharacterClass().equals("Champion")){
+                                        typeOfDamage = "physical";
+                                    }else if(characterInParty.get(i).getCharacterClass().equals("Cleric") || characterInParty.get(i).getCharacterClass().equals("Paladin")){
+                                        typeOfDamage = "psychic";
+                                    }else{
+                                        typeOfDamage = "magical";
+                                    }
 
+                                    if(actualLife != 0) {
+                                        if(characterInParty.get(i).getCharacterClass().equals("Mage") && monstersLife.size() >= 3){
+                                            if(isCrit == 2){
+                                                uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
+                                            }else if(isCrit == 1){
+                                                uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
+                                            }else{
+                                                uiManager.showMessage("Fails and deals 0 damage.");
+                                                fail = true;
+                                            }
 
-                                        uiManager.showMessage("Hit and deals " + (damage) + " physical damage.");
-
-                                        if(isBoss){
-                                            for(int a = 0; a < characterInParty.size(); a++){
-                                                auxLife = charactersLife.get(a).split("/");
-
+                                            for(int c = 0; c < monstersLife.size(); c++){
+                                                auxLife = monstersLife.get(c).split("/");
                                                 actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
-                                                if(actualLife != 0){
-                                                    totalLife = Integer.parseInt(auxLife[1]);
-
+                                                totalLife = Integer.parseInt(auxLife[1]);
+                                                auxName = monstersLife.get(c).split("\\d+");
+                                                attackedMonster = auxName[0];
+                                                int auxIndex = 0;
+                                                if(isCrit == 2){
+                                                    total = actualLife - (damage*2);
+                                                    if(total < 0){
+                                                        total = 0;
+                                                    }
+                                                }else if(isCrit == 1){
                                                     total = actualLife - (damage);
                                                     if(total < 0){
                                                         total = 0;
                                                     }
-
-                                                    charactersLife.set(a, characterInParty.get(a).getCharacterName() + total + "/" + totalLife);
+                                                }else{
+                                                    fail = true;
+                                                }
+                                                if(!fail){
                                                     if (total == 0) {
-                                                        uiManager.showMessage(characterInParty.get(a).getCharacterName() + " falls unconscious.");
+                                                        uiManager.showMessage(attackedMonster + " dies.");
+                                                        for(int a = 0; a < listOfPriorities.size(); a++){
+                                                            auxName = listOfPriorities.get(a).split("\\d+");
+                                                            actualName = auxName[0];
+                                                            if(actualName.equals(attackedMonster)){
+                                                                listOfPriorities.remove(a);
+                                                                monstersLife.remove(c);
+                                                                a = listOfPriorities.size();
+                                                                c--;
+                                                            }
+                                                        }
+                                                    }else{
+                                                        monstersLife.set(c, attackedMonster + total + "/" + totalLife);
                                                     }
                                                 }
                                             }
-                                        }else {
-                                            charactersLife.set(lastCharacterIndex, characterInParty.get(lastCharacterIndex).getCharacterName() + total + "/" + totalLife);
-                                            if (total == 0) {
-                                                uiManager.showMessage(characterInParty.get(lastCharacterIndex).getCharacterName() + " falls unconscious.");
-                                            }
-                                        }
+                                        }else if(characterInParty.get(i).getCharacterClass().equals("Mage") && monstersLife.size() < 3){
+                                            auxLife = monstersLife.get(highestMonsterIndex).split("/");
+                                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                            totalLife = Integer.parseInt(auxLife[1]);
 
-                                        z = listOfPriorities.size();
-                                        j = monstersInEncounter.size();
-
-
-                                    }
-                                    j++;
-                                }
-
-                                while(i < characterInParty.size()) {
-                                    if(actualName.equals(characterInParty.get(i).getCharacterName())) {
-
-                                        String[] auxLife = monstersLife.get(lastMonsterIndex).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                        totalLife = Integer.parseInt(auxLife[1]);
-
-                                        int total = actualLife - (damage);
-                                        if(total < 0){
-                                            total = 0;
-                                        }
-                                        auxLife = charactersLife.get(i).split("/");
-                                        actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
-                                        if(actualLife != 0) {
-                                            uiManager.showMessage("Hit and deals " + (damage) + " physical damage.");
-                                            auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
+                                            auxName = monstersLife.get(highestMonsterIndex).split("\\d+");
                                             attackedMonster = auxName[0];
-                                            if (total == 0) {
-                                                uiManager.showMessage(attackedMonster + " dies.");
-                                                for(int a = 0; a < listOfPriorities.size(); a++){
-                                                    auxName = listOfPriorities.get(a).split("\\d+");
-                                                    actualName = auxName[0];
-                                                    if(actualName.equals(attackedMonster)){
-                                                        listOfPriorities.remove(a);
-                                                        monstersLife.remove(lastMonsterIndex);
-                                                        a = listOfPriorities.size();
+
+                                            if(isCrit == 2){
+                                                total = actualLife - (damage*2);
+                                                if(total < 0){
+                                                    total = 0;
+                                                }
+                                                uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
+                                            }else if(isCrit == 1){
+                                                total = actualLife - (damage);
+                                                if(total < 0){
+                                                    total = 0;
+                                                }
+                                                uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
+                                            }else{
+                                                uiManager.showMessage("Fails and deals 0 damage.");
+                                                fail = true;
+                                            }
+                                            if(!fail){
+                                                if (total == 0) {
+                                                    uiManager.showMessage(attackedMonster + " dies.");
+                                                    for(int a = 0; a < listOfPriorities.size(); a++){
+                                                        auxName = listOfPriorities.get(a).split("\\d+");
+                                                        actualName = auxName[0];
+                                                        if(actualName.equals(attackedMonster)){
+                                                            listOfPriorities.remove(a);
+                                                            monstersLife.remove(smallestMonsterIndex);
+                                                            a = listOfPriorities.size();
+                                                        }
                                                     }
+                                                }else{
+                                                    monstersLife.set(highestMonsterIndex, attackedMonster + total + "/" + totalLife);
                                                 }
-
-                                            }else{
-                                                monstersLife.set(lastMonsterIndex, attackedMonster + total + "/" + totalLife);
-                                            }
-                                            z = listOfPriorities.size();
-                                            i = characterInParty.size();
-                                        }
-                                    }
-                                    i++;
-                                }
-
-                                z++;
-                            }
-                        }
-                    }else{
-                        auxName = listOfPriorities.get(q).split("\\d+");
-                        actualName = auxName[0];
-                        z = 0;
-                        while(z < characterInParty.size()){
-                            String[] auxLife = charactersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
-                            if(actualLife != 0){
-                                if(flag == 0){
-                                    smallerCharacterLife = actualLife;
-                                    lastCharacterIndex = z;
-                                    flag = 1;
-                                }else{
-                                    if(smallerCharacterLife > actualLife){
-                                        smallerCharacterLife = actualLife;
-                                        lastCharacterIndex = z;
-                                    }
-                                }
-
-                            }else{
-                                charactersDefeat++;
-                                flag = 0;
-                            }
-
-                            z++;
-                        }
-                        z = 0;
-                        monstersDefeat = 0;
-                        lastMonsterIndex = 0;
-                        flag = 0;
-
-                        while(z < monstersLife.size()){
-                            String[] auxLife = monstersLife.get(z).split("/");
-                            actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                            if (actualLife != 0) {
-                                if (flag == 0) {
-                                    smallerMonsterLife = actualLife;
-                                    lastMonsterIndex = z;
-                                    flag = 1;
-                                } else {
-                                    if (smallerMonsterLife > actualLife) {
-                                        smallerMonsterLife = actualLife;
-                                        lastMonsterIndex = z;
-                                    }
-                                }
-                            }
-                            z++;
-                        }
-
-                        monstersDefeat = monstersInEncounter.size() - monstersLife.size();
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()) {
-                            z = 0;
-
-                            while (z < characterInParty.size()) {
-                                if (actualName.equals(characterInParty.get(z).getCharacterName())) {
-                                    String[] auxLife = charactersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    if(actualLife != 0) {
-                                        damage = characterManager.characterDamageCalculator(actualName, isUsingApi);
-                                        auxName = monstersLife.get(lastMonsterIndex).split("\\d+");
-                                        attackedMonster = auxName[0];
-                                        uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
-                                    }
-                                    uiManager.showMessage("Fails and deals 0 damage");
-                                    z = characterInParty.size();
-                                }
-                                z++;
-                            }
-                        }
-
-                        if(charactersDefeat < characterInParty.size() && monstersDefeat < monstersInEncounter.size()){
-                            z = 0;
-
-                            while(z < monstersLife.size()){
-                                auxName = monstersLife.get(z).split("\\d+");
-                                compareName = auxName[0];
-                                if(actualName.equals(compareName)){
-                                    String[] auxLife = monstersLife.get(z).split("/");
-                                    actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                    i = 0;
-                                    while(i < monstersDamage.size()){
-                                        String[] auxDice = monstersDamage.get(i).split(" ");
-                                        compareName = auxDice[0];
-                                        if(actualName.equals(compareName)){
-                                            actualDice = auxDice[1];
-                                        }
-                                        i++;
-                                    }
-                                    if(actualLife != 0) {
-                                        damage = monsterManager.monsterDamageCalculator(actualDice);
-                                        if(monstersInEncounter.get(z).getMonsterChallenge().equals("Boss")){
-                                            isBoss = true;
-                                            int a = 0;
-                                            if(consciousPosition.size() != 0){
-                                                for(int b = 0; b < consciousPosition.size(); b++){
-                                                    consciousPosition.remove(b);
-                                                    b--;
-                                                }
-                                            }
-                                            for(int b = 0; b < charactersLife.size(); b++){
-                                                auxLife = charactersLife.get(b).split("/");
-                                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-                                                if(actualLife != 0){
-                                                    consciousPosition.add(a,b);
-                                                    a++;
-                                                }
-                                            }
-
-                                            if(consciousPosition.size() == 1){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 2){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 3){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ".");
-                                            }else if(consciousPosition.size() == 4){
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + ".");
-                                            }else{
-                                                uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(consciousPosition.get(0)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(1)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(2)).getCharacterName() + ", " + characterInParty.get(consciousPosition.get(3)).getCharacterName() + " and " + characterInParty.get(consciousPosition.get(4)).getCharacterName() + ".");
                                             }
                                         }else{
-                                            uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(lastCharacterIndex).getCharacterName());
+                                            if(damage != 0) {
+                                                auxLife = monstersLife.get(smallestMonsterIndex).split("/");
+                                                actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+                                                totalLife = Integer.parseInt(auxLife[1]);
+
+                                                auxName = monstersLife.get(smallestMonsterIndex).split("\\d+");
+                                                attackedMonster = auxName[0];
+
+                                                if (isCrit == 2) {
+                                                    total = actualLife - (damage * 2);
+                                                    if (total < 0) {
+                                                        total = 0;
+                                                    }
+                                                    uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
+                                                } else if (isCrit == 1) {
+                                                    total = actualLife - (damage);
+                                                    if (total < 0) {
+                                                        total = 0;
+                                                    }
+                                                    uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
+                                                } else {
+                                                    uiManager.showMessage("Fails and deals 0 damage.");
+                                                    fail = true;
+                                                }
+                                                if(!fail){
+                                                    if (total == 0) {
+                                                        uiManager.showMessage(attackedMonster + " dies.");
+                                                        for (int a = 0; a < listOfPriorities.size(); a++) {
+                                                            auxName = listOfPriorities.get(a).split("\\d+");
+                                                            actualName = auxName[0];
+                                                            if (actualName.equals(attackedMonster)) {
+                                                                listOfPriorities.remove(a);
+                                                                monstersLife.remove(smallestMonsterIndex);
+                                                                a = listOfPriorities.size();
+                                                            }
+                                                        }
+                                                    } else {
+                                                        monstersLife.set(highestMonsterIndex, attackedMonster + total + "/" + totalLife);
+                                                    }
+                                                }
+                                            }
                                         }
-                                        uiManager.showMessage("Fails and deals 0 damage");
-                                        z = monstersInEncounter.size();
+                                        z = listOfPriorities.size();
+                                        i = characterInParty.size();
                                     }
                                 }
-                                z++;
+                                i++;
                             }
+                            z++;
                         }
                     }
-
-
                     if(charactersDefeat == characterInParty.size()){
                         q = listOfPriorities.size();
                     }
-                    else if(monstersDefeat == monstersInEncounter.size()){
+                    else if(monstersLife.size() == 0){
                         q = listOfPriorities.size();
                     }
                     else{
@@ -1545,7 +1285,7 @@ public class UIController {
                     roundCounter++;
                 }
 
-            }while(monstersDefeat < monstersInEncounter.size() && charactersDefeat < characterInParty.size());
+            }while(monstersLife.size() != 0 && charactersDefeat < characterInParty.size());
 
             if(defeated == 0){
                 uiManager.showMessage("All enemies are defeated.");
@@ -1554,13 +1294,13 @@ public class UIController {
                 uiManager.showMessage("--------------------");
                 int xpSum = 0;
                 i = 0;
-                boolean levelUp = false;
+                boolean levelUp;
                 while(i < monstersInEncounter.size()){
                     xpSum = xpSum + monstersInEncounter.get(i).getMonsterXpDrop();
                     i++;
                 }
                 i = 0;
-                boolean evolved = false;
+                boolean evolved;
                 while(i < characterQuantity){
 
                     levelUp = characterManager.levelUpCheck(xpSum, characterInParty.get(i).getCharacterLevel());

@@ -2,8 +2,8 @@
   {
     "name": "Artorias",
     "player": "Gwyn",
-    "characterClass": "Warrior",
-    "xp": 503,
+    "characterClass": "Champion",
+    "xp": 1509,
     "body": 1,
     "mind": 1,
     "spirit": 0
@@ -12,7 +12,7 @@
     "name": "Maliketh",
     "player": "Marika",
     "characterClass": "Mage",
-    "xp": 629,
+    "xp": 1635,
     "body": 2,
     "mind": 1,
     "spirit": 0
@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 629,
+    "xp": 1635,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -29,8 +29,8 @@
   {
     "name": "Gwynnevere",
     "player": "Gwyn",
-    "characterClass": "Warrior",
-    "xp": 503,
+    "characterClass": "Champion",
+    "xp": 1509,
     "body": 1,
     "mind": 0,
     "spirit": 0
@@ -39,7 +39,7 @@
     "name": "Hdjksd",
     "player": "dfsdf",
     "characterClass": "Mage",
-    "xp": 567,
+    "xp": 1573,
     "body": 1,
     "mind": 2,
     "spirit": 1

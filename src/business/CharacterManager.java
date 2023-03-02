@@ -297,12 +297,9 @@ public class CharacterManager {
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 7
         Random rand = new Random();
-        int upperbound = 7;
-        roll = rand.nextInt(upperbound);
+        int upperbound = 6;
+        roll = rand.nextInt(upperbound) + 1;
 
-        if(roll == 0){
-            roll = 1;
-        }
         return roll;
     }
 
@@ -317,8 +314,8 @@ public class CharacterManager {
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
-        int upperbound = 9;
-        roll = rand.nextInt(upperbound);
+        int upperbound = 8;
+        roll = rand.nextInt(upperbound) + 1;
 
         return roll;
     }
@@ -336,7 +333,7 @@ public class CharacterManager {
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
         int upperbound = 4;
-        roll = rand.nextInt(upperbound + 1);
+        roll = rand.nextInt(upperbound) + 1;
 
         return roll;
     }
@@ -354,7 +351,7 @@ public class CharacterManager {
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
         int upperbound = 20;
-        roll = rand.nextInt(upperbound + 1);
+        roll = rand.nextInt(upperbound) + 1;
 
         return roll;
     }
