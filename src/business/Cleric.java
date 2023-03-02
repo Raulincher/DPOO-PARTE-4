@@ -22,6 +22,11 @@ public class Cleric extends Character {
         return super.getMind();
     }
 
+    @Override
+    public void setMind(int mind) {
+        super.setMind(mind);
+    }
+
     public int setInitialLife(int level){
         int body = getBody();
         return (10 + body) * level;
@@ -32,7 +37,11 @@ public class Cleric extends Character {
         return d10 + spirit;
     }
 
-    public int prayerOfGoodLuck(int d10){
+    public void prayerOfGoodLuck(Character character){
+        setMind(character.getMind() + 1);
+    }
+
+    public int prayerOfHealing(int d10){
         int mind = getMind();
         return d10 + mind;
     }
