@@ -41,7 +41,21 @@ public class CharacterManager {
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
-        return characterDAO.saveCharacter(new Character(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        boolean saved = false;
+        if(characterClass.equals("Adventurer")){
+            saved = characterDAO.saveCharacter(new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Warrior")){
+            saved = characterDAO.saveCharacter(new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Champion")){
+            saved = characterDAO.saveCharacter(new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Cleric")){
+            saved = characterDAO.saveCharacter(new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Paladin")){
+            saved = characterDAO.saveCharacter(new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Mage")){
+            saved = characterDAO.saveCharacter(new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0));
+        }
+        return saved;
     }
 
 
@@ -57,7 +71,21 @@ public class CharacterManager {
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) throws IOException {
-        return characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Character(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        boolean saved = false;
+        if(characterClass.equals("Adventurer")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Warrior")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Champion")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Cleric")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Paladin")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
+        }else if(characterClass.equals("Mage")){
+            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0));
+        }
+        return saved;
     }
 
     /**

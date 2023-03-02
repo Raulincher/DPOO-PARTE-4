@@ -27,6 +27,10 @@ public class Character {
         this.characterClass = characterClass;
     }
 
+    public Character() {
+
+    }
+
     /**
      * Esta función llamará al nombre del character
      *

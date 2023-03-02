@@ -14,11 +14,6 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
 
-        // Indicamos los JSON
-        File characterJSON = new File("files/characters.json");
-        File monstersJSON = new File("monster.json");
-
-
         // Persistance
         MonsterDAO monsterDAO = new MonsterDAO();
         CharacterDAO characterDAO = new CharacterDAO();

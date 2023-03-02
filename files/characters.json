@@ -34,5 +34,14 @@
     "body": 1,
     "mind": 0,
     "spirit": 0
+  },
+  {
+    "name": "Hdjksd",
+    "player": "dfsdf",
+    "characterClass": "Mage",
+    "xp": 400,
+    "body": 1,
+    "mind": 2,
+    "spirit": 1
   }
 ]

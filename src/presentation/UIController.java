@@ -7,11 +7,8 @@ import business.entities.Adventure;
 import business.entities.Character;
 import business.entities.Monster;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 
 public class UIController {
