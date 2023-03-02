@@ -169,44 +169,6 @@ public class CharacterManager {
     }
 
     /**
-     * Función que actualizará el nivel de espíritu que tendrá el personaje
-     * No tiene ni parámetro ni return
-     *
-     */
-    public void updateCharacterSpirit(){
-
-        ArrayList<Character> characters = characterDAO.readCharacterJSON();
-
-    }
-
-    /**
-     * Función que servirá para recibir el espíritu que tiene actualmente el personaje
-     *
-     * @param characterName, valor que describe el nombre del personaje
-     * @return spirit, devuelve el espíritu actual que tiene
-     */
-    public int getCharacterSpirit(String characterName, boolean isUsingApi) throws IOException{
-        int spirit = 0;
-        int i = 0;
-        ArrayList<Character> characters;
-
-        if(isUsingApi){
-            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-
-        }else{
-            characters = characterDAO.readCharacterJSON();
-        }
-        // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
-        while(i < characters.size()){
-            if(characterName.equals(characters.get(i).getCharacterName())){
-                spirit = characters.get(i).getSpirit();
-            }
-            i++;
-        }
-        return spirit;
-    }
-
-    /**
      * Función que servirá para recibir el valor actual de body que tiene el personaje
      *
      * @param characterName, valor que describe el nombre del personaje
