@@ -65,12 +65,5 @@ public class Mage extends Character {
         return dmg;
     }
 
-    public int passive(int dmg, int level){
-        int total = dmg - level;
-        if(total < 0){
-            total = 0;
-        }
-        return total;
-    }
 
 }

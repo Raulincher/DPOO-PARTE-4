@@ -1070,10 +1070,10 @@ public class UIController {
                                     }else {
 
                                         if(typeOfDamage.equals("Magical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
-                                            damage = damage/2;
+                                            damage = damage - characterManager.revertXpToLevel(characterInParty.get(smallestCharacterIndex).getCharacterLevel()) ;
                                         }else if(typeOfDamage.equals("Physical") && (characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Warrior") || characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Champion"))){
                                             damage = damage/2;
-                                        }else if(typeOfDamage.equals("Psychical") && (characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Cleric") || characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Paladin"))){
+                                        }else if(typeOfDamage.equals("Psychical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Paladin")){
                                             damage = damage/2;
                                         }
 

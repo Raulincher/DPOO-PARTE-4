@@ -30,17 +30,6 @@ public class Warrior extends Character {
         super.setSpirit(spirit);
     }
 
-    public int initialLifeCalculator(int level){
-        int life;
-        int body = getBody();
-
-        // Calculamos la vida con la fórmula
-        life = (10 + body) * level;
-
-        return life;
-    }
-
-
     public int initiative(int d12) {
 
         int initiative = 0;
@@ -55,19 +44,9 @@ public class Warrior extends Character {
         setSpirit(getSpirit() + 1);
     }
 
-    public int improvedSwordSlash(int d10){
+    public int improvedSwordSlash(int d10) {
         int body = getBody();
 
         return d10 + body;
-    }
-
-    public int bandageTime(int d8){
-        int mind = getMind();
-
-        return mind + d8;
-    }
-
-    public int passive(int dmg){
-        return dmg / 2;
     }
 }

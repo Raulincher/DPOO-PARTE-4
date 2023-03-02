@@ -12,11 +12,6 @@ public class Paladin extends Character {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
     }
 
-    public int initialLifeCalculator(int level){
-        int body = getBody();
-        return (10 + body) * level;
-    }
-
     public int initiative(int d10){
         int spirit = getSpirit();
         return d10 + spirit;
@@ -35,9 +30,4 @@ public class Paladin extends Character {
         int spirit = getSpirit();
         return d8 + spirit;
     }
-
-    public int passive(int dmg){
-        return dmg / 2;
-    }
-
 }

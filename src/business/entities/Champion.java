@@ -70,9 +70,4 @@ public class Champion extends Character {
 
         return healing;
     }
-
-    public int passive(int dmg){
-        return dmg / 2;
-    }
-
 }
