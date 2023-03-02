@@ -190,7 +190,7 @@ public class AdventureManager {
     }
 
 
-    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, int diceRoll, ArrayList<Mage> magesInBattle, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
+    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, ArrayList<Mage> magesInBattle, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
         ArrayList<String> listOfPriorities = new ArrayList<>(0);
         int i = 0;
         int z = 0;

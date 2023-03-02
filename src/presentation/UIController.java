@@ -790,10 +790,9 @@ public class UIController {
             uiManager.showMessage("Rolling initiative...\n");
             z = 0;
             int monsterQuantity = monstersInEncounter.size();
-            int diceRoll = characterManager.diceRollD12();;
             int roundCounter = 0;
 
-            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, diceRoll, magesInBattle, characterInParty, monstersInEncounter );
+            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, magesInBattle, characterInParty, monstersInEncounter );
 
             adventureManager.orderListOfPriorities(listOfPriorities);
 
@@ -1538,7 +1537,7 @@ public class UIController {
                     String[] parts = charactersLife.get(i).split("/");
                     int temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
                     int restLife =  Integer.parseInt(parts[1]);
-                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer")){
+                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior")){
                         if(temporalLife != 0) {
                             Adventurer adventurer = new Adventurer(characterInParty.get(i));
                             int diceRollHeal = characterManager.diceRollD8();
@@ -1556,28 +1555,11 @@ public class UIController {
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
                         }
 
-                    }else if(characterInParty.get(i).getCharacterClass().equals("Warrior")){
-                        if(temporalLife != 0) {
-                            Warrior warrior = new Warrior(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD8();
-                            int characterCuration = warrior.bandageTime(diceRollHeal);
-                            int characterBandage =  characterCuration + temporalLife;
-
-                            if(characterBandage > restLife) {
-                                characterBandage = restLife;
-                            }
-
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
-
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
-                        }else{
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                        }
                     }else if(characterInParty.get(i).getCharacterClass().equals("Champion")){
                         if(temporalLife != 0) {
-                            Warrior warrior = new Warrior(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD8();
-                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            Champion champion = new Champion(characterInParty.get(i));
+
+                            int characterCuration = champion.improvedBandageTime(restLife, temporalLife);
                             int characterBandage =  characterCuration + temporalLife;
 
                             if(characterBandage > restLife) {
@@ -1586,39 +1568,45 @@ public class UIController {
 
                             charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
 
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Improved bandage time. Heals " + characterCuration + " hit points");
                         }else{
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
                         }
                     }else if(characterInParty.get(i).getCharacterClass().equals("Cleric")){
                         if(temporalLife != 0) {
-                            Warrior warrior = new Warrior(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD8();
-                            int characterCuration = warrior.bandageTime(diceRollHeal);
-                            int characterBandage =  characterCuration + temporalLife;
+                            Cleric cleric = new Cleric(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD10();
+                            int characterCuration = cleric.prayerOfSelfHealing(diceRollHeal);
+                            int characterHeal =  characterCuration + temporalLife;
 
-                            if(characterBandage > restLife) {
-                                characterBandage = restLife;
+                            if(characterHeal > restLife) {
+                                characterHeal = restLife;
                             }
 
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterHeal + "/" + restLife);
 
-                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
+                            uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Payer of self-healing. Heals " + characterCuration + " hit points");
                         }else{
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
                         }
                     }else if(characterInParty.get(i).getCharacterClass().equals("Paladin")){
                         if(temporalLife != 0) {
-                            Warrior warrior = new Warrior(characterInParty.get(i));
-                            int diceRollHeal = characterManager.diceRollD8();
-                            int characterCuration = warrior.bandageTime(diceRollHeal);
+                            Paladin paladin = new Paladin(characterInParty.get(i));
+                            int diceRollHeal = characterManager.diceRollD10();
+                            int characterCuration = paladin.prayerOfMassHealing(diceRollHeal);
                             int characterBandage =  characterCuration + temporalLife;
 
                             if(characterBandage > restLife) {
                                 characterBandage = restLife;
                             }
-
-                            charactersLife.set(i, characterInParty.get(i).getCharacterName() + characterBandage + "/" + restLife);
+                            for(int a = 0; a < characterInParty.size(); a++){
+                                parts = charactersLife.get(a).split("/");
+                                temporalLife = Integer.parseInt(parts[0].replaceAll("[^0-99]", ""));
+                                restLife =  Integer.parseInt(parts[1]);
+                                if(temporalLife != 0){
+                                    charactersLife.set(a, characterInParty.get(a).getCharacterName() + characterBandage + "/" + restLife);
+                                }
+                            }
 
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
                         }else{

@@ -60,8 +60,15 @@ public class Champion extends Character {
         return d10 + body;
     }
 
-    public int improvedBandageTime(int totalLife){
-        return totalLife;
+    public int improvedBandageTime(int totalLife, int leftLife){
+
+       int healing = totalLife - leftLife;
+
+        if(healing < 0){
+            healing = -1 * healing;
+        }
+
+        return healing;
     }
 
     public int passive(int dmg){
