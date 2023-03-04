@@ -822,14 +822,33 @@ public class UIController {
                     auxName = charactersLife.get(z).split("\\d+");
                     actualName = auxName[0];
                     String[] auxLife = charactersLife.get(z).split("/");
-
+                    int mageIndex = 0;
+                    boolean isMage = false;
+                    for(int a = 0; a < magesInBattle.size(); a++){
+                        if (magesInBattle.get(a).getCharacterName().equals(actualName)) {
+                            isMage = true;
+                            mageIndex = a;
+                            a = magesInBattle.size();
+                        }
+                    }
                     actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                     totalLife = Integer.parseInt(auxLife[1]);
-                    if(z == 0){
-                        uiManager.showMessage("\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points");
+
+
+                    if(!isMage){
+                        if(z == 0){
+                            uiManager.showMessage("\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points");
+                        }else{
+                            uiManager.showMessage("\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points");
+                        }
                     }else{
-                        uiManager.showMessage("\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points");
+                        if(z == 0){
+                            uiManager.showMessage("\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + magesInBattle.get(mageIndex).getShield() + ")");
+                        }else{
+                            uiManager.showMessage("\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + magesInBattle.get(mageIndex).getShield() + ")");
+                        }
                     }
+
                     z++;
                 }
 
@@ -1023,38 +1042,84 @@ public class UIController {
 
                                     if(isBoss){
                                         if(isCrit == 2){
-                                            total = actualLife - (damage*2);
-                                            if(total < 0){
-                                                total = 0;
-                                            }
                                             uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
                                         }else if(isCrit == 1){
-                                            total = actualLife - (damage);
-                                            if(total < 0){
-                                                total = 0;
-                                            }
                                             uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
                                         }else{
                                             uiManager.showMessage("Fails and deals 0 damage.");
                                             fail = true;
                                         }
                                         if(!fail){
-                                            for(int a = 0; a < characterInParty.size(); a++){
-                                                auxLife = charactersLife.get(a).split("/");
-
+                                            for(int b = 0; b < characterInParty.size(); b++){
+                                                auxLife = charactersLife.get(b).split("/");
                                                 actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
 
                                                 if(actualLife != 0){
                                                     totalLife = Integer.parseInt(auxLife[1]);
-
-                                                    total = actualLife - (damage*2);
-                                                    if(total < 0){
-                                                        total = 0;
+                                                    if(isCrit == 2){
+                                                        if(characterInParty.get(b).getCharacterClass().equals("Mage")){
+                                                            int mageIndex = 0;
+                                                            for(int a = 0; a < magesInBattle.size(); a++){
+                                                                if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(b).getCharacterName())){
+                                                                    mageIndex = a;
+                                                                    a = magesInBattle.size();
+                                                                }
+                                                            }
+                                                            if(magesInBattle.get(mageIndex).getShield() > 0){
+                                                                total = magesInBattle.get(mageIndex).getShield() - (damage*2);
+                                                                if(total < 0){
+                                                                    total = actualLife + total;
+                                                                    magesInBattle.get(mageIndex).setShield(0);
+                                                                }else{
+                                                                    magesInBattle.get(mageIndex).setShield(total);
+                                                                    total = actualLife;
+                                                                }
+                                                            }else{
+                                                                total = actualLife - (damage*2);
+                                                                if(total < 0){
+                                                                    total = 0;
+                                                                }
+                                                            }
+                                                        }else{
+                                                            total = actualLife - (damage*2);
+                                                            if(total < 0){
+                                                                total = 0;
+                                                            }
+                                                        }
+                                                    }else if(isCrit == 1){
+                                                        if(characterInParty.get(b).getCharacterClass().equals("Mage")){
+                                                            int mageIndex = 0;
+                                                            for(int a = 0; a < magesInBattle.size(); a++){
+                                                                if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(b).getCharacterName())){
+                                                                    mageIndex = a;
+                                                                    a = magesInBattle.size();
+                                                                }
+                                                            }
+                                                            if(magesInBattle.get(mageIndex).getShield() > 0){
+                                                                total = magesInBattle.get(mageIndex).getShield() - (damage);
+                                                                if(total < 0){
+                                                                    total = actualLife + total;
+                                                                    magesInBattle.get(mageIndex).setShield(0);
+                                                                }else{
+                                                                    magesInBattle.get(mageIndex).setShield(total);
+                                                                    total = actualLife;
+                                                                }
+                                                            }else{
+                                                                total = actualLife - (damage);
+                                                                if(total < 0){
+                                                                    total = 0;
+                                                                }
+                                                            }
+                                                        }else{
+                                                            total = actualLife - (damage);
+                                                            if(total < 0){
+                                                                total = 0;
+                                                            }
+                                                        }
                                                     }
-
-                                                    charactersLife.set(a, characterInParty.get(a).getCharacterName() + total + "/" + totalLife);
+                                                    charactersLife.set(b, characterInParty.get(b).getCharacterName() + total + "/" + totalLife);
                                                     if (total == 0) {
-                                                        uiManager.showMessage(characterInParty.get(a).getCharacterName() + " falls unconscious.");
+                                                        uiManager.showMessage(characterInParty.get(b).getCharacterName() + " falls unconscious.");
                                                     }
                                                 }
                                             }
@@ -1063,7 +1128,7 @@ public class UIController {
                                     }else {
 
                                         if(typeOfDamage.equals("Magical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
-                                            damage = damage - characterManager.revertXpToLevel(characterInParty.get(smallestCharacterIndex).getCharacterLevel()) ;
+                                            damage = damage - characterManager.revertXpToLevel(characterInParty.get(smallestCharacterIndex).getCharacterLevel());
                                         }else if(typeOfDamage.equals("Physical") && (characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Warrior") || characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Champion"))){
                                             damage = damage/2;
                                         }else if(typeOfDamage.equals("Psychical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Paladin")){
@@ -1071,15 +1136,65 @@ public class UIController {
                                         }
 
                                         if(isCrit == 2){
-                                            total = actualLife - (damage*2);
-                                            if(total < 0){
-                                                total = 0;
+                                            if(characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
+                                                int mageIndex = 0;
+                                                for(int a = 0; a < magesInBattle.size(); a++){
+                                                    if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(smallestCharacterIndex).getCharacterName())){
+                                                        mageIndex = a;
+                                                        a = magesInBattle.size();
+                                                    }
+                                                }
+                                                if(magesInBattle.get(mageIndex).getShield() > 0){
+                                                    total = magesInBattle.get(mageIndex).getShield() - (damage*2);
+                                                    if(total < 0){
+                                                        total = actualLife + total;
+                                                        magesInBattle.get(mageIndex).setShield(0);
+                                                    }else{
+                                                        magesInBattle.get(mageIndex).setShield(total);
+                                                        total = actualLife;
+                                                    }
+                                                }else{
+                                                    total = actualLife - (damage*2);
+                                                    if(total < 0){
+                                                        total = 0;
+                                                    }
+                                                }
+                                            }else{
+                                                total = actualLife - (damage*2);
+                                                if(total < 0){
+                                                    total = 0;
+                                                }
                                             }
                                             uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
                                         }else if(isCrit == 1){
-                                            total = actualLife - (damage);
-                                            if(total < 0){
-                                                total = 0;
+                                            if(characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
+                                                int mageIndex = 0;
+                                                for(int a = 0; a < magesInBattle.size(); a++){
+                                                    if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(smallestCharacterIndex).getCharacterName())){
+                                                        mageIndex = a;
+                                                        a = magesInBattle.size();
+                                                    }
+                                                }
+                                                if(magesInBattle.get(mageIndex).getShield() > 0){
+                                                    total = magesInBattle.get(mageIndex).getShield() - (damage);
+                                                    if(total < 0){
+                                                        total = actualLife + total;
+                                                        magesInBattle.get(mageIndex).setShield(0);
+                                                    }else{
+                                                        magesInBattle.get(mageIndex).setShield(total);
+                                                        total = actualLife;
+                                                    }
+                                                }else{
+                                                    total = actualLife - (damage);
+                                                    if(total < 0){
+                                                        total = 0;
+                                                    }
+                                                }
+                                            }else{
+                                                total = actualLife - (damage);
+                                                if(total < 0){
+                                                    total = 0;
+                                                }
                                             }
                                             uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
                                         }else{

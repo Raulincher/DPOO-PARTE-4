@@ -12,7 +12,7 @@
     "name": "Maliketh",
     "player": "Marika",
     "characterClass": "Mage",
-    "xp": 1802,
+    "xp": 2345,
     "body": 2,
     "mind": 1,
     "spirit": 0
@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 1802,
+    "xp": 2345,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -39,7 +39,7 @@
     "name": "Hdjksd",
     "player": "dfsdf",
     "characterClass": "Mage",
-    "xp": 1740,
+    "xp": 1759,
     "body": 1,
     "mind": 2,
     "spirit": 1
@@ -48,7 +48,7 @@
     "name": "Paladin",
     "player": "prueba",
     "characterClass": "Paladin",
-    "xp": 1959,
+    "xp": 1978,
     "body": 1,
     "mind": 0,
     "spirit": 0
@@ -57,7 +57,7 @@
     "name": "Mago",
     "player": "prueba",
     "characterClass": "Mage",
-    "xp": 2126,
+    "xp": 2669,
     "body": 1,
     "mind": 2,
     "spirit": 0
