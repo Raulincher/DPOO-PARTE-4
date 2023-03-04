@@ -64,5 +64,116 @@
         }
       ]
     ]
+  },
+  {
+    "name": "fdfsdfs",
+    "encounters": 3,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Orc Shaman",
+          "challenge": "Minion",
+          "experience": 5,
+          "hitPoints": 7,
+          "initiative": 1,
+          "damageDice": "d8",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Orc Shaman",
+          "challenge": "Minion",
+          "experience": 5,
+          "hitPoints": 7,
+          "initiative": 1,
+          "damageDice": "d8",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Orc Shaman",
+          "challenge": "Minion",
+          "experience": 5,
+          "hitPoints": 7,
+          "initiative": 1,
+          "damageDice": "d8",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Orc Shaman",
+          "challenge": "Minion",
+          "experience": 5,
+          "hitPoints": 7,
+          "initiative": 1,
+          "damageDice": "d8",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Orc Shaman",
+          "challenge": "Minion",
+          "experience": 5,
+          "hitPoints": 7,
+          "initiative": 1,
+          "damageDice": "d8",
+          "damageType": "Magical"
+        }
+      ],
+      [
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Werewolf",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 25,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Morgoth",
+          "challenge": "Boss",
+          "experience": 168,
+          "hitPoints": 100,
+          "initiative": 4,
+          "damageDice": "d20",
+          "damageType": "Psychical"
+        }
+      ],
+      [
+        {
+          "name": "Sauron",
+          "challenge": "Boss",
+          "experience": 148,
+          "hitPoints": 89,
+          "initiative": 3,
+          "damageDice": "d20",
+          "damageType": "Physical"
+        }
+      ]
+    ]
   }
 ]

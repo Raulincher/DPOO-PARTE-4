@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 2345,
+    "xp": 4193,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -48,7 +48,7 @@
     "name": "Paladin",
     "player": "prueba",
     "characterClass": "Paladin",
-    "xp": 1978,
+    "xp": 2003,
     "body": 1,
     "mind": 0,
     "spirit": 0
@@ -84,7 +84,7 @@
     "name": "Champ",
     "player": "prueba",
     "characterClass": "Champion",
-    "xp": 1234,
+    "xp": 1259,
     "body": 1,
     "mind": 2,
     "spirit": 0
@@ -93,9 +93,36 @@
     "name": "Warrior",
     "player": "prueba",
     "characterClass": "Warrior",
-    "xp": 567,
+    "xp": 592,
     "body": 1,
     "mind": 1,
     "spirit": 1
+  },
+  {
+    "name": "Dfs",
+    "player": "dfsd",
+    "characterClass": "Mage",
+    "xp": 475,
+    "body": 1,
+    "mind": 1,
+    "spirit": 1
+  },
+  {
+    "name": "Fcsdfsdgfs",
+    "player": "dfsdfs",
+    "characterClass": "Champion",
+    "xp": 2523,
+    "body": 1,
+    "mind": 1,
+    "spirit": 3
+  },
+  {
+    "name": "Dfsdfsd",
+    "player": "dfsdf",
+    "characterClass": "Paladin",
+    "xp": 2623,
+    "body": 1,
+    "mind": 1,
+    "spirit": 2
   }
 ]

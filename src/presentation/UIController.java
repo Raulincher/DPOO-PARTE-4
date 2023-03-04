@@ -868,6 +868,7 @@ public class UIController {
 
                     monstersDefeat = monstersInEncounter.size() - monstersLife.size();
 
+
                     if(charactersDefeat < characterInParty.size() && monstersLife.size() != 0) {
                         z = 0;
                         while (z < characterInParty.size()) {
@@ -926,7 +927,7 @@ public class UIController {
                                                         auxName = charactersLife.get(a).split("\\d+");
                                                         String healedCharacter = auxName[0];
                                                         int newLife = heal + actualLife;
-                                                        charactersLife.set(smallestCharacterIndex, healedCharacter + newLife + "/" + totalLife);
+                                                        charactersLife.set(a, healedCharacter + newLife + "/" + totalLife);
                                                     }
                                                 }
                                                 uiManager.showMessage("\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to all conscious party");
@@ -975,8 +976,9 @@ public class UIController {
                                 actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                 i = 0;
                                 while(i < monstersDamage.size()){
-                                    String[] auxDice = monstersDamage.get(i).split(" ");
+                                    String[] auxDice = monstersDamage.get(i).split("d");
                                     compareName = auxDice[0];
+                                    compareName = compareName.substring(0,compareName.length()-1);
                                     if(actualName.equals(compareName)){
                                         actualDice = auxDice[1];
                                     }
@@ -1134,6 +1136,9 @@ public class UIController {
                                         }else if(typeOfDamage.equals("Psychical") && characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Paladin")){
                                             damage = damage/2;
                                         }
+                                        if(damage < 0){
+                                            damage = 0;
+                                        }
 
                                         if(isCrit == 2){
                                             if(characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
@@ -1233,6 +1238,10 @@ public class UIController {
                                         typeOfDamage = "magical";
                                     }
 
+                                    if(damage < 0){
+                                        damage = 0;
+                                    }
+
                                     if(actualLife != 0) {
                                         if(characterInParty.get(i).getCharacterClass().equals("Mage") && monstersLife.size() >= 3){
                                             if(isCrit == 2){
@@ -1286,6 +1295,7 @@ public class UIController {
                                             actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
                                             totalLife = Integer.parseInt(auxLife[1]);
 
+
                                             auxName = monstersLife.get(highestMonsterIndex).split("\\d+");
                                             attackedMonster = auxName[0];
 
@@ -1313,7 +1323,7 @@ public class UIController {
                                                         actualName = auxName[0];
                                                         if(actualName.equals(attackedMonster)){
                                                             listOfPriorities.remove(a);
-                                                            monstersLife.remove(smallestMonsterIndex);
+                                                            monstersLife.remove(highestMonsterIndex);
                                                             a = listOfPriorities.size();
                                                         }
                                                     }
@@ -1359,7 +1369,7 @@ public class UIController {
                                                             }
                                                         }
                                                     } else {
-                                                        monstersLife.set(highestMonsterIndex, attackedMonster + total + "/" + totalLife);
+                                                        monstersLife.set(smallestMonsterIndex, attackedMonster + total + "/" + totalLife);
                                                     }
                                                 }
                                             }

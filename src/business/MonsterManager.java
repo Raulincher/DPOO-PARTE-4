@@ -52,15 +52,15 @@ public class MonsterManager {
         int damage = 0;
 
         // Abrimos los ifs dependiendo del tipo de azar que tenga el Monster y asignamos damage
-        if(Objects.equals(diceType, "d4")){
+        if(Objects.equals(diceType, "4")){
             damage = diceRollD4();
-        }else if(Objects.equals(diceType, "d6")){
+        }else if(Objects.equals(diceType, "6")){
             damage = diceRollD6();
-        }else if(Objects.equals(diceType, "d8")){
+        }else if(Objects.equals(diceType, "8")){
             damage = diceRollD8();
-        }else if(Objects.equals(diceType, "d10")){
+        }else if(Objects.equals(diceType, "10")){
             damage = diceRollD10();
-        }else if(Objects.equals(diceType, "d12")){
+        }else if(Objects.equals(diceType, "12")){
             damage = diceRollD12();
         }else{
             damage = diceRollD20();
@@ -148,8 +148,8 @@ public class MonsterManager {
 
         // A través de la variable random generamos el número con upperbound de 7
         Random rand = new Random();
-        int upperbound = 7;
-        roll = rand.nextInt(upperbound);
+        int upperbound = 6;
+        roll = rand.nextInt(upperbound) + 1;
 
         return roll;
     }
@@ -165,8 +165,8 @@ public class MonsterManager {
 
         // A través de la variable random generamos el número con upperbound de 8
         Random rand = new Random();
-        int upperbound = 9;
-        roll = rand.nextInt(upperbound);
+        int upperbound = 8;
+        roll = rand.nextInt(upperbound) + 1;
 
         return roll;
     }
