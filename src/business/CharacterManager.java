@@ -61,7 +61,7 @@ public class CharacterManager {
 
 
     /**
-     * Esta función servirá para crear un character
+     * Esta función servirá para crear un character en la API
      *
      * @param characterName, el nombre deseado del personaje
      * @param playerName, el nombre del jugador
@@ -528,6 +528,7 @@ public class CharacterManager {
     public ArrayList<Character> filteredPlayers(String playerName, boolean isUsingAPI) throws IOException {
         ArrayList<Character> characters = null;
 
+        // Comprovamos si es desde la API o el DAO
         if(isUsingAPI){
             characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
         }else{
@@ -591,11 +592,19 @@ public class CharacterManager {
         return filteredCharacters;
     }
 
-
+    /**
+     * Esta función servirá para calcular en qué fase evolutiva estará el
+     * personaje
+     *
+     * @param characterClass clase del personaje
+     * @param characterLevel nivel del personaje
+     * @return confirmación de clase que le pertoca
+     */
     public String initialEvolution(String characterClass, int characterLevel){
 
         String evolution;
 
+        // Revisamos la línea evolutiva de Adventurer en caso que lo sea
         if(characterClass.equals("Adventurer")){
             if(characterLevel > 0 && characterLevel < 4){
                 evolution = "Adventurer";
@@ -604,13 +613,17 @@ public class CharacterManager {
             }else{
                 evolution = "Champion";
             }
-        }else if(characterClass.equals("Cleric")){
+        }
+        // Revisamos la línea evolutuva de Cleric en caso que lo sea
+        else if(characterClass.equals("Cleric")){
             if(characterLevel > 0 && characterLevel < 5){
                 evolution = "Cleric";
             }else{
                 evolution = "Paladin";
             }
-        }else{
+        }
+        // En caso que sea Mage se queda igual
+        else{
             evolution = "Mage";
         }
 
@@ -618,11 +631,19 @@ public class CharacterManager {
     }
 
 
-
+    /**
+     * Esta función servirá para actualizar un personaje en caso que evolucione
+     *
+     * @param character  personaje a analizar
+     * @param isUsingApi bool para comprobar si es desde la API
+     * @return evolved, para comrpobar si ha evolucionado o no
+     * @throws IOException
+     */
     public boolean evolution(Character character, boolean isUsingApi) throws IOException {
 
         boolean evolved = false;
 
+        // Si se trata de la línea de Adventurer, revisamos si le toca evolucionar y lo actualizamos
         if(character.getCharacterClass().equals("Adventurer") && character.getCharacterLevel() >= 300){
             evolved = true;
             if(isUsingApi){
@@ -631,7 +652,9 @@ public class CharacterManager {
                 updateEvolutionJson(character, "Warrior");
             }
             character.setClass("Warrior");
-        }else if(character.getCharacterClass().equals("Warrior") && character.getCharacterLevel() >= 700){
+        }
+        // Si se trata de un Warrior, revisamos si le toca evolucionar y lo actualizamos
+        else if(character.getCharacterClass().equals("Warrior") && character.getCharacterLevel() >= 700){
             evolved = true;
             if(isUsingApi){
                 updateEvolutionApi(character, "Champion");
@@ -639,7 +662,9 @@ public class CharacterManager {
                 updateEvolutionJson(character,"Champion");
             }
             character.setClass("Champion");
-        }else if(character.getCharacterClass().equals("Cleric") && character.getCharacterLevel() >= 400){
+        }
+        // Si se trata de un Cleric, revisamos si le toca evolucionar y lo actualizamos
+        else if(character.getCharacterClass().equals("Cleric") && character.getCharacterLevel() >= 400){
             evolved = true;
             if(isUsingApi){
                 updateEvolutionApi(character, "Paladin");
@@ -653,10 +678,25 @@ public class CharacterManager {
         return evolved;
     }
 
+    /**
+     * Esta función servirá para actualizar la fase evolutiva del
+     * personaje
+     *
+     * @param character personaje que ha evolucionado
+     * @param newClass clase en la que ha evolucionado
+     */
     public void updateEvolutionJson(Character character, String newClass){
         characterDAO.updateCharacterClass(character, newClass);
     }
 
+    /**
+     * Esta función servirá para actualizar la fase evolutiva del
+     * personaje de la API
+     *
+     * @param character personaje que ha evolucionado
+     * @param newClass clase en la que ha evolucionado
+     * @throws IOException
+     */
     public void updateEvolutionApi(Character character, String newClass) throws IOException {
         characterAPI.updateClassToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character, newClass);
     }
@@ -710,7 +750,12 @@ public class CharacterManager {
     }
 
 
-
+    /**
+     * Esta función borrará un personaje existente de la lista de la API
+     *
+     * @param characterName, valor que contendrá el nombre del personaje a borrar
+     * @return devuelve un bool, siguiendo la función del objeto DAO conforme si se ha eliminado o no
+     */
     public boolean deleteCharacterAPI (String characterName) throws IOException {
         return characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters?name=" + characterName);
     }
@@ -737,7 +782,10 @@ public class CharacterManager {
         characterAPI.updateToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character,gainedXp);
     }
 
-
+    /**
+     * Esta función servirá para borrar un personaje de la API en caso de emergencia
+     * @throws IOException
+     */
     public void emergencyDelete() throws IOException {
         characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
     }
