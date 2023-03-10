@@ -14,6 +14,14 @@ public class UIController {
     private final CharacterManager characterManager;
     private final MonsterManager monsterManager;
 
+    /**
+     * Esta función hace de constructor del UIController
+     *
+     * @param uiManager, para vincularlo con UIManager
+     * @param adventureManager, para vincularlo con AdventureManager
+     * @param characterManager, para vincularlo con CharacterManager
+     * @param monsterManager, para vincularlo con MonsterManager
+     */
     public UIController(UIManager uiManager, AdventureManager adventureManager, CharacterManager characterManager, MonsterManager monsterManager) {
         this.uiManager = uiManager;
         this.adventureManager = adventureManager;
@@ -21,28 +29,41 @@ public class UIController {
         this.monsterManager = monsterManager;
     }
 
-
+    /**
+     * Esta función acciona el programa entero
+     * No tendrá ni param ni return
+     */
     public void run() throws IOException {
         int option;
         int i = 0;
         int totalCharacters = 0;
 
+        // Damos la bienvenida después de crear variables
         uiManager.showMessage("Welcome to Simple LSRPG.\n");
         uiManager.showDataMenu();
         option = uiManager.askForInteger("\nYour answer: ");
         uiManager.showMessage("\nLoading data...");
         if(option == 1){
+            // Nos aseguremos que se carguen los monsters
             ArrayList<Monster> monsters = monsterManager.getAllMonsters();
             if(monsters.size() > 0){
                 uiManager.showMessage("Data was successfully loaded.\n\n\n");
+
+                // Abrimos un bucle para monstrar el menú
                 do {
                     ArrayList<Character> characters = characterManager.getAllCharacters();
+
+                    // Obtenemos el número de personajes
                     for (Character ignored : characters) {
                         i++;
                         totalCharacters = i;
                     }
                     i = 0;
+
+                    // Obtenemos todas las adventures y las guardamos
                     ArrayList<Adventure> adventures = adventureManager.getAdventuresList();
+
+                    // En caso que hayan menos de 3 personajes creamos, denegamos opción 4
                     if(totalCharacters < 3){
                         uiManager.showMainMenuDissabled();
                         option = uiManager.askForInteger("\nYour answer: ");
@@ -51,6 +72,8 @@ public class UIController {
                         }else{
                             uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
                         }
+
+                        // En caso que no hayan adventures, denegamos opción 4 y avisamos que necesitan crearla
                     }else if(adventures == null){
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
@@ -59,6 +82,7 @@ public class UIController {
                         }else{
                             uiManager.showMessage("\nYou need to create an adventure before playing one.\n");
                         }
+                        // En caso que no falte nada, se ejecuta la opción
                     }else{
                         uiManager.showMainMenu();
                         option = uiManager.askForInteger("\nYour answer: ");
@@ -155,7 +179,13 @@ public class UIController {
         }
     }
 
-
+    /**
+     * Esta función ejecuta la opción del menú que el usuario desee
+     *
+     * @param option, opción que el usuario habrá escogido
+     * @param isUsingApi, bool para saber si se está usando la API
+     * @throws IOException
+     */
     private void executeOption(int option, boolean isUsingApi) throws IOException {
         uiManager.showMessage("");
         switch (option) {
@@ -171,6 +201,13 @@ public class UIController {
         }
     }
 
+    /**
+     * Esta función representa la opción 1. Con un seguido
+     * de preguntas prepara un gran terreno para que el usuario cree un personaje.
+     *
+     * @param isUsingApi, bool para saber si se está usando la API
+     * @throws IOException
+     */
     private void characterCreation(boolean isUsingApi) throws IOException {
         int error = 0;
         String characterName = "NoCharacterName";
@@ -376,6 +413,12 @@ public class UIController {
         }
     }
 
+    /**
+     * Esta función representa la opción 3 y crea una adventure.
+     *
+     * @param isUsingApi, bool para saber si se está usando la API
+     * @throws IOException
+     */
     private void adventureCreation(boolean isUsingApi) throws IOException {
         int error = 0;
         int adventureEncounters = 0;
