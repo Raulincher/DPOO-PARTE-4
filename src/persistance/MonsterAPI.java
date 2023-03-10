@@ -22,77 +22,77 @@ public class MonsterAPI {
     private final HttpClient client;
 
     /**
-     * Default constructor, where the client used for HTTPS communication is set up
+     * Constructor predeterminado, donde se configura el cliente utilizado para la comunicación HTTPS
      *
-     * @throws IOException If your computer doesn't support SSL at all. If you get this exception when calling the
-     *                     constructor, contact the OOPD teachers.
+     * @throws IOException si su computadora no admite SSL en absoluto. Si obtiene esta excepción al llamar al
+     * constructor, contactar con los profesores de la OOPD.
      */
     public MonsterAPI() throws IOException {
-        // We set up the HTTPClient we will (re)use across requests, with a custom *INSECURE* SSL context
+        // Configuramos el HTTPClient que (re)utilizaremos en todas las solicitudes, con un contexto *INSEGURE* SSL personalizado
         try {
             client = HttpClient.newBuilder().sslContext(insecureContext()).build();
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
 
 
     /**
-     * Method that reads the contents from a URL using the HTTPS protocol. Specifically, a GET request is sent.
-     * Any parameters should be included in the URL.
+     * Método que lee el contenido de una URL utilizando el protocolo HTTPS. Específicamente, se envía una solicitud GET.
+     * Todos los parámetros deben incluirse en la URL.
      *
-     * @param url A String representation of the URL to read from, which will be assumed to use HTTP/HTTPS.
-     * @return The contents of the URL represented as text.
-     * @throws IOException If the URL is malformed or the server can't be reached.
+     * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
+     * @return El contenido de la URL representada como texto.
+     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public ArrayList<Monster> getFromUrl(String url) throws IOException {
 
         Monster[] monsters = null;
 
         try {
-            // Define the request
-            // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
-            // The HttpRequest.Builder pattern offers a ton of customization for the request (headers, body, HTTP version...)
+            // Definir la solicitud
+            // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
+            // El patrón HttpRequest.Builder ofrece mucha personalización para la solicitud (encabezados, cuerpo, versión HTTP...)
             HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).build();
 
-            // We use the default BodyHandler for Strings (so we can get the body of the response as a String)
-            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+            // Usamos el BodyHandler predeterminado para cadenas (para que podamos obtener el cuerpo de la respuesta como una cadena)
+            // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Just return the body
+            // Solo devuelve el cuerpo
             Gson g = new Gson();
             monsters = g.fromJson(response.body(), Monster[].class);
             return new ArrayList<Monster>(Arrays.asList(monsters));
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
 
     /**
-     * Helper function that sets up a SSLContext designed to ignore certificates, accepting anything by default
-     * NOT TO BE USED IN REAL PRODUCTION ENVIRONMENTS
+     * Función de ayuda que configura un SSLContext diseñado para ignorar certificados, aceptando cualquier cosa por defecto
+     * NO UTILIZARSE EN ENTORNOS REALES DE PRODUCCIÓN
      *
-     * @return An instance of the SSLContext class, which manages SSL verifications, configured to accept even misconfigured certificates
+     * @return Una instancia de la clase SSLContext, que gestiona las verificaciones SSL, configurada para aceptar incluso certificados mal configurados
      */
     private SSLContext insecureContext() throws NoSuchAlgorithmException, KeyManagementException {
-        // We set up a TrustManager that accepts every certificate by default
+        // Configuramos un TrustManager que acepta todos los certificados por defecto
         TrustManager[] insecureTrustManager = new TrustManager[]{new X509TrustManager() {
-            // By not throwing any exceptions in these methods we're accepting everything
+            // Al no lanzar ninguna excepción en estos métodos, estamos aceptando todo
             public void checkClientTrusted(X509Certificate[] xcs, String string) {
             }
 
             public void checkServerTrusted(X509Certificate[] xcs, String string) {
             }
 
-            // This doesn't affect our use case, so we just return an empty array
+            // Esto no afecta nuestro caso de uso, por lo que solo devolvemos una matriz vacía
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[0];
             }
         }};
-        // We set up the SSLContext with the over-accepting TrustManager
+        // Configuramos el SSLContext con el TrustManager que acepta en exceso
         SSLContext sc = SSLContext.getInstance("ssl");
         sc.init(null, insecureTrustManager, null);
         return sc;

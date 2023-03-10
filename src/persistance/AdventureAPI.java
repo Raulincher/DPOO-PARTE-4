@@ -24,103 +24,103 @@ public class AdventureAPI {
     private final HttpClient client;
 
     /**
-     * Default constructor, where the client used for HTTPS communication is set up
+     * Constructor predeterminado, donde se configura el cliente utilizado para la comunicación HTTPS
      *
-     * @throws IOException If your computer doesn't support SSL at all. If you get this exception when calling the
-     *                     constructor, contact the OOPD teachers.
+     * @throws IOException si su computadora no admite SSL en absoluto. Si obtiene esta excepción al llamar al
+     * constructor, contactar con los profesores de la OOPD.
      */
     public AdventureAPI() throws IOException {
-        // We set up the HTTPClient we will (re)use across requests, with a custom *INSECURE* SSL context
+        // Configuramos el HTTPClient que (re)utilizaremos en todas las solicitudes, con un contexto *INSEGURE* SSL personalizado
         try {
             client = HttpClient.newBuilder().sslContext(insecureContext()).build();
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
 
 
     /**
-     * Method that reads the contents from a URL using the HTTPS protocol. Specifically, a GET request is sent.
-     * Any parameters should be included in the URL.
+     * Método que lee el contenido de una URL utilizando el protocolo HTTPS. Específicamente, se envía una solicitud GET.
+     * Todos los parámetros deben incluirse en la URL.
      *
-     * @param url A String representation of the URL to read from, which will be assumed to use HTTP/HTTPS.
-     * @return The contents of the URL represented as text.
-     * @throws IOException If the URL is malformed or the server can't be reached.
+     * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
+     * @return El contenido de la URL representada como texto.
+     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public ArrayList<Adventure> getFromUrl(String url) throws IOException {
         Adventure[] adventures = null;
         try {
-            // Define the request
-            // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
-            // The HttpRequest.Builder pattern offers a ton of customization for the request (headers, body, HTTP version...)
+            // Definir la solicitud
+            // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
+            // El patrón HttpRequest.Builder ofrece mucha personalización para la solicitud (encabezados, cuerpo, versión HTTP...)
             HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).build();
 
-            // We use the default BodyHandler for Strings (so we can get the body of the response as a String)
-            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+            // Usamos el BodyHandler predeterminado para cadenas (para que podamos obtener el cuerpo de la respuesta como una cadena)
+            // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             Gson g = new Gson();
             adventures = g.fromJson(response.body(), Adventure[].class);
             return new ArrayList<Adventure>(Arrays.asList(adventures));
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
 
 
     /**
-     * Method that posts contents to a URL using the HTTPS protocol. Specifically, a POST request is sent.
-     * The request body is set to the corresponding parameter, and the response body is returned just in case.
+     * Método que publica contenidos en una URL utilizando el protocolo HTTPS. Específicamente, se envía una solicitud POST.
+     * El cuerpo de la solicitud se establece en el parámetro correspondiente y el cuerpo de la respuesta se devuelve por si acaso.
      *
-     * @param url  A String representation of the URL to post to, which will be assumed to use HTTP/HTTPS.
-     * @param adventure The content to post, which will be sent to the server in the request body.
-     * @return The contents of the response, in case the server sends anything back after posting the content.
-     * @throws IOException If the URL is malformed or the server can't be reached.
+     * @param url Una representación de cadena de la URL para publicar, que se supondrá que utiliza HTTP/HTTPS.
+     * @param adventure El contenido a publicar, que se enviará al servidor en el cuerpo de la solicitud.
+     * @return El contenido de la respuesta, en caso de que el servidor devuelva algo después de publicar el contenido.
+     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public Boolean postToUrl(String url, Adventure adventure) throws IOException {
         Gson g = new Gson();
         String adventureString = g.toJson(adventure);
 
         try {
-            // Define the request
-            // In this case, we have to use the .POST() and .headers() methods to define what we want (to send a string containing JSON data)
+            // Definir la solicitud
+            // En este caso, tenemos que usar los métodos .POST() y .headers() para definir lo que queremos (enviar una cadena que contenga datos JSON)
             HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).headers("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(adventureString)).build();
 
-            // We could use a BodyHandler that discards the response body, but here we return the API's response
-            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+            // Podríamos usar un BodyHandler que descarta el cuerpo de la respuesta, pero aquí devolvemos la respuesta de la API
+            // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             response.body();
             return true;
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
 
     /**
-     * Method that removes the contents from a URL using the HTTPS protocol. Specifically, a DELETE request is sent.
-     * Any parameters should be included in the URL.
+     * Método que elimina los contenidos de una URL utilizando el protocolo HTTPS. Específicamente, se envía una solicitud DELETE.
+     * Todos los parámetros deben incluirse en la URL.
      *
-     * @param url A String representation of the URL to delete from, which will be assumed to use HTTP/HTTPS.
-     * @return The contents of the response, in case the server sends anything back after deleting the content.
-     * @throws IOException If the URL is malformed or the server can't be reached.
+     * @param url Una representación de cadena de la URL para eliminar, que se supondrá que utiliza HTTP/HTTPS.
+     * @return El contenido de la respuesta, en caso de que el servidor devuelva algo después de eliminar el contenido.
+     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public String deleteFromUrl(String url) throws IOException {
         try {
-            // Define the request
-            // The default method is GET, so we don't need to specify it (but we could do so by calling .GET() before .build()
-            // The HttpRequest.Builder pattern offers a ton of customization for the request (headers, body, HTTP version...)
+            // Definir la solicitud
+            // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
+            // El patrón HttpRequest.Builder ofrece mucha personalización para la solicitud (encabezados, cuerpo, versión HTTP...)
             HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).DELETE().build();
 
-            // We use the default BodyHandler for Strings (so we can get the body of the response as a String)
-            // Note we could also send the request asynchronously, but things would escalate in terms of coding complexity
+            // Usamos el BodyHandler predeterminado para cadenas (para que podamos obtener el cuerpo de la respuesta como una cadena)
+            // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Exceptions are simplified for any classes that need to catch them
+            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);
         }
     }
@@ -128,27 +128,27 @@ public class AdventureAPI {
 
 
     /**
-     * Helper function that sets up a SSLContext designed to ignore certificates, accepting anything by default
-     * NOT TO BE USED IN REAL PRODUCTION ENVIRONMENTS
+     * Función de ayuda que configura un SSLContext diseñado para ignorar certificados, aceptando cualquier cosa por defecto
+     * NO UTILIZARSE EN ENTORNOS REALES DE PRODUCCIÓN
      *
-     * @return An instance of the SSLContext class, which manages SSL verifications, configured to accept even misconfigured certificates
+     * @return Una instancia de la clase SSLContext, que gestiona las verificaciones SSL, configurada para aceptar incluso certificados mal configurados
      */
     private SSLContext insecureContext() throws NoSuchAlgorithmException, KeyManagementException {
-        // We set up a TrustManager that accepts every certificate by default
+        // Configuramos un TrustManager que acepta todos los certificados por defecto
         TrustManager[] insecureTrustManager = new TrustManager[]{new X509TrustManager() {
-            // By not throwing any exceptions in these methods we're accepting everything
+            // Al no lanzar ninguna excepción en estos métodos, estamos aceptando todo
             public void checkClientTrusted(X509Certificate[] xcs, String string) {
             }
 
             public void checkServerTrusted(X509Certificate[] xcs, String string) {
             }
 
-            // This doesn't affect our use case, so we just return an empty array
+            // Esto no afecta nuestro caso de uso, por lo que solo devolvemos una matriz vacía
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[0];
             }
         }};
-        // We set up the SSLContext with the over-accepting TrustManager
+        // Configuramos el SSLContext con el TrustManager que acepta en exceso
         SSLContext sc = SSLContext.getInstance("ssl");
         sc.init(null, insecureTrustManager, null);
         return sc;
