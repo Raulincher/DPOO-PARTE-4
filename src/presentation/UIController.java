@@ -70,7 +70,7 @@ public class UIController {
                         if(option != 4){
                             executeOption(option, false);
                         }else{
-                            uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
+                            uiManager.showMessage("\nTavern keeper: You need to gather a minimum of 3 characters to play an adventure.\n");
                         }
 
                         // En caso que no hayan adventures, denegamos opción 4 y avisamos que necesitan crearla
@@ -113,7 +113,7 @@ public class UIController {
                         if(option != 4){
                             executeOption(option, true);
                         }else{
-                            uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
+                            uiManager.showMessage("\nTavern keeper: You need to gather a minimum of 3 characters to play an adventure.\n");
                         }
                     }else if(adventures == null){
                         uiManager.showMainMenu();
@@ -154,7 +154,7 @@ public class UIController {
                             if(option != 4){
                                 executeOption(option, false);
                             }else{
-                                uiManager.showMessage("\nTavern keeper: “You need to gather a minimum of 3 characters to play an adventure.”\n");
+                                uiManager.showMessage("\nTavern keeper: You need to gather a minimum of 3 characters to play an adventure.\n");
                             }
                         }else if(adventures == null){
                             uiManager.showMainMenu();
@@ -193,10 +193,10 @@ public class UIController {
             case 2 -> listCharacters(isUsingApi);
             case 3 -> adventureCreation(isUsingApi);
             case 4 -> adventurePlay(isUsingApi);
-            case 5 -> uiManager.showMessage("\nTavern keeper: “Are you leaving already? See you soon, adventurer.”\n");
+            case 5 -> uiManager.showMessage("\nTavern keeper: Are you leaving already? See you soon, adventurer.\n");
             default -> {
-                uiManager.showMessage("\nTavern keeper: “I can't understand you, could you repeat it to me, please?”");
-                uiManager.showMessage("\nValid options are between 1 to 5 (including them)”");
+                uiManager.showMessage("\nTavern keeper: I can't understand you, could you repeat it to me, please?");
+                uiManager.showMessage("\nValid options are between 1 to 5 (including them)");
             }
         }
     }
@@ -216,8 +216,8 @@ public class UIController {
         boolean saved;
         boolean exist;
         uiManager.showMessage("""
-                Tavern keeper: “Oh, so you are new to this land.”
-                “What’s your name?”
+                Tavern keeper: Oh, so you are new to this land.
+                What’s your name?
                 """);
         while(error == 0 ) {
             characterName = uiManager.askForString("-> Enter your name: ");
@@ -225,12 +225,12 @@ public class UIController {
             boolean correct = characterManager.nameCheck(characterName);
             characterName = characterManager.fixName(characterName);
             if(!correct){
-                uiManager.showMessage("\nTavern keeper: “C'mon don't fool around and tell me your real name, will ya?”");
+                uiManager.showMessage("\nTavern keeper: C'mon don't fool around and tell me your real name, will ya?");
                 uiManager.showMessage("Character name can't include numbers or special characters\n");
             }else{
                 exist = characterManager.characterNameDisponibility(characterName, isUsingApi);
                 if(exist){
-                    uiManager.showMessage("\nTavern keeper: “Sorry lad this character name already exists”\n");
+                    uiManager.showMessage("\nTavern keeper: Sorry lad this character name already exists\n");
                 }else{
                     error = 1;
                 }
@@ -238,21 +238,21 @@ public class UIController {
         }
 
 
-        uiManager.showMessage("\nTavern keeper: “Hello, " +  characterName + ", be welcome.”\n" + "“And now, if I may break the fourth wall, who is your Player?”\n");
+        uiManager.showMessage("\nTavern keeper: Hello, " +  characterName + ", be welcome.\n" + "And now, if I may break the fourth wall, who is your Player?\n");
 
         playerName = uiManager.askForString("-> Enter the player’s name: ");
 
         uiManager.showMessage("""
 
-                Tavern keeper: “I see, I see...”
-                “Now, are you an experienced adventurer?”
+                Tavern keeper: I see, I see...
+                Now, are you an experienced adventurer?
                 """);
 
         error = 0;
         while(error == 0) {
             characterLevel = uiManager.askForInteger("-> Enter the character’s level [1..10]: ");
             if(characterLevel > 10 || characterLevel < 1){
-                uiManager.showMessage("\nTavern keeper: “I don't think you could be at that level, c'mon tell me the truth”");
+                uiManager.showMessage("\nTavern keeper: I don't think you could be at that level, c'mon tell me the truth");
                 uiManager.showMessage("Character level can't be lower than 1 or higher than 10\n");
             }
             else {
@@ -262,7 +262,7 @@ public class UIController {
 
         int experience = characterManager.experienceCalculator(characterLevel);
 
-        uiManager.showMessage("\nTavern keeper: “Oh, so you are level "+ characterLevel + "!”\n" + "“Great, let me get a closer look at you...”\n");
+        uiManager.showMessage("\nTavern keeper: Oh, so you are level "+ characterLevel + "!\n" + "Great, let me get a closer look at you...\n");
         uiManager.showMessage("Generating your stats...\n");
 
         //mind, body, spirit
@@ -287,8 +287,8 @@ public class UIController {
         int mindSum = Integer.parseInt(stat2);
         int spiritSum = Integer.parseInt(stat3);
 
-        uiManager.showMessage("\nTavern keeper: “Looking good!”");
-        uiManager.showMessage("“And, lastly, ?”\n");
+        uiManager.showMessage("\nTavern keeper: Looking good!");
+        uiManager.showMessage("And, lastly, ?\n");
 
         String characterClass;
 
@@ -296,8 +296,8 @@ public class UIController {
             characterClass = uiManager.askForString("-> Enter the character’s initial class [Adventurer, Cleric, Mage]: ");
 
             if(!Objects.equals(characterClass, "Cleric") && !Objects.equals(characterClass, "Adventurer") && !Objects.equals(characterClass, "Mage")){
-                uiManager.showMessage("\nTavern keeper: “I'm sorry but that class is unknown to me...”");
-                uiManager.showMessage("Character can only be the type of class announced in brackets (Adventurer, Cleric or Mage)”\n");
+                uiManager.showMessage("\nTavern keeper: I'm sorry but that class is unknown to me...");
+                uiManager.showMessage("Character can only be the type of class announced in brackets (Adventurer, Cleric or Mage)\n");
             }
 
         }while(!Objects.equals(characterClass, "Cleric") && !Objects.equals(characterClass, "Adventurer") && !Objects.equals(characterClass, "Mage"));
@@ -313,7 +313,7 @@ public class UIController {
         if (saved){
             uiManager.showMessage("\nThe new character " + characterName + " has been created.\n");
         }else{
-            uiManager.showMessage("\nTavern keeper: “Im sorry friend but " + characterName +  " couldn't be found on the guild. Try it again next time.");
+            uiManager.showMessage("\nTavern keeper: Im sorry friend but " + characterName +  " couldn't be found on the guild. Try it again next time.");
             uiManager.showMessage("There is an error in the save of your character.");
         }
 
@@ -323,7 +323,7 @@ public class UIController {
     private void listCharacters(boolean isUsingApi) throws IOException {
         int i = 0;
 
-        uiManager.showMessage("Tavern keeper: “Lads! The Boss wants to see you, come here!”\n" + "“Who piques your interest?”");
+        uiManager.showMessage("Tavern keeper: Lads! The Boss wants to see you, come here!\n" + "Who piques your interest?");
         String playerName = uiManager.askForString("-> Enter the name of the Player to filter: ");
 
         ArrayList<Character> character = characterManager.filteredPlayers(playerName, isUsingApi);
@@ -339,7 +339,7 @@ public class UIController {
                 int characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
                 if((characterPicked) > character.size() || (characterPicked) < 0) {
                     while ((characterPicked) > character.size() || (characterPicked) < 1) {
-                        uiManager.showMessage("Tavern keeper: “Please choose an existing character”\n");
+                        uiManager.showMessage("Tavern keeper: Please choose an existing character\n");
                         characterPicked = uiManager.askForInteger("Who would you like to meet [0.." + character.size() + "]: ");
                     }
                 }
@@ -374,7 +374,7 @@ public class UIController {
                         spiritIntToString = String.valueOf(spiritChosen);
                     }
 
-                    uiManager.showMessage("Tavern keeper: “Hey" + characterChosen.getCharacterName()  + " get here; the boss wants to see you!”\n");
+                    uiManager.showMessage("Tavern keeper: Hey" + characterChosen.getCharacterName()  + " get here; the boss wants to see you!\n");
                     uiManager.showMessage("* " + "Name:   " + characterChosen.getCharacterName());
                     uiManager.showMessage("* " + "Player: " + characterChosen.getPlayerName());
                     uiManager.showMessage("* " + "Class:  " + characterChosen.getCharacterClass());
@@ -395,20 +395,20 @@ public class UIController {
                         erased = characterManager.deleteCharacter(characterDelete);
                     }
                     if(erased){
-                        uiManager.showMessage("Tavern keeper: “I’m sorry kiddo, but you have to leave.”\n");
+                        uiManager.showMessage("Tavern keeper: I’m sorry kiddo, but you have to leave.\n");
                         uiManager.showMessage("Character " + characterChosen.getCharacterName() + " left the Guild.\n");
                     }else{
-                        uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to fire”\n");
+                        uiManager.showMessage("Tavern keeper: Don't worry mate you don't need to decide now. Come back when you decided who you want to fire\n");
                     }
 
                 }else{
-                    uiManager.showMessage("Tavern keeper: “Don't worry mate you don't need to decide now. Come back when you decided who you want to meet”\n");
+                    uiManager.showMessage("Tavern keeper: Don't worry mate you don't need to decide now. Come back when you decided who you want to meet\n");
                 }
             }else{
-                uiManager.showMessage("Tavern keeper: “That player has never created a character. Come back later”\n");
+                uiManager.showMessage("Tavern keeper: That player has never created a character. Come back later\n");
             }
         }else{
-            uiManager.showMessage("\nTavern keeper: “I'm sorry mate, it seems that there is no one here at the moment”");
+            uiManager.showMessage("\nTavern keeper: I'm sorry mate, it seems that there is no one here at the moment");
             uiManager.showMessage("There are no characters created at the moment\n");
         }
     }
@@ -432,15 +432,15 @@ public class UIController {
         int monsterDeleteOption;
         boolean adventureSaved;
 
-        uiManager.showMessage("Tavern keeper: “Planning an adventure? Good luck with that!”\n");
+        uiManager.showMessage("Tavern keeper: Planning an adventure? Good luck with that!\n");
         String adventureName = uiManager.askForString("-> Name your adventure: ");
 
-        uiManager.showMessage("\nTavern keeper: “You plan to undertake " + adventureName + " , really?”\n" + "“How long will that take?”\n");
+        uiManager.showMessage("\nTavern keeper: You plan to undertake " + adventureName + " , really?\n" + "How long will that take?\n");
 
         while(error == 0) {
             adventureEncounters = uiManager.askForInteger("-> How many encounters do you want [1..4]: ");
             if(adventureEncounters > 4 || adventureEncounters < 1){
-                uiManager.showMessage("\nTavern keeper: “That number of encounters is impossible to be truth, ya fooling around with me aren't ya”");
+                uiManager.showMessage("\nTavern keeper: That number of encounters is impossible to be truth, ya fooling around with me aren't ya");
                 uiManager.showMessage("Number of encounters should be between 1 and 4\n");
             }
             else {
@@ -448,7 +448,7 @@ public class UIController {
             }
         }
 
-        uiManager.showMessage("\nTavern keeper: “"+ adventureEncounters +" encounters? That is too much for me...”");
+        uiManager.showMessage("\nTavern keeper: "+ adventureEncounters +" encounters? That is too much for me...");
 
         ArrayList<ArrayList<Monster>> encounterMonsters;
         ArrayList<String> monstersQuantityAndNames = new ArrayList<>(1);
@@ -476,7 +476,7 @@ public class UIController {
                 option = uiManager.askForInteger("\n-> Enter an option [1..3]: ");
 
                 if(option == 2 && encounterMonsters.get(auxEncounter).get(0) == null){
-                    uiManager.showMessage("\nTavern keeper: “Sorry pal you can't erase monsters if your adventure don't have any, i'll let you add some first”");
+                    uiManager.showMessage("\nTavern keeper: Sorry pal you can't erase monsters if your adventure don't have any, i'll let you add some first");
                     uiManager.showMessage("The tavern keeper shows you the add monster menu\n");
                     option = 1;
                 }
@@ -502,7 +502,7 @@ public class UIController {
 
                         if(monsterOption > monsters.size() || monsterOption < 1) {
                             while(monsterOption > monsters.size() || monsterOption < 1) {
-                                uiManager.showMessage("Tavern keeper: “Please choose an existing monster”\n");
+                                uiManager.showMessage("Tavern keeper: Please choose an existing monster\n");
                                 monsterOption = uiManager.askForInteger("-> Choose a monster to add [1.." + monsters.size() + "]: ");
                             }
                         }
@@ -513,8 +513,8 @@ public class UIController {
                             monsterQuantity = uiManager.askForInteger("-> How many " + monsters.get(monsterOption - 1).getMonsterName() + " do you want to add: ");
 
                             if(monsterQuantity < 1){
-                                uiManager.showMessage("\nTavern keeper: “Please add a correct number of monsters”");
-                                uiManager.showMessage("Quantity must be greater than 0”\n");
+                                uiManager.showMessage("\nTavern keeper: Please add a correct number of monsters");
+                                uiManager.showMessage("Quantity must be greater than 0\n");
                             }
                             else{
                                 error = 0;
@@ -529,7 +529,7 @@ public class UIController {
 
                         if(exist){
                             lastQuantity = lastQuantity - monsterQuantity;
-                            uiManager.showMessage("\nTavern keeper: “You can't add more than 2 different type of boss in your encounter”");
+                            uiManager.showMessage("\nTavern keeper: You can't add more than 2 different type of boss in your encounter");
                         }else {
                             adventureManager.setMonstersEncounter(monsters, encounterMonsters, monsterOption, lastQuantity, monsterQuantity, auxEncounter);
                             adventureManager.setMonstersNames(monstersQuantityAndNames, monsters, monsterQuantity, monsterOption);
@@ -541,7 +541,7 @@ public class UIController {
 
                         if(monsterDeleteOption > monstersQuantityAndNames.size() || monsterDeleteOption < 1) {
                             while(monsterDeleteOption > monstersQuantityAndNames.size() || monsterDeleteOption < 1) {
-                                uiManager.showMessage("Tavern keeper: “Please choose an existing monster”\n");
+                                uiManager.showMessage("Tavern keeper: Please choose an existing monster\n");
                                 monsterDeleteOption = uiManager.askForInteger("Which monster do you want to delete: ");
                             }
                         }
@@ -569,8 +569,8 @@ public class UIController {
                         }
                     }
                     default -> {
-                        uiManager.showMessage("\nTavern keeper: “I can't understand you, could you repeat it to me, please?”");
-                        uiManager.showMessage("\nValid options are between 1 to 3 (including them)”");
+                        uiManager.showMessage("\nTavern keeper: I can't understand you, could you repeat it to me, please?");
+                        uiManager.showMessage("\nValid options are between 1 to 3 (including them)");
                     }
                 }
             }while(option != 3);
@@ -583,9 +583,9 @@ public class UIController {
         }
 
         if(adventureSaved){
-            uiManager.showMessage("\nTavern keeper: “Your adventure is ready whenever you want to play it”");
+            uiManager.showMessage("\nTavern keeper: Your adventure is ready whenever you want to play it");
         }else{
-            uiManager.showMessage("\nTavern keeper: “I don't know an adventure like that could be carry on, make sure to do it correctly”");
+            uiManager.showMessage("\nTavern keeper: I don't know an adventure like that could be carry on, make sure to do it correctly");
             uiManager.showMessage("\nSomething went wrong in the creation of your adventure");
         }
     }
@@ -603,8 +603,8 @@ public class UIController {
         int monstersDefeat; //number of monsters encounter defeat
         int charactersDefeat = 0; //number of characters defeat
         uiManager.showMessage("""
-                Tavern keeper: “So, you are looking to go on an adventure?”
-                “Where do you fancy going?”
+                Tavern keeper: So, you are looking to go on an adventure?
+                Where do you fancy going?
                 """);
         uiManager.showMessage("Available adventures:\n");
         if(isUsingApi){
@@ -621,20 +621,20 @@ public class UIController {
 
         if((adventureSelection) > adventures.size() || (adventureSelection) < 1) {
             while ((adventureSelection) > adventures.size() || (adventureSelection) < 1) {
-                uiManager.showMessage("Tavern keeper: “Please choose an existing adventure”\n");
+                uiManager.showMessage("Tavern keeper: Please choose an existing adventure\n");
                 adventureSelection = uiManager.askForInteger("-> Choose an adventure: ");
             }
         }
-        uiManager.showMessage("Tavern keeper: “" + adventures.get(adventureSelection - 1).getAdventureName() + " it is!" + "” \n “And how many people shall join you?”");
+        uiManager.showMessage("Tavern keeper: " + adventures.get(adventureSelection - 1).getAdventureName() + " it is!" + " \n And how many people shall join you?");
 
         characterQuantity = uiManager.askForInteger("-> Choose a number of characters [3..5]: ");
         if((characterQuantity) > 5 || (characterQuantity) < 3) {
             while ((characterQuantity) > 5 || (characterQuantity) < 3)  {
-                uiManager.showMessage("Tavern keeper: “Please choose a correct number of characters”\n");
+                uiManager.showMessage("Tavern keeper: Please choose a correct number of characters\n");
                 characterQuantity = uiManager.askForInteger("-> Choose a number of characters [3..5]: ");
             }
         }
-        uiManager.showMessage("Tavern keeper: “Great, " + characterQuantity + " it is.”\n" + "“Who among these lads shall join you?”");
+        uiManager.showMessage("Tavern keeper: Great, " + characterQuantity + " it is.\n" + "Who among these lads shall join you?");
 
         int i, j = 0;
         ArrayList<Character> characterInParty = new ArrayList<>(characterQuantity);
@@ -675,17 +675,17 @@ public class UIController {
 
             if (CharacterPartySelected < 1 || CharacterPartySelected > characters.size()) {
                 while (CharacterPartySelected < 1 || CharacterPartySelected > characters.size()) {
-                    uiManager.showMessage("Tavern keeper: “Please choose an existing character”\n");
+                    uiManager.showMessage("Tavern keeper: Please choose an existing character\n");
                     CharacterPartySelected = uiManager.askForInteger("-> Choose character "+ (j+1) + " in your party: \n");
                 }
             }
             int w;
             for (w=0; w<5; w++) {
                 if (saveNumber[w] == CharacterPartySelected) {
-                    uiManager.showMessage("Tavern keeper: “You've already chosen this character!”\n");
+                    uiManager.showMessage("Tavern keeper: You've already chosen this character!\n");
                     CharacterPartySelected = uiManager.askForInteger("-> Choose character "+ (j+1) + " in your party: \n");
                     while (CharacterPartySelected < 1 || CharacterPartySelected > characters.size() || saveNumber[w] == CharacterPartySelected) {
-                        uiManager.showMessage("Tavern keeper: “Come on! Just choose an existing new character.”\n");
+                        uiManager.showMessage("Tavern keeper: Come on! Just choose an existing new character.\n");
                         CharacterPartySelected = uiManager.askForInteger("-> Choose character "+ (j+1) + " in your party: \n");
                     }
                 }
@@ -706,8 +706,8 @@ public class UIController {
             i++;
         }
 
-        uiManager.showMessage("\nTavern keeper: “Great, good luck on your adventure lads!”\n");
-        uiManager.showMessage("The “" + adventures.get(adventureSelection - 1).getAdventureName()  +"” will start soon...\n");
+        uiManager.showMessage("\nTavern keeper: Great, good luck on your adventure lads!\n");
+        uiManager.showMessage("The " + adventures.get(adventureSelection - 1).getAdventureName()  +" will start soon...\n");
         counterEncounters = 0;
         int adventureEncounters = adventures.get(adventureSelection - 1).getEncounters();
 
@@ -1587,11 +1587,11 @@ public class UIController {
 
         if(defeated != 0) {
             uiManager.showMessage("""
-                    Tavern keeper: “Lad, wake up. Yes, your party fell unconscious.”
-                    “Don’t worry, you are safe back at the Tavern.”
+                    Tavern keeper: Lad, wake up. Yes, your party fell unconscious.
+                    Don’t worry, you are safe back at the Tavern.
                     """);
         }else{
-            uiManager.showMessage("Congratulations, your party completed “"+ adventures.get(adventureSelection - 1).getAdventureName() +"”\n");
+            uiManager.showMessage("Congratulations, your party completed "+ adventures.get(adventureSelection - 1).getAdventureName() +"\n");
         }
 
     }

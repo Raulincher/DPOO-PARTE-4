@@ -3,7 +3,7 @@
     "name": "Artorias",
     "player": "Gwyn",
     "characterClass": "Champion",
-    "xp": 1676,
+    "xp": 2034,
     "body": 1,
     "mind": 1,
     "spirit": 0
@@ -12,7 +12,7 @@
     "name": "Maliketh",
     "player": "Marika",
     "characterClass": "Mage",
-    "xp": 2345,
+    "xp": 2703,
     "body": 2,
     "mind": 1,
     "spirit": 0
@@ -21,7 +21,7 @@
     "name": "Dsfsdfsd",
     "player": "dsfsdfs",
     "characterClass": "Mage",
-    "xp": 4193,
+    "xp": 4551,
     "body": 1,
     "mind": 1,
     "spirit": 1
@@ -124,5 +124,14 @@
     "body": 1,
     "mind": 1,
     "spirit": 2
+  },
+  {
+    "name": "Dfhkjs",
+    "player": "raul",
+    "characterClass": "Mage",
+    "xp": 558,
+    "body": 1,
+    "mind": 0,
+    "spirit": 1
   }
 ]

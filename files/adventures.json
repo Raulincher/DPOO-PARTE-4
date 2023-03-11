@@ -175,5 +175,116 @@
         }
       ]
     ]
+  },
+  {
+    "name": "paseo",
+    "encounters": 3,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Vampire",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 24,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Vampire",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 24,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Vampire",
+          "challenge": "Lieutenant",
+          "experience": 24,
+          "hitPoints": 24,
+          "initiative": 2,
+          "damageDice": "d10",
+          "damageType": "Magical"
+        },
+        {
+          "name": "Ogre",
+          "challenge": "Minion",
+          "experience": 9,
+          "hitPoints": 21,
+          "initiative": -1,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Ogre",
+          "challenge": "Minion",
+          "experience": 9,
+          "hitPoints": 21,
+          "initiative": -1,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Ogre",
+          "challenge": "Minion",
+          "experience": 9,
+          "hitPoints": 21,
+          "initiative": -1,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Ogre",
+          "challenge": "Minion",
+          "experience": 9,
+          "hitPoints": 21,
+          "initiative": -1,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        }
+      ],
+      [
+        {
+          "name": "Sauron",
+          "challenge": "Boss",
+          "experience": 148,
+          "hitPoints": 89,
+          "initiative": 3,
+          "damageDice": "d20",
+          "damageType": "Physical"
+        }
+      ],
+      [
+        {
+          "name": "Nazgul",
+          "challenge": "Lieutenant",
+          "experience": 34,
+          "hitPoints": 44,
+          "initiative": 1,
+          "damageDice": "d10",
+          "damageType": "Psychical"
+        },
+        {
+          "name": "Nazgul",
+          "challenge": "Lieutenant",
+          "experience": 34,
+          "hitPoints": 44,
+          "initiative": 1,
+          "damageDice": "d10",
+          "damageType": "Psychical"
+        },
+        {
+          "name": "Nazgul",
+          "challenge": "Lieutenant",
+          "experience": 34,
+          "hitPoints": 44,
+          "initiative": 1,
+          "damageDice": "d10",
+          "damageType": "Psychical"
+        }
+      ]
+    ]
   }
 ]
