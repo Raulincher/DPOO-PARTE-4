@@ -1,5 +1,6 @@
 package persistance;
 
+import business.entities.Adventurer;
 import business.entities.Character;
 
 import com.google.gson.Gson;
@@ -25,7 +26,7 @@ public class CharacterDAO {
     public CharacterDAO() {
 
         // Creamos la variable gson y leemos el JSON en cuestión
-        gson = new GsonBuilder().setPrettyPrinting().create();
+        gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         File jsonCharacterFile = new File(String.valueOf(characterPath));
 
@@ -56,7 +57,7 @@ public class CharacterDAO {
         try
         {
             // Leemos el JSON y creamos una ArrayList para guardar los Characters
-            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Adventurer[].class);
             ArrayList<Character> characters = new ArrayList<>(Arrays.asList(currentCharacters));
 
             // Abrimos bucle para buscar el Character que queremos modificar
@@ -96,7 +97,7 @@ public class CharacterDAO {
         try
         {
             // Leemos el JSON y creamos una ArrayList para guardar los Characters
-            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Adventurer[].class);
             ArrayList<Character> characters = new ArrayList<>(Arrays.asList(currentCharacters));
 
             // Abrimos bucle para buscar el Character que queremos modificar
@@ -135,7 +136,7 @@ public class CharacterDAO {
         try
         {
             // Leemos el JSON y creamos una ArrayList para guardar los Characters
-            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Adventurer[].class);
             ArrayList<Character> characters = new ArrayList<>(Arrays.asList(currentCharacters));
 
             // Abrimos bucle para buscar el Character que queremos eliminar
@@ -172,7 +173,7 @@ public class CharacterDAO {
         // Abrimos un try & catch para leer el JSON
         try
         {
-            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            currentCharacters = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Adventurer[].class);
 
             // Si tiene algun personaje guardado, nos lo guardamos
             if (currentCharacters != null) {
@@ -204,7 +205,7 @@ public class CharacterDAO {
         // Abrimos un try & catch para leer el JSON
         try
         {
-            currentCharacter = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Character[].class);
+            currentCharacter = gson.fromJson(gson.newJsonReader(new FileReader(String.valueOf(characterPath))), Adventurer[].class);
             writer = new FileWriter(String.valueOf(characterPath));
 
             // Guardamos lo que ya esté escrito en el JSON

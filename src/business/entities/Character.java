@@ -1,9 +1,16 @@
 package business.entities;
 
-public class Character {
+import com.google.gson.annotations.Expose;
 
+import java.util.Random;
+
+public abstract class Character {
+
+    @Expose
     String name, player, characterClass;
+    @Expose
     int xp, body, mind, spirit;
+    int actualLife, totalLife;
 
     //Creamos constructor con todos los atributos
     /**
@@ -17,7 +24,7 @@ public class Character {
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
      */
-    public Character(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
+    public Character(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife){
         this.name = characterName;
         this.player = playerName;
         this.xp = characterLevel;
@@ -25,6 +32,25 @@ public class Character {
         this.mind = mind;
         this.spirit = spirit;
         this.characterClass = characterClass;
+        this.actualLife = actualLife;
+        this.totalLife = totalLife;
+    }
+
+
+    public void setActualLife(int actualLife) {
+        this.actualLife = actualLife;
+    }
+
+    public int getActualLife() {
+        return actualLife;
+    }
+
+    public void setTotalLife(int totalLife) {
+        this.totalLife = totalLife;
+    }
+
+    public int getTotalLife() {
+        return totalLife;
     }
 
     /**
@@ -111,4 +137,178 @@ public class Character {
      * @param newClass, que será la nueva clase del character
      */
     public void setClass(String newClass) {this.characterClass = newClass;}
+
+
+    /**
+     * Esta función servirà para calcular la vida inicial
+     * de cada personaje
+     *
+     * @param level, que será el nivel del Champion
+     * @return life, vida que tendrá el personaje
+     */
+    public abstract int initialLifeCalculator(int level);
+
+    /**
+     * Esta función servirá para calcular la iniciativa del
+     * personaje
+     *
+     * @param dice, que será el dado con el que se calculará la iniciativa
+     * @return initiative, iniciativa del personaje
+     */
+    public abstract int initiative(int dice);
+
+    public abstract int attack(int dice);
+
+
+    /**
+     * Esta función genera un par de números entre el 1 y el 6 simulando tirar
+     * dos dados de 6 caras
+     *
+     * @return roll, array de ints que serán los 2 números random generados
+     */
+    public int[] diceRoll2D6(){
+
+        int[] roll = {0, 0};
+
+        // Usamos la clase Random para que genere los dos números aleatorios
+        Random rand = new Random();
+        int upperbound = 6;
+        roll[0] = rand.nextInt(upperbound) + 1;
+        roll[1] = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+    /**
+     * Esta función genera un número entre el 1 y el 12 simulando tirar
+     * un dado de 12 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD12(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
+        Random rand = new Random();
+        int upperbound = 12;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+    /**
+     * Esta función genera un número entre el 1 y el 12 simulando tirar
+     * un dado de 12 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD3(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
+        Random rand = new Random();
+        int upperbound = 3;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+
+
+    /**
+     * Esta función genera un número entre el 1 y el 10 simulando tirar
+     * un dado de 10 caras
+     *
+     * @return damage, int que será el número daño que causará
+     */
+    public int diceRollD10(){
+        int roll = 0;
+        int damage;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 10
+        Random rand = new Random();
+        int upperbound = 10;
+        roll = rand.nextInt(upperbound) + 1;
+
+        // Sacaremos directamente el daño que causará a través de varios ifs
+        if(roll == 1){
+            damage = 0;
+        }else if(roll < 10){
+            damage = 1;
+        }else{
+            damage = 2;
+        }
+
+        return damage;
+    }
+
+    /**
+     * Esta función genera un número entre el 1 y el 6 simulando tirar
+     * un dado de 6 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD6(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 7
+        Random rand = new Random();
+        int upperbound = 6;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+    /**
+     * Esta función genera un número entre el 1 y el 8 simulando tirar
+     * un dado de 8 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD8(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
+        Random rand = new Random();
+        int upperbound = 8;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+
+    /**
+     * Esta función genera un número entre el 1 y el 20 simulando tirar
+     * un dado de 8 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD4(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
+        Random rand = new Random();
+        int upperbound = 4;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+
+    /**
+     * Esta función genera un número entre el 1 y el 20 simulando tirar
+     * un dado de 8 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD20(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
+        Random rand = new Random();
+        int upperbound = 20;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
 }

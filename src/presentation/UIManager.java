@@ -34,7 +34,7 @@ public class UIManager {
      */
     public void showMainMenu(){
         System.out.println("The tavern keeper looks at you and says:");
-        System.out.println("“Welcome adventurer! How can I help you?”");
+        System.out.println("“Welcome adventurer! How can I help you?");
         System.out.println("\n\t1) Character creation");
         System.out.println("\t2) List characters");
         System.out.println("\t3) Create an adventure");
@@ -49,7 +49,7 @@ public class UIManager {
      */
     public void showMainMenuDissabled(){
         System.out.println("The tavern keeper looks at you and says:");
-        System.out.println("“Welcome adventurer! How can I help you?”");
+        System.out.println("“Welcome adventurer! How can I help you?");
         System.out.println("\n\t1) Character creation");
         System.out.println("\t2) List characters");
         System.out.println("\t3) Create an adventure");

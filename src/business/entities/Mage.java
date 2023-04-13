@@ -19,8 +19,8 @@ public class Mage extends Character {
      * @param characterClass, clase del Character
      * @param shield, protección del Character
      */
-    public Mage(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int shield) {
-        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
+    public Mage(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int shield, int actualLife, int totalLife) {
+        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
         this.shield = shield;
     }
 
@@ -31,28 +31,8 @@ public class Mage extends Character {
      * @param character, personaje en cuestión
      */
     public Mage(Character character, int shield) {
-        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass(), character.getActualLife(), character.getTotalLife());
         this.shield = shield;
-    }
-
-    /**
-     * Esta función llamará a la mind del Mage
-     *
-     * @return la mind del Mage
-     */
-    @Override
-    public int getMind() {
-        return super.getMind();
-    }
-
-    /**
-     * Esta función llamará al body del Mage
-     *
-     * @return el body del Mage
-     */
-    @Override
-    public int getBody() {
-        return super.getBody();
     }
 
     /**
@@ -80,6 +60,7 @@ public class Mage extends Character {
      * @param level, que será el nivel del Mage
      * @return life, vida del personaje
      */
+    @Override
     public int initialLifeCalculator(int level){
         int body = getBody();
 
@@ -94,6 +75,7 @@ public class Mage extends Character {
      * @param d20, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
+    @Override
     public int initiative(int d20){
         int mind = getMind();
 
@@ -107,7 +89,7 @@ public class Mage extends Character {
      * @param d6, dado con el que se calculará el shield
      * @param level, nivel del personaje
      */
-    public void shieldSetUp(int d6, int level){
+    public void shieldSetup(int d6, int level){
         int shield;
         int mind = getMind();
 
@@ -122,7 +104,7 @@ public class Mage extends Character {
      * @param d4, dado con el que se calculará el daño
      * @return dmg, daño resultante
      */
-    public int fireball(int d4){
+    public int multihit(int d4){
         int dmg;
         int mind = getMind();
 
@@ -137,7 +119,7 @@ public class Mage extends Character {
      * @param d6, dado con el que se calculará el daño
      * @return dmg, daño resulltante
      */
-    public int arcane_missile(int d6){
+    public int attack(int d6){
         int dmg;
         int mind = getMind();
 

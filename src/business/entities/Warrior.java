@@ -16,8 +16,13 @@ public class Warrior extends Character {
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
      */
-    public Warrior(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
-        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
+    public Warrior(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife) {
+        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
+    }
+
+    @Override
+    public int initialLifeCalculator(int level) {
+        return 0;
     }
 
     /**
@@ -27,47 +32,7 @@ public class Warrior extends Character {
      * @param character, personaje en cuestión
      */
     public Warrior(Character character) {
-        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
-    }
-
-    /**
-     * Esta función llamará al body del Warrior
-     *
-     * @return el body del Warrior
-     */
-    @Override
-    public int getBody() {
-        return super.getBody();
-    }
-
-    /**
-     * Esta función llamará al spirit del Warrior
-     *
-     * @return el spirit del Warrior
-     */
-    @Override
-    public int getSpirit() {
-        return super.getSpirit();
-    }
-
-    /**
-     * Esta función llamará a la mind del Warrior
-     *
-     * @return la mind del Warrior
-     */
-    @Override
-    public int getMind() {
-        return super.getMind();
-    }
-
-    /**
-     * Esta función servirá para actualizar el spirit del Warrior
-     *
-     * @param spirit, que será el nuevo spirit del Warrior
-     */
-    @Override
-    public void setSpirit(int spirit) {
-        super.setSpirit(spirit);
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass(), character.getActualLife(), character.getTotalLife());
     }
 
     /**
@@ -77,6 +42,7 @@ public class Warrior extends Character {
      * @param d12, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
+    @Override
     public int initiative(int d12) {
 
         int initiative = 0;
@@ -104,7 +70,8 @@ public class Warrior extends Character {
      * @param d10, que será el dado para calcular el ataque
      * @return int con el ataque que realizará
      */
-    public int improvedSwordSlash(int d10) {
+    @Override
+    public int attack(int d10) {
         int body = getBody();
 
         // Calculamos con la fórmula

@@ -16,8 +16,8 @@ public class Champion extends Character {
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
      */
-    public Champion(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
-        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
+    public Champion(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife) {
+        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
     }
 
     /**
@@ -27,47 +27,7 @@ public class Champion extends Character {
      * @param character, personaje en cuestión
      */
     public Champion(Character character) {
-        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
-    }
-
-    /**
-     * Esta función llamará al body del Champion
-     *
-     * @return el body del Champion
-     */
-    @Override
-    public int getBody() {
-        return super.getBody();
-    }
-
-    /**
-     * Esta función llamará al spirit del Champion
-     *
-     * @return el spirit del Champion
-     */
-    @Override
-    public int getSpirit() {
-        return super.getSpirit();
-    }
-
-    /**
-     * Esta función llamará a la mind del Champion
-     *
-     * @return la mind del Champion
-     */
-    @Override
-    public int getMind() {
-        return super.getMind();
-    }
-
-    /**
-     * Esta función servirá para actualizar el spirit del Champion
-     *
-     * @param spirit, que será el nuevo spirit del Champion
-     */
-    @Override
-    public void setSpirit(int spirit) {
-        super.setSpirit(spirit);
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass(), character.getActualLife(), character.getTotalLife());
     }
 
     /**
@@ -77,6 +37,7 @@ public class Champion extends Character {
      * @param level, que será el nivel del Champion
      * @return life, vida que tendrá el personaje
      */
+    @Override
     public int initialLifeCalculator(int level){
         int life;
         int body = getBody();
@@ -94,6 +55,7 @@ public class Champion extends Character {
      * @param d12, que será el dado con el que se calculará la iniciativa
      * @return initiative, número de iniciativa del personaje
      */
+    @Override
     public int initiative(int d12) {
 
         int initiative = 0;
@@ -122,7 +84,8 @@ public class Champion extends Character {
      * @param d10, que será el dado para calcular el ataque
      * @return int con el ataque que realizará
      */
-    public int improvedSwordSlash(int d10){
+    @Override
+    public int attack(int d10){
         int body = getBody();
 
         // Calculamos con la fórmula

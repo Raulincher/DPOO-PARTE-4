@@ -171,4 +171,12 @@ public class MonsterManager {
         return roll;
     }
 
+
+    public void setInitialMonsterLife(ArrayList<Monster> monsters){
+
+        for (Monster monster : monsters) {
+            monster.setActualHitPoints(monster.getMonsterHitPoints());
+        }
+    };
+
 }

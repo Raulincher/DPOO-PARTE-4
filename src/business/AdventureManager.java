@@ -234,46 +234,42 @@ public class AdventureManager {
      * de los personajes
      *
      * @param characterInParty, lista de todos los personajes en el grupo
-     * @param charactersLife, lista de personajes con sus vidas
-     * @param isUsingApi, para comprobar si es a través de la API
      */
-    public void setAdventurersLifeList(ArrayList<Character> characterInParty, ArrayList<String> charactersLife, boolean isUsingApi) throws IOException {
-        int z;
-        int characterInitialLife = 0;
+    public void setAdventurersLifeList(ArrayList<Character> characterInParty) {
+        int z = 0;
 
         // Abrimos un if para comprobar si hay alguna vida establecida
-        if(charactersLife.size() == 0) {
-            z = 0;
-
-            // Iniciamos un bucle para calcular todas las respectivas vidas
-            while (z < characterInParty.size()) {
-
+        while(z < characterInParty.size()) {
+            switch (characterInParty.get(z).getCharacterClass()) {
                 // Caso de Adventurer
-                if(characterInParty.get(z).getCharacterClass().equals("Adventurer") || characterInParty.get(z).getCharacterClass().equals("Warrior")){
+                case "Adventurer", "Warrior" -> {
                     Adventurer adventurer = new Adventurer(characterInParty.get(z));
-                    characterInitialLife = adventurer.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
-
+                    characterInParty.get(z).setActualLife(adventurer.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
+                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
                 }
                 // Caso de Champion
-                else if(characterInParty.get(z).getCharacterClass().equals("Champion")){
+                case "Champion" -> {
                     Champion champion = new Champion(characterInParty.get(z));
-                    characterInitialLife = champion.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+                    characterInParty.get(z).setActualLife(champion.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
+                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
 
                 }
                 // Caso de Cleric
-                else if(characterInParty.get(z).getCharacterClass().equals("Cleric") || characterInParty.get(z).getCharacterClass().equals("Paladin")){
+                case "Cleric", "Paladin" -> {
                     Cleric cleric = new Cleric(characterInParty.get(z));
-                    characterInitialLife = cleric.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+                    characterInParty.get(z).setActualLife(cleric.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
+                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
 
                 }
                 // Caso de Mage
-                else if(characterInParty.get(z).getCharacterClass().equals("Mage")){
-                    Mage mage = new Mage(characterInParty.get(z),0);
-                    characterInitialLife = mage.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel()));
+                case "Mage" -> {
+                    Mage mage = new Mage(characterInParty.get(z), 0);
+                    characterInParty.get(z).setActualLife(mage.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
+                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
+
                 }
-                charactersLife.add(z, characterInParty.get(z).getCharacterName() + characterInitialLife + "/" + characterInitialLife);
-                z++;
             }
+            z++;
         }
     }
 
@@ -281,16 +277,15 @@ public class AdventureManager {
      * Esta función servirá para contar los personajes que estén
      * muertos en ese instante
      *
-     * @param charactersLife lista con todas las vidas de los personajes
+     * @param characters lista con todas las vidas de los personajes
      * @return número total de muertos
      */
-    public int countDeadCharacters(ArrayList<String> charactersLife){
+    public int countDeadCharacters(ArrayList<Character> characters){
         int deadCounter = 0;
 
         // A través de un bucle revisamos cuáles no tienen vida
-        for(int a = 0; a < charactersLife.size(); a++){
-            String[] auxLife = charactersLife.get(a).split("/");
-            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+        for(int a = 0; a < characters.size(); a++){
+            int actualLife = characters.get(a).getActualLife();
             if(actualLife == 0){
                 deadCounter++;
             }
@@ -302,19 +297,19 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el personaje que tenga menos vida
      *
-     * @param charactersLife lista con todas las vidas de los personajes
+     * @param characters lista con todas las vidas de los personajes
      * @return índice del personaje con menos vida
      */
-    public int smallestCharacterLife(ArrayList<String> charactersLife){
+    public int smallestCharacterLife(ArrayList<Character> characters){
         int z = 0;
         int flag = 0;
         int index = 0;
         int smallerCharacterLife = 0;
 
         // Abrimos bucle a través de toda la lista de vidas
-        while(z < charactersLife.size()){
-            String[] auxLife = charactersLife.get(z).split("/");
-            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+        while(z < characters.size()){
+
+            int actualLife = characters.get(z).getActualLife();
 
             // Si el personaje no está muerto iremos comparando vida por vida
             if(actualLife != 0){
@@ -339,19 +334,19 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el enemigo con mayor vida
      *
-     * @param monstersLife lista con todas las vidas de los monsters
+     * @param monsters lista con todas las vidas de los monsters
      * @return índice del monster con mayor vida
      */
-    public int highestEnemyLife(ArrayList<String> monstersLife){
+    public int highestEnemyLife(ArrayList<Monster> monsters){
         int index = 0;
         int z = 0;
         int biggerMonsterLife = 0;
         int flag = 0;
 
         // Abrimos bucle a través de toda la lista de vidas de monsters
-        while(z < monstersLife.size()){
-            String[] auxLife = monstersLife.get(z).split("/");
-            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
+        while(z < monsters.size()){
+
+            int actualLife = monsters.get(z).getActualHitPoints();
 
             // Las iremos comparando y actualizaremos el índice en caso que haya una mayor
             if (actualLife != 0) {
@@ -375,20 +370,18 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el monster que tenga menos vida
      *
-     * @param monstersLife lista con todas las vidas de los monsters
+     * @param monsters lista con todas las vidas de los monsters
      * @return índice del monster con menos vida
      */
-    public int smallestEnemyLife(ArrayList<String> monstersLife){
+    public int smallestEnemyLife(ArrayList<Monster> monsters){
         int index = 0;
         int z = 0;
         int smallerMonsterLife = 0;
         int flag = 0;
 
         // Abrimos bucle a través de la lista de vidas de los monsters
-        while(z < monstersLife.size()){
-            String[] auxLife = monstersLife.get(z).split("/");
-            int actualLife = Integer.parseInt(auxLife[0].replaceAll("[^0-9]", ""));
-
+        while(z < monsters.size()){
+            int actualLife = monsters.get(z).getActualHitPoints();
             // Iremos comparando entre ellas, en caso que se detecte una menor actualizaremos índice
             if (actualLife != 0) {
                 if (flag == 0) {
@@ -406,6 +399,40 @@ public class AdventureManager {
         }
 
         return index;
+    }
+
+    public int countAliveMonsters(ArrayList<Monster> monsters){
+        int counter = 0;
+        for (Monster monster : monsters) {
+            if (monster.getActualHitPoints() > 0) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public int applyDamage(int isCrit, int actualLife, int damage ){
+        int total = 0;
+
+        if(isCrit == 2){
+            total = actualLife - (damage*2);
+            if(total < 0){
+                total = 0;
+            }
+        }else if(isCrit == 1){
+            total = actualLife - (damage);
+            if(total < 0){
+                total = 0;
+            }
+        }
+
+        return total;
+    }
+
+
+    public boolean failedAttack(int isCrit){
+
+        return isCrit != 1 && isCrit != 2;
     }
 
     /**

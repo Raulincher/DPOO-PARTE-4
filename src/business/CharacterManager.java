@@ -31,7 +31,7 @@ public class CharacterManager {
     }
 
     /**
-     * Esta función servirá para crear un character
+     * Esta función servirá para crear un character dependiendo del tipo que sea
      *
      * @param characterName, el nombre deseado del personaje
      * @param playerName, el nombre del jugador
@@ -42,21 +42,15 @@ public class CharacterManager {
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
-        boolean saved = false;
-        if(characterClass.equals("Adventurer")){
-            saved = characterDAO.saveCharacter(new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Warrior")){
-            saved = characterDAO.saveCharacter(new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Champion")){
-            saved = characterDAO.saveCharacter(new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Cleric")){
-            saved = characterDAO.saveCharacter(new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Paladin")){
-            saved = characterDAO.saveCharacter(new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Mage")){
-            saved = characterDAO.saveCharacter(new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0));
-        }
-        return saved;
+        return switch (characterClass) {
+            case "Adventurer" -> characterDAO.saveCharacter(new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Warrior" -> characterDAO.saveCharacter(new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Champion" -> characterDAO.saveCharacter(new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass,0 ,0));
+            case "Cleric" -> characterDAO.saveCharacter(new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Paladin" -> characterDAO.saveCharacter(new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Mage" -> characterDAO.saveCharacter(new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0, 0));
+            default -> false;
+        };
     }
 
 
@@ -72,21 +66,15 @@ public class CharacterManager {
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) throws IOException {
-        boolean saved = false;
-        if(characterClass.equals("Adventurer")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Warrior")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Champion")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Cleric")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Paladin")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass));
-        }else if(characterClass.equals("Mage")){
-            saved = characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0));
-        }
-        return saved;
+        return switch (characterClass) {
+            case "Adventurer" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Adventurer(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Warrior" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Warrior(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0 , 0));
+            case "Champion" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Champion(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Cleric" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Cleric(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Paladin" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Paladin(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0));
+            case "Mage" -> characterAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", new Mage(characterName, playerName, characterLevel, body, mind, spirit, characterClass, 0, 0, 0));
+            default -> false;
+        };
     }
 
     /**
@@ -170,62 +158,6 @@ public class CharacterManager {
     }
 
     /**
-     * Función que servirá para recibir el valor actual de body que tiene el personaje
-     *
-     * @param characterName, valor que describe el nombre del personaje
-     * @return body, devuelve el valor de body del personaje
-     */
-    public int getCharacterBody(String characterName, boolean isUsingApi) throws IOException{
-        int body = 0;
-        int i = 0;
-        ArrayList<Character> characters;
-
-        if(isUsingApi){
-            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-
-        }else{
-            characters = characterDAO.readCharacterJSON();
-        }
-        // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
-        while(i < characters.size()){
-            if(characterName.equals(characters.get(i).getCharacterName())){
-                body = characters.get(i).getBody();
-            }
-            i++;
-        }
-        return body;
-    }
-
-    /**
-     * Función que servirá para recibir el valor actual de xp que tiene el personaje
-     *
-     * @param characterName, valor que describe el nombre del personaje
-     * @return xp, devuelve el valor de xp del personaje
-     */
-    public int getCharacterXp(String characterName, boolean isUsingApi) throws IOException {
-        int xp = 0;
-        int i = 0;
-
-        ArrayList<Character> characters;
-
-        if(isUsingApi){
-            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-
-        }else{
-            characters = characterDAO.readCharacterJSON();
-        }
-
-        // A través del bucle recorreremos toda la ArrayList hasta coincidir nombre con personaje
-        while(i < characters.size()){
-            if(characterName.equals(characters.get(i).getCharacterName())){
-                xp = characters.get(i).getCharacterLevel();
-            }
-            i++;
-        }
-        return xp;
-    }
-
-    /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
      *
@@ -241,24 +173,6 @@ public class CharacterManager {
 
         return roll;
     }
-    /**
-     * Esta función genera un número entre el 1 y el 12 simulando tirar
-     * un dado de 12 caras
-     *
-     * @return roll, int que será el número random generado
-     */
-    public int diceRollD3(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
-        Random rand = new Random();
-        int upperbound = 3;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
-    }
-
-
 
     /**
      * Esta función genera un número entre el 1 y el 10 simulando tirar
@@ -392,6 +306,8 @@ public class CharacterManager {
         return level;
     }
 
+
+
     /**
      * Esta función indica si el nombre que se le quiere poner al personaje está ya en
      * uso o está disponible
@@ -413,6 +329,7 @@ public class CharacterManager {
 
         // Analizamos con un bucle si el nombre coincide en la ArrayList
         while(i < characters.size() && !exist){
+            System.out.println(characters.get(i).getCharacterName());
             if(name.toLowerCase(Locale.ROOT).matches(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT))){
                 exist = true;
             }

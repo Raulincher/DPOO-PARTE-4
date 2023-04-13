@@ -18,8 +18,13 @@ public class Paladin extends Character {
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
      */
-    public Paladin(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) {
-        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass);
+    public Paladin(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife) {
+        super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
+    }
+
+    @Override
+    public int initialLifeCalculator(int level) {
+        return 0;
     }
 
     /**
@@ -29,7 +34,7 @@ public class Paladin extends Character {
      * @param character, personaje en cuestión
      */
     public Paladin(Character character) {
-        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass());
+        super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass(), character.getActualLife(), character.getTotalLife());
     }
 
     /**
@@ -39,6 +44,7 @@ public class Paladin extends Character {
      * @param d10, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
+    @Override
     public int initiative(int d10){
         int spirit = getSpirit();
 
@@ -63,7 +69,7 @@ public class Paladin extends Character {
      * @param d10, dado para calcular la suma de mind
      * @return cura resultante
      */
-    public int prayerOfMassHealing(int d10){
+    public int heal(int d10){
         int mind = getMind();
 
         // Calculamos con la fórmula
@@ -77,7 +83,7 @@ public class Paladin extends Character {
      * @param d8, dado con el que se calculará la suma
      * @return spirit resultante
      */
-    public int neverOnMyWatch(int d8){
+    public int attack(int d8){
         int spirit = getSpirit();
 
         // Calculamos con la fórmula

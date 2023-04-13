@@ -6,6 +6,7 @@ public class Monster {
     int experience;
     int hitPoints;
     int initiative;
+    int actualHitPoints;
     String damageDice;
     String damageType;
 
@@ -20,7 +21,7 @@ public class Monster {
      * @param monsterDice, dado de daño del Monster
      * @param damageType, tipo de daño del Monster
      */
-    public Monster(String monsterName, String monsterChallenge, int monsterXpDrop, int monsterHitPoints, int monsterInitiative, String monsterDice, String damageType){
+    public Monster(String monsterName, String monsterChallenge, int monsterXpDrop, int monsterHitPoints, int actualHitPoints, int monsterInitiative, String monsterDice, String damageType){
         this.name = monsterName;
         this.challenge = monsterChallenge;
         this.experience = monsterXpDrop;
@@ -28,6 +29,7 @@ public class Monster {
         this.initiative = monsterInitiative;
         this.damageDice = monsterDice;
         this.damageType = damageType;
+        this.actualHitPoints = actualHitPoints;
     }
 
     /**
@@ -93,4 +95,15 @@ public class Monster {
         return damageDice;
     }
 
+    public void setInitiative(int initiative) {
+        this.initiative = initiative;
+    }
+
+    public void setActualHitPoints(int actualHitPoints) {
+        this.actualHitPoints = actualHitPoints;
+    }
+
+    public int getActualHitPoints() {
+        return actualHitPoints;
+    }
 }
