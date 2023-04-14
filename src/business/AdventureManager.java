@@ -488,6 +488,19 @@ public class AdventureManager {
     }
 
 
+    public int getMageIndex(ArrayList<Mage> magesInBattle, String actualName){
+        int index = -1;
+
+        for(int a = 0; a < magesInBattle.size(); a++){
+            if (magesInBattle.get(a).getCharacterName().equals(actualName)) {
+                index = a;
+                a = magesInBattle.size();
+            }
+        }
+        return index;
+    }
+
+
     public boolean failedAttack(int isCrit){
 
         return isCrit != 1 && isCrit != 2;

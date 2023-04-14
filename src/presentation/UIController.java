@@ -846,7 +846,19 @@ public class UIController {
             i = 0;
             while(i < characterQuantity){
                 // Abrimos switch para comprobar que clase posee el personaje para así realizar su habilidad correspondiente
-                switch (characterInParty.get(i).getCharacterClass()) {
+                int shield = -1;
+                boolean isMage = adventureManager.isMage(characterInParty, i);
+                if(isMage){
+                    int index = adventureManager.getMageIndex(magesInBattle, characterInParty.get(i).getCharacterName());
+                    shield = magesInBattle.get(index).getShield();
+                }
+
+                int roll = characterInParty.get(i).diceRollD3();
+
+                uiManager.showAbilitiesPrepPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), shield, roll);
+
+
+                /*switch (characterInParty.get(i).getCharacterClass()) {
                     case "Adventurer" -> {
                         Adventurer adventurer = new Adventurer(characterInParty.get(i));
                         //anunciamos habilidad
@@ -906,7 +918,7 @@ public class UIController {
                         //anunciamos habilidad
                         uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Mage shield. Shield recharges " + magesInBattle.get(b).getShield());
                     }
-                }
+                }*/
                 i++;
             }
 
@@ -945,7 +957,7 @@ public class UIController {
             do{
                 // Preparamos variables
                 int q = 0;
-                boolean isMage = false;
+                boolean isMage;
                 int damage;
                 int multihit = 0;
                 int heal = 0;
@@ -957,7 +969,8 @@ public class UIController {
                 boolean isBoss = false;
                 int highestMonsterIndex;
                 int smallestMonsterIndex;
-                int smallestCharacterIndex ;
+                int smallestCharacterIndex;
+                int shield;
                 String healedCharacter = "none";
                 int total = 0;
                 boolean fail;
@@ -978,35 +991,19 @@ public class UIController {
                     actualName = characterInParty.get(z).getCharacterName();
                     //comprobación de que nuestro personaje sea un mago
                     //en caso de serlo lo guardamos en un array para almacenar su cantidad de escudo
-                    int mageIndex = 0;
-                    for(int a = 0; a < magesInBattle.size(); a++){
-                        if (magesInBattle.get(a).getCharacterName().equals(actualName)) {
-                            isMage = true;
-                            mageIndex = a;
-                            a = magesInBattle.size();
-                        }
-                    }
+                    int mageIndex = adventureManager.getMageIndex(magesInBattle, actualName);
                     actualLife = characterInParty.get(z).getActualLife();
                     totalLife = characterInParty.get(z).getTotalLife();
-
 
                     // Después de preparar todos los formatos (con ints) mostramos los personajes
                     // En caso de que este muerto, dejamos un poco más de espacio para remarcarlo (un \t)
                     // En el caso de que nuestro personaje sea un mago su cantidad de escudo se verá remarcada
-                    if(!isMage){
-                        if(z == 0){
-                            uiManager.showMessage("\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points");
-                        }else{
-                            uiManager.showMessage("\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points");
-                        }
+                    if(mageIndex == -1){
+                        shield = -1;
                     }else{
-                        if(z == 0){
-                            uiManager.showMessage("\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + magesInBattle.get(mageIndex).getShield() + ")");
-                        }else{
-                            uiManager.showMessage("\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + magesInBattle.get(mageIndex).getShield() + ")");
-                        }
+                        shield = magesInBattle.get(mageIndex).getShield();
                     }
-
+                    uiManager.showLifeInBattle(actualLife, actualName, totalLife, shield, z);
                     z++;
                 }
 
@@ -1436,40 +1433,18 @@ public class UIController {
                                             //en caso de que el personaje que ataca sea un mago, pero haya menos de 3 enemigos
                                         }else if(characterInParty.get(i).getCharacterClass().equals("Mage") && aliveMonsters < 3){
                                             actualLife = monstersInEncounter.get(highestMonsterIndex).getActualHitPoints();
-                                            totalLife = monstersInEncounter.get(highestMonsterIndex).getMonsterHitPoints();
-
                                             //atacaremos al monstruo con más vida el encuentro
                                             attackedMonster = monstersInEncounter.get(highestMonsterIndex).getMonsterName();
+                                            total = adventureManager.applyDamage(isCrit, actualLife, damage);
+                                            uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                            fail = adventureManager.failedAttack(isCrit);
 
-                                            if(isCrit == 2){
-                                                total = actualLife - (damage*2);
-                                                if(total < 0){
-                                                    total = 0;
-                                                }
-                                                uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
-                                            }else if(isCrit == 1){
-                                                total = actualLife - (damage);
-                                                if(total < 0){
-                                                    total = 0;
-                                                }
-                                                uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
-                                            }else{
-                                                uiManager.showMessage("Fails and deals 0 damage.");
-                                                fail = true;
-                                            }
 
                                             //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)
                                             if(!fail){
                                                 if (total == 0) {
                                                     uiManager.showMessage(attackedMonster + " dies.");
-                                                    for(int a = 0; a < listOfPriorities.size(); a++){
-                                                        auxName = listOfPriorities.get(a).split("\\d+");
-                                                        actualName = auxName[0];
-                                                        if(actualName.equals(attackedMonster)){
-                                                            monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(0);
-                                                            a = listOfPriorities.size();
-                                                        }
-                                                    }
+                                                    monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(0);
                                                 }else{
                                                     monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(monstersInEncounter.get(highestMonsterIndex).getActualHitPoints() - total);
                                                 }

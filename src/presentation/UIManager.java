@@ -1,5 +1,7 @@
 package presentation;
 
+import business.entities.*;
+
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -166,5 +168,69 @@ public class UIManager {
 
         showMessage(message);
     }
+    
+    
+    public void hitMessage(int damage, String typeOfDamage, int isCrit){
+        String message;
 
+        if(isCrit == 2){
+            message = "Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.";
+        }else if(isCrit == 1){
+            message = "Hit and deals " + damage + " " + typeOfDamage + " damage.";
+        }else{
+            message = "Fails and deals 0 damage.";
+        }
+
+        showMessage(message);
+    }
+
+
+    public void showLifeInBattle(int actualLife, String actualName, int totalLife, int shield, int z){
+
+        String message = "empty";
+
+        if(shield == -1){
+            if(z == 0){
+               message = "\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points";
+            }else{
+                message = "\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points";
+            }
+        }else{
+            if(z == 0){
+                message = "\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + shield + ")";
+            }else{
+                message = "\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + shield + ")";
+            }
+        }
+        showMessage(message);
+    }
+
+
+    public void showAbilitiesPrepPhase(String characterClass, String characterName, int shield, int roll) {
+
+        String message = "empty";
+
+        switch (characterClass) {
+            case "Adventurer", "Warrior" -> {
+                //anunciamos habilidad
+                message = characterName + " uses Self-Motivated. Their Spirit increases in +1";
+            }
+            case "Champion" -> {
+                //anunciamos habilidad
+                message = characterName + " uses Motivational speech. Everyone’s Spirit increases in +1";
+            }
+            case "Cleric" -> {
+                //anunciamos habilidad
+                message = characterName + " uses Prayer of good luck. Everyone’s Mind increases in +1";
+            }
+            case "Paladin" -> {
+                //anunciamos habilidad
+                message = characterName + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll;
+            }
+            case "Mage" -> {
+                //anunciamos habilidad
+                message = characterName + " uses Mage shield. Shield recharges " + shield;
+            }
+        }
+    }
 }
