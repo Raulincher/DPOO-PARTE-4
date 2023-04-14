@@ -1,7 +1,6 @@
 package presentation;
 
-import business.entities.*;
-
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -205,6 +204,22 @@ public class UIManager {
         showMessage(message);
     }
 
+    public void bossAttackMessage(ArrayList<String> consciousPosition, String actualName){
+        String message;
+        if(consciousPosition.size() == 1){
+            message = "\n" + actualName + " attacks " + consciousPosition.get(0) + ".";
+        }else if(consciousPosition.size() == 2){
+            message = "\n" + actualName + " attacks " + consciousPosition.get(0) + " and " + consciousPosition.get(1) + ".";
+        }else if(consciousPosition.size() == 3){
+            message = "\n" + actualName + " attacks " + consciousPosition.get(0) + ", " + consciousPosition.get(1) + " and " + consciousPosition.get(2) + ".";
+        }else if(consciousPosition.size() == 4){
+            message = "\n" + actualName + " attacks " + consciousPosition.get(0) + ", " + consciousPosition.get(1) + ", " + consciousPosition.get(2) + " and " + consciousPosition.get(3) + ".";
+        }else{
+            message = "\n" + actualName + " attacks " + consciousPosition.get(0) + ", " + consciousPosition.get(1) + ", " + consciousPosition.get(2) + ", " + consciousPosition.get(3) + " and " + consciousPosition.get(4) + ".";
+        }
+        showMessage(message);
+    }
+
 
     public void showAbilitiesPrepPhase(String characterClass, String characterName, int shield, int roll) {
 
@@ -232,5 +247,6 @@ public class UIManager {
                 message = characterName + " uses Mage shield. Shield recharges " + shield;
             }
         }
+        showMessage(message);
     }
 }

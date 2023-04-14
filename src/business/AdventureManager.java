@@ -411,6 +411,17 @@ public class AdventureManager {
         return counter;
     }
 
+
+    public int countAliveCharacters(ArrayList<Character> characters){
+        int counter = 0;
+        for (Character character : characters) {
+            if (character.getActualLife() > 0) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
     public String needAHeal(Character characterInParty){
         String healedCharacter = "empty";
         int actualLife = characterInParty.getActualLife();
@@ -504,6 +515,38 @@ public class AdventureManager {
     public boolean failedAttack(int isCrit){
 
         return isCrit != 1 && isCrit != 2;
+    }
+
+    public int applyDamage(Character character, int aliveMonster){
+        int damage = 0;
+
+        switch (character.getCharacterClass()) {
+            case "Adventurer" -> {
+                damage = character.attack(character.diceRollD6());
+            }
+            case "Warrior", "Champion" -> {
+                damage = character.attack(character.diceRollD10());
+            }
+            case "Cleric" -> {
+                damage = character.attack(character.diceRollD4());
+            }
+            case "Paladin" -> {
+                damage = character.attack(character.diceRollD8());
+            }
+            case "Mage" -> {
+                //si hay más de 2 enemigos en batalla el mago pegara en área
+                if (aliveMonster >= 3) {
+                    damage = character.attack(character.diceRollD4());
+                }
+                //si por el contrario no los hay el mago atacara al enemigo con más vida
+                else {
+                    damage = character.attack(character.diceRollD6());
+                }
+            }
+        }
+
+
+        return damage;
     }
 
     /**

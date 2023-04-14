@@ -26,6 +26,13 @@ public class MonsterManager {
         this.monsterAPI = monsterAPI;
     }
 
+    public String diceNumber(Monster monsterInEncounter){
+        String diceNumber = "empty";
+        String[] auxDice = monsterInEncounter.getMonsterDice().split("d");
+        diceNumber = auxDice[1];
+        return diceNumber;
+    }
+
     /**
      * Esta función genera una ArrayList con todos los Monsters
      *

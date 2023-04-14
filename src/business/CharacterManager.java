@@ -548,6 +548,9 @@ public class CharacterManager {
     }
 
 
+
+
+
     /**
      * Esta función servirá para actualizar un personaje en caso que evolucione
      *
