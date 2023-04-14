@@ -1059,14 +1059,7 @@ public class UIController {
                                         }
                                     }
                                     if(characterInParty.get(z).getCharacterClass().equals("Paladin") || characterInParty.get(z).getCharacterClass().equals("Cleric") ){
-                                        actualLife = characterInParty.get(smallestCharacterIndex).getActualLife();
-                                        totalLife = characterInParty.get(smallestCharacterIndex).getTotalLife();
-                                        if ((totalLife / 2) >= actualLife) {
-                                            heal = 1;
-                                            healedCharacter = characterInParty.get(smallestCharacterIndex).getCharacterName();
-                                        }else{
-                                            heal = 0;
-                                        }
+                                        healedCharacter = adventureManager.needAHeal(characterInParty.get(smallestCharacterIndex));
                                     }
                                     uiManager.messageAttack(actualName, attackedMonster, characterInParty.get(z).getCharacterClass(),heal,multihit, healedCharacter);
 

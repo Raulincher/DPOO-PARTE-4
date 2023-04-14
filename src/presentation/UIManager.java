@@ -131,22 +131,24 @@ public class UIManager {
                 message = "\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.";
             }
             case "Cleric" -> {
-                if (heal == 1) {
-                    //mostramos que personaje realiza la sanción y a quien sana (PJ con menos vida en nuestro caso)
-                    message = "\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to " + healedCharacter;
-                } else {
+                if (healedCharacter.equals("empty")) {
                     //en caso de no sanar el clérigo atacará con su habilidad de clase
                     message = "\n" + actualName + " attacks " + attackedMonster + " with Not on my watch.";
+                } else {
+                    //mostramos que personaje realiza la sanción y a quien sana (PJ con menos vida en nuestro caso)
+                    message = "\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to " + healedCharacter;
                 }
             }
             case "Paladin" -> {
-                if (heal == 1) {
-                    //mostramos que personaje realiza la sanción y curamos a toda la party aun consciente
-                    message = "\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to all conscious party";
+                if (healedCharacter.equals("empty")) {
 
-                } else {
                     //en caso de no sanar el paladin atacará con su habilidad de clase
                     message = "\n" + actualName + " attacks " + attackedMonster + " with Never on my watch.";
+
+
+                } else {
+                    //mostramos que personaje realiza la sanción y curamos a toda la party aun consciente
+                    message = "\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to all conscious party";
                 }
             }
             case "Mage" -> {

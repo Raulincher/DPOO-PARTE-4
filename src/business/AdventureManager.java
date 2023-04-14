@@ -411,6 +411,16 @@ public class AdventureManager {
         return counter;
     }
 
+    public String needAHeal(Character characterInParty){
+        String healedCharacter = "empty";
+        int actualLife = characterInParty.getActualLife();
+        int totalLife = characterInParty.getTotalLife();
+        if ((totalLife / 2) >= actualLife) {
+            healedCharacter = characterInParty.getCharacterName();
+        }
+        return healedCharacter;
+    }
+
     public boolean isMage(ArrayList<Character> charactersInParty, int index ){
 
         boolean isMage = false;
@@ -421,6 +431,8 @@ public class AdventureManager {
 
         return isMage;
     }
+
+
 
 
     public int shieldDealer(Character characterInParty, ArrayList<Mage> magesInBattle, int isCrit, int damage ){
