@@ -945,7 +945,10 @@ public class UIController {
             do{
                 // Preparamos variables
                 int q = 0;
+                boolean isMage = false;
                 int damage;
+                int multihit = 0;
+                int heal = 0;
                 String[] auxName;
                 String actualName;
                 int isCrit;
@@ -955,6 +958,7 @@ public class UIController {
                 int highestMonsterIndex;
                 int smallestMonsterIndex;
                 int smallestCharacterIndex ;
+                String healedCharacter = "none";
                 int total = 0;
                 boolean fail;
                 ArrayList<Integer> consciousPosition = new ArrayList<>(0);
@@ -975,7 +979,6 @@ public class UIController {
                     //comprobación de que nuestro personaje sea un mago
                     //en caso de serlo lo guardamos en un array para almacenar su cantidad de escudo
                     int mageIndex = 0;
-                    boolean isMage = false;
                     for(int a = 0; a < magesInBattle.size(); a++){
                         if (magesInBattle.get(a).getCharacterName().equals(actualName)) {
                             isMage = true;
@@ -1047,7 +1050,25 @@ public class UIController {
 
                                     damage = characterInParty.get(z).attack(characterManager.diceRollD6());
                                     attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
-                                    uiManager.showMessage("\n" + actualName + " attacks " + attackedMonster + " with Sword slash.");
+                                    isMage = adventureManager.isMage(characterInParty,z);
+                                    if(isMage){
+                                        if(aliveMonsters >= 3){
+                                            multihit = 1;
+                                        }else{
+                                            multihit = 0;
+                                        }
+                                    }
+                                    if(characterInParty.get(z).getCharacterClass().equals("Paladin") || characterInParty.get(z).getCharacterClass().equals("Cleric") ){
+                                        actualLife = characterInParty.get(smallestCharacterIndex).getActualLife();
+                                        totalLife = characterInParty.get(smallestCharacterIndex).getTotalLife();
+                                        if ((totalLife / 2) >= actualLife) {
+                                            heal = 1;
+                                            healedCharacter = characterInParty.get(smallestCharacterIndex).getCharacterName();
+                                        }else{
+                                            heal = 0;
+                                        }
+                                    }
+                                    uiManager.messageAttack(actualName, attackedMonster, characterInParty.get(z).getCharacterClass(),heal,multihit, healedCharacter);
 
                                     /*switch (characterInParty.get(z).getCharacterClass()) {
                                         case "Adventurer" -> {
@@ -1241,74 +1262,16 @@ public class UIController {
                                         if(!fail){
                                             for(int b = 0; b < characterInParty.size(); b++){
                                                 actualLife = characterInParty.get(b).getActualLife();
-
                                                 //comprobamos que el personaje atacado no este muerto
                                                 if(actualLife != 0){
-                                                    totalLife = characterInParty.get(b).getTotalLife();
-                                                    if(isCrit == 2){
-                                                        //también comprobamos si el personaje es un mago
-                                                        //en caso de serlo revisaremos si este tiene aún suficiente escudo para parar el daño total o parcialmente
-                                                        if(characterInParty.get(b).getCharacterClass().equals("Mage")){
-                                                            int mageIndex = 0;
-                                                            for(int a = 0; a < magesInBattle.size(); a++){
-                                                                if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(b).getCharacterName())){
-                                                                    mageIndex = a;
-                                                                    a = magesInBattle.size();
-                                                                }
-                                                            }
-                                                            if(magesInBattle.get(mageIndex).getShield() > 0){
-                                                                total = magesInBattle.get(mageIndex).getShield() - (damage*2);
-                                                                //en caso de que el daño haya sido parado parcialmente el restante será recibido a la vida del mago en cuestión
-                                                                if(total < 0){
-                                                                    total = actualLife + total;
-                                                                    magesInBattle.get(mageIndex).setShield(0);
-                                                                }else{
-                                                                    magesInBattle.get(mageIndex).setShield(total);
-                                                                    total = actualLife;
-                                                                }
-                                                            }else{
-                                                                total = actualLife - (damage*2);
-                                                                if(total < 0){
-                                                                    total = 0;
-                                                                }
-                                                            }
-                                                        }else{
-                                                            total = actualLife - (damage*2);
-                                                            if(total < 0){
-                                                                total = 0;
-                                                            }
-                                                        }
-                                                    }else if(isCrit == 1){
-                                                        if(characterInParty.get(b).getCharacterClass().equals("Mage")){
-                                                            int mageIndex = 0;
-                                                            for(int a = 0; a < magesInBattle.size(); a++){
-                                                                if(magesInBattle.get(a).getCharacterName().equals(characterInParty.get(b).getCharacterName())){
-                                                                    mageIndex = a;
-                                                                    a = magesInBattle.size();
-                                                                }
-                                                            }
-                                                            if(magesInBattle.get(mageIndex).getShield() > 0){
-                                                                total = magesInBattle.get(mageIndex).getShield() - (damage);
-                                                                if(total < 0){
-                                                                    total = actualLife + total;
-                                                                    magesInBattle.get(mageIndex).setShield(0);
-                                                                }else{
-                                                                    magesInBattle.get(mageIndex).setShield(total);
-                                                                    total = actualLife;
-                                                                }
-                                                            }else{
-                                                                total = actualLife - (damage);
-                                                                if(total < 0){
-                                                                    total = 0;
-                                                                }
-                                                            }
-                                                        }else{
-                                                            total = actualLife - (damage);
-                                                            if(total < 0){
-                                                                total = 0;
-                                                            }
-                                                        }
+                                                    isMage = adventureManager.isMage(characterInParty, b);
+
+                                                    if(isMage){
+                                                        total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, damage);
+                                                    }else{
+                                                        total = adventureManager.applyDamage(isCrit,actualLife, damage);
                                                     }
+
                                                     characterInParty.get(b).setActualLife(total);
                                                     if (total == 0) {
                                                         uiManager.showMessage(characterInParty.get(b).getCharacterName() + " falls unconscious.");

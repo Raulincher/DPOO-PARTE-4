@@ -411,6 +411,52 @@ public class AdventureManager {
         return counter;
     }
 
+    public boolean isMage(ArrayList<Character> charactersInParty, int index ){
+
+        boolean isMage = false;
+
+        if(charactersInParty.get(index).getCharacterClass().equals("Mage")){
+            isMage = true;
+        }
+
+        return isMage;
+    }
+
+
+    public int shieldDealer(Character characterInParty, ArrayList<Mage> magesInBattle, int isCrit, int damage ){
+
+        int mageIndex = 0;
+        int total = 0;
+        for(int a = 0; a < magesInBattle.size(); a++){
+            if(magesInBattle.get(a).getCharacterName().equals(characterInParty.getCharacterName())){
+                mageIndex = a;
+                a = magesInBattle.size();
+            }
+        }
+        int actualLife = magesInBattle.get(mageIndex).getActualLife();
+        if(isCrit == 2){
+           damage = damage * 2;
+        }
+        if(magesInBattle.get(mageIndex).getShield() > 0){
+            total = magesInBattle.get(mageIndex).getShield() - (damage);
+            //en caso de que el daño haya sido parado parcialmente el restante será recibido a la vida del mago en cuestión
+            if(total < 0){
+                total = actualLife + total;
+                magesInBattle.get(mageIndex).setShield(0);
+            }else{
+                magesInBattle.get(mageIndex).setShield(total);
+                total = actualLife;
+            }
+        }else{
+            total = actualLife - (damage);
+            if(total < 0){
+                total = 0;
+            }
+        }
+
+        return total;
+    }
+
     public int applyDamage(int isCrit, int actualLife, int damage ){
         int total = 0;
 
