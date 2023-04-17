@@ -147,6 +147,8 @@ public class AdventureManager {
         return removedCounter;
     }
 
+
+
     /**
      * Esta función servirá para recoger todas las adventures
      *
@@ -413,7 +415,6 @@ public class AdventureManager {
 
 
     public int damageReduction(int damage, Character character, String typeOfDamage){
-
         if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
             damage = damage - characterManager.revertXpToLevel(character.getCharacterLevel());
         }else if(typeOfDamage.equals("Physical") && (character.getCharacterClass().equals("Warrior") || character.getCharacterClass().equals("Champion"))){
@@ -421,6 +422,22 @@ public class AdventureManager {
         }else if(typeOfDamage.equals("Psychical") && character.getCharacterClass().equals("Paladin")){
             damage = damage/2;
         }
+        if(damage < 0){
+            damage = 0;
+        }
+        return damage;
+    }
+
+
+    public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
+        if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
+            damage = damage/2;
+        }else if(typeOfDamage.equals("Physical") && monster.getDamageType().equals("Physical")){
+            damage = damage/2;
+        }else if(typeOfDamage.equals("Psychical") && monster.getDamageType().equals("Psychical")){
+            damage = damage/2;
+        }
+
         if(damage < 0){
             damage = 0;
         }
@@ -448,6 +465,8 @@ public class AdventureManager {
         }
         return healedCharacter;
     }
+
+
 
     public boolean isMage(ArrayList<Character> charactersInParty, int index ){
 
@@ -497,6 +516,7 @@ public class AdventureManager {
         return total;
     }
 
+
     public int applyDamage(int isCrit, int actualLife, int damage ){
         int total = 0;
 
@@ -516,6 +536,15 @@ public class AdventureManager {
     }
 
 
+    public int sumAllMonsterXp(ArrayList<Monster> monstersInEncounter){
+        int xpSum = 0, i = 0;
+        while(i < monstersInEncounter.size()){
+            xpSum = xpSum + monstersInEncounter.get(i).getMonsterXpDrop();
+            i++;
+        }
+        return xpSum;
+    }
+
     public int getMageIndex(ArrayList<Mage> magesInBattle, String actualName){
         int index = -1;
 
@@ -529,7 +558,7 @@ public class AdventureManager {
     }
 
 
-    public void applyAbilitiesPrepPhase(Character character, ArrayList<Character> characterInParty, ArrayList<Mage> magesInBattle){
+    public void applyAbilitiesPrepPhase(Character character, ArrayList<Character> characterInParty, ArrayList<Mage> magesInBattle, int roll){
 
         switch (character.getCharacterClass()) {
             case "Adventurer" -> {
@@ -558,8 +587,6 @@ public class AdventureManager {
             }
             case "Paladin" -> {
                 Paladin paladin = new Paladin(character);
-                int roll = paladin.diceRollD3();
-
                 //efectuamos habilidad
                 for (int a = 0; a < characterInParty.size(); a++) {
                     paladin.blessOfGoodLuck(roll, characterInParty.get(a));
@@ -569,13 +596,75 @@ public class AdventureManager {
                 //efectuamos habilidad
                 int diceRoll = characterManager.diceRollD6();
                 int characterLevel = characterManager.revertXpToLevel(character.getCharacterLevel());
-                for (Mage mage : magesInBattle) {
-                    if (mage.getCharacterName().equals(character.getCharacterName())) {
-                        mage.shieldSetup(diceRoll, characterLevel);
+                for (Mage mageaux : magesInBattle) {
+                    if (mageaux.getCharacterName().equals(character.getCharacterName())) {
+                        mageaux.shieldSetup(diceRoll, characterLevel);
                     }
                 }
             }
         }
+    }
+
+    public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
+
+        int curation = 0;
+        int total = 0;
+
+        switch (character.getCharacterClass()) {
+            case "Adventurer" -> {
+                Adventurer adventurer = new Adventurer(character);
+                //efectuamos habilidad
+                curation = adventurer.bandageTime(adventurer.diceRollD8());
+                total = adventurer.getActualLife() + curation;
+                if(total >= character.getTotalLife()){
+                    total = character.getTotalLife();
+                }
+                adventurer.setActualLife(total);
+            }
+            case "Warrior" -> {
+                Warrior warrior = new Warrior(character);
+                //efectuamos habilidad
+                curation = warrior.bandageTime(warrior.diceRollD8());
+                total = warrior.getActualLife() + curation;
+                if(total >= character.getTotalLife()){
+                    total = character.getTotalLife();
+                }
+                warrior.setActualLife(total);
+            }
+            case "Champion" -> {
+                Champion champion = new Champion(character);
+                //efectuamos habilidad
+                curation = champion.improvedBandageTime(champion.getTotalLife(), champion.getActualLife());
+                total = champion.getActualLife() + curation;
+                if(total >= character.getTotalLife()){
+                    total = character.getTotalLife();
+                }
+                champion.setActualLife(total);
+            }
+            case "Cleric" -> {
+                Cleric cleric = new Cleric(character);
+                //efectuamos habilidad
+                curation = cleric.heal(cleric.diceRollD10());
+                total = cleric.getActualLife() + curation;
+                if(total >= characterInParty.get(smallIndex).getTotalLife()){
+                    total = characterInParty.get(smallIndex).getTotalLife();
+                }
+                characterInParty.get(smallIndex).setActualLife(total);
+            }
+            case "Paladin" -> {
+                Paladin paladin = new Paladin(character);
+                curation = paladin.heal(paladin.diceRollD10());
+                int i = 0;
+                while(i < characterInParty.size()){
+                    total = characterInParty.get(i).getActualLife() + curation;
+                    if(total >= characterInParty.get(i).getTotalLife()){
+                        total = characterInParty.get(i).getTotalLife();
+                    }
+                    characterInParty.get(i).setActualLife(total);
+                }
+            }
+        }
+        return curation;
     }
 
 
@@ -646,9 +735,9 @@ public class AdventureManager {
         int z = 0;
 
         // Recorreremos un bucle e iremos añadiendo a la lista si se detecta una
-        for(int a = 0; a < characterInParty.size(); a++){
-            if(characterInParty.get(a).getCharacterClass().equals("Mage")){
-                magesInBattle.add(z, new Mage(characterInParty.get(a), 0));
+        for (Character character : characterInParty) {
+            if (character.getCharacterClass().equals("Mage")) {
+                magesInBattle.add(z, new Mage(character, 0));
                 z++;
             }
         }
@@ -723,37 +812,40 @@ public class AdventureManager {
             if(i < characterInParty.size()){
 
                 // Caso Adventurer
-                if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior") || characterInParty.get(i).getCharacterClass().equals("Champion")){
-                    Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                    diceroll = characterManager.diceRollD12();
-                    characterInitiative = adventurer.initiative(diceroll);
-                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
-                }
-                // Caso Cleric
-                else if(characterInParty.get(i).getCharacterClass().equals("Cleric") || characterInParty.get(i).getCharacterClass().equals("Paladin")){
-                    Cleric cleric = new Cleric(characterInParty.get(i));
-                    diceroll = characterManager.diceRollD10();
-                    characterInitiative = cleric.initiative(diceroll);
-                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
-                }
-                // Caso Mage
-                else if(characterInParty.get(i).getCharacterClass().equals("Mage")){
-                    int b = 0;
-                    for(int a = 0; a < magesInBattle.size(); a++){
-                        if(characterInParty.get(i).getCharacterName().equals(magesInBattle.get(a).getCharacterName())){
-                            b = a;
-                        }
+                switch (characterInParty.get(i).getCharacterClass()) {
+                    case "Adventurer", "Warrior", "Champion" -> {
+                        Adventurer adventurer = new Adventurer(characterInParty.get(i));
+                        diceroll = characterManager.diceRollD12();
+                        characterInitiative = adventurer.initiative(diceroll);
+                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
                     }
-                    diceroll = characterManager.diceRollD20();
-                    characterInitiative = magesInBattle.get(b).initiative(diceroll);
-                    listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                    // Caso Cleric
+                    case "Cleric", "Paladin" -> {
+                        Cleric cleric = new Cleric(characterInParty.get(i));
+                        diceroll = characterManager.diceRollD10();
+                        characterInitiative = cleric.initiative(diceroll);
+                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                    }
+                    // Caso Mage
+                    case "Mage" -> {
+                        int b = 0;
+                        for (int a = 0; a < magesInBattle.size(); a++) {
+                            if (characterInParty.get(i).getCharacterName().equals(magesInBattle.get(a).getCharacterName())) {
+                                b = a;
+                            }
+                        }
+                        diceroll = characterManager.diceRollD20();
+                        characterInitiative = magesInBattle.get(b).initiative(diceroll);
+                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
+                    }
                 }
                 z++;
             }
 
             // Recogemos todas las iniciativas de los monsters
             if(i < monstersInEncounter.size()){
-                listOfPriorities.add(z,monstersInEncounter.get(i).getMonsterName() + monstersInEncounter.get(i).getMonsterInitiative());
+                diceroll = characterManager.diceRollD12();
+                listOfPriorities.add(z,monstersInEncounter.get(i).getMonsterName() + (monstersInEncounter.get(i).getMonsterInitiative() * diceroll));
                 z++;
             }
             i++;
@@ -778,6 +870,7 @@ public class AdventureManager {
         }
         return encounterMonsters;
     }
+
 
     /**
      * Esta función servirá para contar cuantos monsters habrán
@@ -847,36 +940,4 @@ public class AdventureManager {
     public boolean createAdventureAPI(String adventureName, int encounters, ArrayList<ArrayList<Monster>> monsters) throws IOException {
         return adventureAPI.postToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures", new Adventure(adventureName, encounters, monsters));
     }
-
-    /**
-     * Esta función servirá para crear una adventure
-     *
-     * @param monstersDamage, lista con todos los daños que causarán los monsters
-     * @param monstersInEncounter, lista con todos los monsters del encuentro
-     */
-    public void enemyDice(ArrayList<String> monstersDamage, ArrayList<Monster> monstersInEncounter){
-        int z = 0;
-        int i = 0;
-
-        // Iniciamos un bucle por todos los monsters disponibles
-        while(z < monstersInEncounter.size()){
-
-            // En la primera oleada guardamos el daño
-            if(z == 0){
-                monstersDamage.add(i,monstersInEncounter.get(z).getMonsterName() + " " + monstersInEncounter.get(z).getMonsterDice());
-                i++;
-            }else{
-                String [] auxName = monstersDamage.get(i - 1).split(" ");
-                String actualName = auxName[0];
-
-                // Guardaremos el daño en caso que se trate de otro monster del último daño guardado
-                if(!actualName.equals(monstersInEncounter.get(z).getMonsterName())){
-                    monstersDamage.add(i,monstersInEncounter.get(z).getMonsterName() + " " + monstersInEncounter.get(z).getMonsterDice());
-                    i++;
-                }
-            }
-            z++;
-        }
-    }
-
 }

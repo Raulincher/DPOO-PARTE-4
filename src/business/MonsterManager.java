@@ -26,9 +26,9 @@ public class MonsterManager {
         this.monsterAPI = monsterAPI;
     }
 
-    public String diceNumber(Monster monsterInEncounter){
-        String diceNumber = "empty";
-        String[] auxDice = monsterInEncounter.getMonsterDice().split("d");
+    public String diceNumber(String dice){
+        String diceNumber;
+        String[] auxDice = dice.split("d");
         diceNumber = auxDice[1];
         return diceNumber;
     }

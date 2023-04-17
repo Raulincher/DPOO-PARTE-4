@@ -1,5 +1,11 @@
 package presentation;
 
+import business.entities.Adventurer;
+import business.entities.Champion;
+import business.entities.Character;
+import business.entities.Cleric;
+import business.entities.Paladin;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
@@ -75,6 +81,27 @@ public class UIManager {
      */
     public void showMessage(String message){
         System.out.println(message);
+    }
+
+
+    public void showPrepStage(){
+        System.out.println("-------------------------");
+        System.out.println("*** Preparation stage ***");
+        System.out.println("-------------------------\n");
+    }
+
+
+    public void showCombatStage(){
+        System.out.println("\n\n--------------------");
+        System.out.println("*** Combat stage ***");
+        System.out.println("--------------------");
+    }
+
+    public void showRestStage(){
+        System.out.println("All enemies are defeated.");
+        System.out.println("--------------------");
+        System.out.println("*** Short rest stage ***");
+        System.out.println("--------------------");
     }
 
     /**
@@ -251,6 +278,53 @@ public class UIManager {
                 message = characterName + " uses Mage shield. Shield recharges " + shield;
             }
         }
+        showMessage(message);
+    }
+
+
+
+    public void showAbilitiesRestPhase(String characterClass, String characterName, int characterCuration, int temporalLife) {
+
+        String message = "empty";
+
+        switch (characterClass) {
+            //bandagetime para la clase aventurero y guerrero
+            case "Adventurer":
+            case "Warrior":
+                if (temporalLife != 0) {
+
+                    message = characterName + " uses BandageTime. Heals " + characterCuration + " hit points";
+                } else {
+                    message = characterName + " is unconscious";
+                }
+
+                break;
+            //improved bandagetime para la clase campeón
+            case "Champion":
+                if (temporalLife != 0) {
+                    message = characterName + " uses Improved bandage time. Heals " + characterCuration + " hit points";
+                } else {
+                    message = characterName + " is unconscious";
+                }
+                break;
+            //prayer of self-healing para la clase clérigo
+            case "Cleric":
+                if (temporalLife != 0) {
+                    message = characterName + " uses Payer of self-healing. Heals " + characterCuration + " hit points";
+                } else {
+                    message = characterName + " is unconscious";
+                }
+                break;
+            case "Paladin":
+                //prayer of mass healing para la clase paladin
+                if (temporalLife != 0) {
+                    message = characterName + " uses Prayer of mass healing. Heals " + characterCuration + " hit points to all the conscious party";
+                } else {
+                    message = characterName + " is unconscious";
+                }
+                break;
+        }
+
         showMessage(message);
     }
 }

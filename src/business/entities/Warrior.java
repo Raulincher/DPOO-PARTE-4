@@ -78,4 +78,19 @@ public class Warrior extends Character {
         // Calculamos con la fórmula
         return d10 + body;
     }
+
+
+    /**
+     * Esta función servirá para calcular cuánto se curará
+     * el adventurer
+     *
+     * @param d8, que será el dado para calcular la curación
+     * @return curación del personaje
+     */
+    public int bandageTime(int d8){
+        int mind = getMind();
+
+        // Calculamos con la fórmula
+        return mind + d8;
+    }
 }
