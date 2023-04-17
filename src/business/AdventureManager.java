@@ -412,6 +412,23 @@ public class AdventureManager {
     }
 
 
+    public int damageReduction(int damage, Character character, String typeOfDamage){
+
+        if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
+            damage = damage - characterManager.revertXpToLevel(character.getCharacterLevel());
+        }else if(typeOfDamage.equals("Physical") && (character.getCharacterClass().equals("Warrior") || character.getCharacterClass().equals("Champion"))){
+            damage = damage/2;
+        }else if(typeOfDamage.equals("Psychical") && character.getCharacterClass().equals("Paladin")){
+            damage = damage/2;
+        }
+        if(damage < 0){
+            damage = 0;
+        }
+
+        return damage;
+    }
+
+
     public int countAliveCharacters(ArrayList<Character> characters){
         int counter = 0;
         for (Character character : characters) {
@@ -512,12 +529,81 @@ public class AdventureManager {
     }
 
 
+    public void applyAbilitiesPrepPhase(Character character, ArrayList<Character> characterInParty, ArrayList<Mage> magesInBattle){
+
+        switch (character.getCharacterClass()) {
+            case "Adventurer" -> {
+                Adventurer adventurer = new Adventurer(character);
+                //efectuamos habilidad
+                adventurer.selfMotivated();
+            }
+            case "Warrior" -> {
+                Warrior warrior = new Warrior(character);
+                //efectuamos habilidad
+                warrior.selfMotivated();
+            }
+            case "Champion" -> {
+                Champion champion = new Champion(character);
+                //efectuamos habilidad
+                for (int a = 0; a < characterInParty.size(); a++) {
+                    champion.MotivationalSpeech(characterInParty.get(a));
+                }
+            }
+            case "Cleric" -> {
+                Cleric cleric = new Cleric(character);
+                //efectuamos habilidad
+                for (int a = 0; a < characterInParty.size(); a++) {
+                    cleric.prayerOfGoodLuck(characterInParty.get(a));
+                }
+            }
+            case "Paladin" -> {
+                Paladin paladin = new Paladin(character);
+                int roll = paladin.diceRollD3();
+
+                //efectuamos habilidad
+                for (int a = 0; a < characterInParty.size(); a++) {
+                    paladin.blessOfGoodLuck(roll, characterInParty.get(a));
+                }
+            }
+            case "Mage" -> {
+                //efectuamos habilidad
+                int diceRoll = characterManager.diceRollD6();
+                int characterLevel = characterManager.revertXpToLevel(character.getCharacterLevel());
+                for (Mage mage : magesInBattle) {
+                    if (mage.getCharacterName().equals(character.getCharacterName())) {
+                        mage.shieldSetup(diceRoll, characterLevel);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void setConsciousPosition(ArrayList<String> consciousPosition, ArrayList<Character> characterInParty){
+
+        int a = 0;
+        if(consciousPosition.size() != 0){
+            for(int b = 0; b < consciousPosition.size(); b++){
+                consciousPosition.remove(b);
+                b--;
+            }
+        }
+        for(int b = 0; b < characterInParty.size(); b++){
+            int actualLife = characterInParty.get(b).getActualLife();
+            if(actualLife != 0){
+                consciousPosition.add(a,characterInParty.get(b).getCharacterName());
+                a++;
+            }
+        }
+    }
+
+
     public boolean failedAttack(int isCrit){
 
         return isCrit != 1 && isCrit != 2;
     }
 
-    public int applyDamage(Character character, int aliveMonster){
+    public int calculateDamage(Character character, int aliveMonster){
         int damage = 0;
 
         switch (character.getCharacterClass()) {

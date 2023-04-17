@@ -220,6 +220,10 @@ public class UIManager {
         showMessage(message);
     }
 
+    public void deadMessage(String name){
+        showMessage(name + " falls unconscious.");
+    }
+
 
     public void showAbilitiesPrepPhase(String characterClass, String characterName, int shield, int roll) {
 

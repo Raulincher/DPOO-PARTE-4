@@ -159,25 +159,8 @@ public abstract class Character {
 
     public abstract int attack(int dice);
 
+    public void selfMotivated(){};
 
-    /**
-     * Esta función genera un par de números entre el 1 y el 6 simulando tirar
-     * dos dados de 6 caras
-     *
-     * @return roll, array de ints que serán los 2 números random generados
-     */
-    public int[] diceRoll2D6(){
-
-        int[] roll = {0, 0};
-
-        // Usamos la clase Random para que genere los dos números aleatorios
-        Random rand = new Random();
-        int upperbound = 6;
-        roll[0] = rand.nextInt(upperbound) + 1;
-        roll[1] = rand.nextInt(upperbound) + 1;
-
-        return roll;
-    }
 
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar

@@ -59,6 +59,7 @@ public class Warrior extends Character {
      * en la batalla, es decir, subir 1 al spirit.
      * No tendrá ni param ni return.
      */
+    @Override
     public void selfMotivated(){
         setSpirit(getSpirit() + 1);
     }
