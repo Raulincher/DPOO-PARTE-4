@@ -48,7 +48,7 @@ public class MonsterAPI {
      */
     public ArrayList<Monster> getFromUrl(String url) throws IOException {
 
-        Monster[] monsters = null;
+        Monster[] monsters;
 
         try {
             // Definir la solicitud

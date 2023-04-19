@@ -339,6 +339,23 @@ public class CharacterManager {
         return exist;
     }
 
+
+    public String characterTypeOfDamage(String characterClass){
+
+        String typeOfDamage;
+
+        if(characterClass.equals("Adventurer") || characterClass.equals("Warrior") || characterClass.equals("Champion")){
+            typeOfDamage = "physical";
+        }else if(characterClass.equals("Cleric") || characterClass.equals("Paladin")){
+            typeOfDamage = "psychic";
+        }else{
+            typeOfDamage = "magical";
+        }
+
+
+        return typeOfDamage;
+    }
+
     /**
      * Esta función arregla el nombre introducido por el usuario, haciendo que sí o sí
      * tenga la primera letra en mayúscula

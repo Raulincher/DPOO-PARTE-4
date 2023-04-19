@@ -240,7 +240,6 @@ public class UIController {
             boolean correct = characterManager.nameCheck(characterName);
             characterName = characterManager.fixName(characterName);
             // Si el usuario no introduce bien el nombre, mostramos error
-            System.out.println(characterName);
             if(!correct){
                 uiManager.showMessage("\nTavern keeper: C'mon don't fool around and tell me your real name, will ya?");
                 uiManager.showMessage("Character name can't include numbers or special characters\n");
@@ -662,15 +661,10 @@ public class UIController {
      * @throws IOException
      */
     private void adventurePlay(boolean isUsingApi) throws IOException {
-        int characterQuantity;
-        int adventureSelection;
-        int defeated = 0;
-        int[] saveNumber = new int[5];
-        int counterEncounters;
-        ArrayList<Adventure> adventures;
 
-        int monstersDefeat; //number of monsters encounter defeat
-        int charactersDefeat = 0; //number of characters defeat
+        int adventureSelection, characterQuantity, defeated = 0, counterEncounters, charactersDefeat = 0;
+        int[] saveNumber = new int[5];
+        ArrayList<Adventure> adventures;
 
         // Mostramos las aventuras disponibles
         uiManager.showMessage("""
@@ -838,13 +832,13 @@ public class UIController {
             uiManager.showMessage("---------------------");
 
             // FASE DE PREPARACIÓN
-            uiManager.showMessage("-------------------------");
-            uiManager.showMessage("*** Preparation stage ***");
-            uiManager.showMessage("-------------------------\n");
+            uiManager.showPrepStage();
             // Obtenemos los monsters del encuentro y el número de este
 
             i = 0;
             while(i < characterQuantity){
+                int roll = characterInParty.get(i).diceRollD3();
+                adventureManager.applyAbilitiesPrepPhase(characterInParty.get(i), characterInParty, magesInBattle, roll);
                 // Abrimos switch para comprobar que clase posee el personaje para así realizar su habilidad correspondiente
                 int shield = -1;
                 boolean isMage = adventureManager.isMage(characterInParty, i);
@@ -852,74 +846,7 @@ public class UIController {
                     int index = adventureManager.getMageIndex(magesInBattle, characterInParty.get(i).getCharacterName());
                     shield = magesInBattle.get(index).getShield();
                 }
-
-                int roll = characterInParty.get(i).diceRollD3();
-
                 uiManager.showAbilitiesPrepPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), shield, roll);
-                adventureManager.applyAbilitiesPrepPhase(characterInParty.get(i), characterInParty, magesInBattle);
-
-
-                /*switch (characterInParty.get(i).getCharacterClass()) {
-                    case "Adventurer" -> {
-                        Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
-                        //efectuamos habilidad
-                        adventurer.selfMotivated();
-                        characterInParty.set(i, adventurer);
-                    }
-                    case "Warrior" -> {
-                        Warrior warrior = new Warrior(characterInParty.get(i));
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Self-Motivated. Their Spirit increases in +1");
-                        //efectuamos habilidad
-                        warrior.selfMotivated();
-                        characterInParty.set(i, warrior);
-                    }
-                    case "Champion" -> {
-                        Champion champion = new Champion(characterInParty.get(i));
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Motivational speech. Everyone’s Spirit increases in +1");
-                        //efectuamos habilidad
-                        for (int a = 0; a < characterQuantity; a++) {
-                            champion.MotivationalSpeech(characterInParty.get(a));
-                        }
-                    }
-                    case "Cleric" -> {
-                        Cleric cleric = new Cleric(characterInParty.get(i));
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of good luck. Everyone’s Mind increases in +1");
-                        //efectuamos habilidad
-                        for (int a = 0; a < characterQuantity; a++) {
-                            cleric.prayerOfGoodLuck(characterInParty.get(a));
-                        }
-                    }
-                    case "Paladin" -> {
-                        Paladin paladin = new Paladin(characterInParty.get(i));
-                        int roll = paladin.diceRollD3();
-
-                        //efectuamos habilidad
-                        for (int a = 0; a < characterQuantity; a++) {
-                            paladin.blessOfGoodLuck(roll, characterInParty.get(a));
-                        }
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll);
-                    }
-                    case "Mage" -> {
-                        //efectuamos habilidad
-                        int b = 0;
-                        int diceRoll = characterManager.diceRollD6();
-                        int characterLevel = characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel());
-                        for (int a = 0; a < magesInBattle.size(); a++) {
-                            if (magesInBattle.get(a).getCharacterName().equals(characterInParty.get(i).getCharacterName())) {
-                                magesInBattle.get(a).shieldSetup(diceRoll, characterLevel);
-                                b = a;
-                            }
-                        }
-                        //anunciamos habilidad
-                        uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Mage shield. Shield recharges " + magesInBattle.get(b).getShield());
-                    }
-                }*/
                 i++;
             }
 
@@ -940,17 +867,19 @@ public class UIController {
                 String[] auxCompareName = listOfPriorities.get(i).split("\\d+");
                 String compareName = auxCompareName[0];
                 int compareInitiative = Integer.parseInt(listOfPriorities.get(i).replaceAll("[^0-9]", ""));
+                if(compareName.endsWith("-")){
+                    auxCompareName = compareName.split("-");
+                    compareName = auxCompareName[0];
+                    compareInitiative = -compareInitiative;
+                }
                 uiManager.showMessage("\t- " + compareInitiative + "   " + compareName);
                 i++;
             }
 
             // FASE DE COMBATE
-            uiManager.showMessage("\n\n--------------------");
-            uiManager.showMessage("*** Combat stage ***");
-            uiManager.showMessage("--------------------");
+            uiManager.showCombatStage();
 
             // Preparamos todos los stats de los monsters
-
             monsterManager.setInitialMonsterLife(monstersInEncounter);
 
             int aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
@@ -959,31 +888,11 @@ public class UIController {
             // Abrimos nuevo bucle para realizar el combate
             do{
                 // Preparamos variables
-                int q = 0;
-                boolean isMage;
-                int damage;
-                int multihit = 0;
-                int heal = 0;
+                int q = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total = 0, damage, multihit = 0, heal = 0;
+                boolean isMage, isBoss = false, fail;
                 String[] auxName;
-                String actualName;
-                int isCrit;
-                int totalLife;
-                int actualLife;
-                boolean isBoss = false;
-                int highestMonsterIndex;
-                int smallestMonsterIndex;
-                int smallestCharacterIndex;
-                int shield;
-                String healedCharacter;
-                int total = 0;
-                boolean fail;
+                String actualName, healedCharacter, attackedMonster, compareName, typeOfDamage;
                 ArrayList<String> consciousPosition = new ArrayList<>(0);
-                String attackedMonster;
-                String compareName;
-                String actualDice = null;
-                String typeOfDamage;
-                ArrayList<String> monstersDamage = new ArrayList<>(0);
-
 
                 // Mostramos ronda
                 uiManager.showMessage("Round "+  (roundCounter + 1) + ":");
@@ -1011,8 +920,6 @@ public class UIController {
                     z++;
                 }
 
-                // Obtenemos el daño que harán los monsters
-                adventureManager.enemyDice(monstersDamage, monstersInEncounter);
 
                 // Iniciamos bucle para la batalla
                 while(q < listOfPriorities.size()){
@@ -1034,12 +941,13 @@ public class UIController {
                     aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
-                    if(charactersDefeat < characterInParty.size() && aliveMonsters == 0) {
+                    if(charactersDefeat < characterInParty.size() && aliveMonsters > 0) {
                         z = 0;
                         //abrimos bucle donde revisaremos toda nuestra party
                         //si el nombre de la lista de prioridades coincide con alguno entraremos
                         //aquí mostraremos quien está atacando y que habilidad está usando
                         //las clases con habilidades de combate iguales han sido englobadas en un solo caso
+
                         while (z < characterInParty.size()) {
                             healedCharacter = "empty";
                             if (actualName.equals(characterInParty.get(z).getCharacterName())) {
@@ -1081,7 +989,7 @@ public class UIController {
                             compareName = monstersInEncounter.get(z).getMonsterName();
                             if(actualName.equals(compareName)){
                                 actualLife = monstersInEncounter.get(z).getActualHitPoints();
-                                actualDice = monsterManager.diceNumber(monstersInEncounter.get(z));
+                                String actualDice = monsterManager.diceNumber(monstersInEncounter.get(z).getMonsterDice());
                                 if(actualLife != 0) {
                                     damage = monsterManager.monsterDamageCalculator(actualDice);
                                     if(monstersInEncounter.get(z).getMonsterChallenge().equals("Boss")){
@@ -1097,31 +1005,25 @@ public class UIController {
                             z++;
                         }
                     }
+
                     //hacemos reinicio de variables auxiliares
                     z = 0;
                     j = 0;
                     i = 0;
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
-                    if(aliveMonsters == 0 && charactersDefeat < characterInParty.size() ){
+                    if(aliveMonsters > 0 && charactersDefeat < characterInParty.size() ){
                         //recorriendo toda la lista de prioridades buscamos a que bando pertenece el personaje que pega
                         while(z < listOfPriorities.size()){
                             while (j < monstersInEncounter.size()) {
                                 compareName = monstersInEncounter.get(j).getMonsterName();
                                 //si el personaje que pega es un monstruo entraremos aquí
                                 if (actualName.equals(compareName)) {
-
-                                    actualLife = characterInParty.get(smallestCharacterIndex).getActualLife();
-                                    totalLife = characterInParty.get(smallestCharacterIndex).getTotalLife();
-
                                     //miramos el tipo de daño que hace el enemigo en cuestión
                                     typeOfDamage = monstersInEncounter.get(j).getDamageType();
 
                                     //Con los jefes hemos decidido añadir que, independientemente de la resistencia a los tipos de sus enemigos, siempre harán el mismo daño
                                     if(isBoss){
-
-                                        uiManager.hitMessage(damage, typeOfDamage, isCrit);
-
                                         fail = adventureManager.failedAttack(isCrit);
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
@@ -1130,12 +1032,18 @@ public class UIController {
                                                 //comprobamos que el personaje atacado no este muerto
                                                 if(actualLife != 0){
                                                     isMage = adventureManager.isMage(characterInParty, b);
+                                                    System.out.println(damage + "jefe sin");
+                                                    damage = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
+                                                    System.out.println(damage + "jefe");
 
+                                                    uiManager.hitMessage(damage, typeOfDamage, isCrit);
                                                     if(isMage){
                                                         total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, damage);
                                                     }else{
                                                         total = adventureManager.applyDamage(isCrit,actualLife, damage);
                                                     }
+
+                                                    System.out.println(total + "jefe");
 
                                                     characterInParty.get(b).setActualLife(total);
                                                     if (total == 0) {
@@ -1148,14 +1056,22 @@ public class UIController {
                                     }else {
 
                                         //aplicamos reducciones de daño dependiendo del tipo del mismo
+                                        System.out.println(damage + "enemigo sin");
                                         damage = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
+                                        System.out.println(damage + "enemigo");
 
-                                        if(characterInParty.get(smallestCharacterIndex).getCharacterClass().equals("Mage")){
-                                            adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, damage);
+
+
+                                        uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                        isMage = adventureManager.isMage(characterInParty, smallestCharacterIndex);
+                                        if(isMage){
+                                            total = adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, damage);
                                         }else{
                                             total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), damage);
                                         }
-                                        uiManager.hitMessage(damage, typeOfDamage, isCrit);
+
+                                        System.out.println(total + "enemigo");
+
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
                                             characterInParty.get(smallestCharacterIndex).setActualLife(total);
@@ -1181,58 +1097,32 @@ public class UIController {
                                     actualLife = characterInParty.get(i).getActualLife();
 
                                     //miramos el tipo de daño infligido dependiendo de la clase del personaje
-                                    if(characterInParty.get(i).getCharacterClass().equals("Adventurer") || characterInParty.get(i).getCharacterClass().equals("Warrior") || characterInParty.get(i).getCharacterClass().equals("Champion")){
-                                        typeOfDamage = "physical";
-                                    }else if(characterInParty.get(i).getCharacterClass().equals("Cleric") || characterInParty.get(i).getCharacterClass().equals("Paladin")){
-                                        typeOfDamage = "psychic";
-                                    }else{
-                                        typeOfDamage = "magical";
-                                    }
-
-
-                                    if(damage < 0){
-                                        damage = 0;
-                                    }
+                                    typeOfDamage = characterManager.characterTypeOfDamage(characterInParty.get(i).getCharacterClass());
 
                                     //si el personaje que ataca esta consciente entraremos
-                                    if(actualLife != 0) {
+                                    if(actualLife > 0) {
                                         //si el personaje atacante es mago y además a más de dos enemigos
                                         if(characterInParty.get(i).getCharacterClass().equals("Mage") && aliveMonsters >= 3){
-
-
-                                            if(isCrit == 2){
-                                                uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
-                                            }else if(isCrit == 1){
-                                                uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
-                                            }else{
-                                                uiManager.showMessage("Fails and deals 0 damage.");
-                                                fail = true;
-                                            }
-
                                             //ataque en área afecta a todos los monstruos vivos
                                             for(int c = 0; c < aliveMonsters; c++){
                                                 actualLife = monstersInEncounter.get(c).getActualHitPoints();
-                                                totalLife = monstersInEncounter.get(c).getMonsterHitPoints();
                                                 attackedMonster = monstersInEncounter.get(c).getMonsterName();
-
-                                                total = adventureManager.applyDamage(isCrit, actualLife, totalLife);
+                                                System.out.println(damage + "multihit sin");
+                                                damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(c), typeOfDamage);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, damage);
                                                 fail = adventureManager.failedAttack(isCrit);
+                                                System.out.println(damage + "multihit");
+
+                                                System.out.println(total + "multihit");
+
+                                                uiManager.hitMessage(damage, typeOfDamage, isCrit);
 
                                                 //si no hay fallo aplicamos los daños y notificamos las muertes (en caso de haberlas)
                                                 if(!fail){
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
-                                                        for(int a = 0; a < listOfPriorities.size(); a++){
-                                                            auxName = listOfPriorities.get(a).split("\\d+");
-                                                            actualName = auxName[0];
-                                                            if(actualName.equals(attackedMonster)){
-                                                                monstersInEncounter.get(a).setActualHitPoints(0);
-                                                                a = listOfPriorities.size();
-                                                            }
-                                                        }
-                                                    }else{
-                                                        monstersInEncounter.get(c).setActualHitPoints(monstersInEncounter.get(c).getActualHitPoints() - total);
                                                     }
+                                                    monstersInEncounter.get(c).setActualHitPoints(0);
                                                 }
                                             }
 
@@ -1241,7 +1131,12 @@ public class UIController {
                                             actualLife = monstersInEncounter.get(highestMonsterIndex).getActualHitPoints();
                                             //atacaremos al monstruo con más vida el encuentro
                                             attackedMonster = monstersInEncounter.get(highestMonsterIndex).getMonsterName();
+                                            System.out.println(damage + "mago sin");
+                                            damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(highestMonsterIndex), typeOfDamage);
                                             total = adventureManager.applyDamage(isCrit, actualLife, damage);
+                                            System.out.println(damage + "mago");
+                                            System.out.println(total + "mago");
+
                                             uiManager.hitMessage(damage, typeOfDamage, isCrit);
                                             fail = adventureManager.failedAttack(isCrit);
 
@@ -1250,53 +1145,33 @@ public class UIController {
                                             if(!fail){
                                                 if (total == 0) {
                                                     uiManager.showMessage(attackedMonster + " dies.");
-                                                    monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(0);
-                                                }else{
-                                                    monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(monstersInEncounter.get(highestMonsterIndex).getActualHitPoints() - total);
                                                 }
+                                                monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(total);
+
                                             }
                                         }else{
                                             //comprobación orientada a cuando es turno de un clérigo o paladin que cura
                                             //en caso de no ser ese caso entrara a comprobar y aplicar daños
                                             if(damage != 0) {
                                                 actualLife = monstersInEncounter.get(smallestMonsterIndex).getActualHitPoints();
-                                                totalLife = monstersInEncounter.get(smallestMonsterIndex).getMonsterHitPoints();
 
                                                 //cogemos el monstruo con menos vida
                                                 attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
+                                                System.out.println(damage + "base sin");
 
-                                                if (isCrit == 2) {
-                                                    total = actualLife - (damage * 2);
-                                                    if (total < 0) {
-                                                        total = 0;
-                                                    }
-                                                    uiManager.showMessage("Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.");
-                                                } else if (isCrit == 1) {
-                                                    total = actualLife - (damage);
-                                                    if (total < 0) {
-                                                        total = 0;
-                                                    }
-                                                    uiManager.showMessage("Hit and deals " + damage + " " + typeOfDamage + " damage.");
-                                                } else {
-                                                    uiManager.showMessage("Fails and deals 0 damage.");
-                                                    fail = true;
-                                                }
+                                                damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, damage);
+                                                System.out.println(damage + "base");
+                                                System.out.println(total + "base");
+                                                uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                                fail = adventureManager.failedAttack(isCrit);
 
                                                 //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)
                                                 if(!fail){
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
-                                                        for (int a = 0; a < listOfPriorities.size(); a++) {
-                                                            auxName = listOfPriorities.get(a).split("\\d+");
-                                                            actualName = auxName[0];
-                                                            if (actualName.equals(attackedMonster)){
-                                                                monstersInEncounter.get(a).setActualHitPoints(0);
-                                                                a = listOfPriorities.size();
-                                                            }
-                                                        }
-                                                    } else {
-                                                        monstersInEncounter.get(smallestMonsterIndex).setActualHitPoints(total);
                                                     }
+                                                    monstersInEncounter.get(smallestMonsterIndex).setActualHitPoints(total);
                                                 }
                                             }
                                         }
@@ -1310,12 +1185,7 @@ public class UIController {
                         }
                     }
                     //salida forzada del bucle cuando uno de los bandos ha muerto
-                    if(charactersDefeat == characterInParty.size()){
-                        q = listOfPriorities.size();
-                    }
-                    else{
-                        q++;
-                    }
+                    q++;
                 }
 
 
@@ -1327,24 +1197,17 @@ public class UIController {
                     roundCounter++;
                 }
 
-            }while(aliveMonsters > 0 && charactersDefeat < characterInParty.size());
+            }while((aliveMonsters > 0 && charactersDefeat < characterInParty.size()));
 
             //si la auxiliar de derrota no se activa entraremos
             if(defeated == 0){
 
                 //FASE DE DESCANSO
-                uiManager.showMessage("All enemies are defeated.");
-                uiManager.showMessage("--------------------");
-                uiManager.showMessage("*** Short rest stage ***");
-                uiManager.showMessage("--------------------");
-                int xpSum = 0;
-                i = 0;
+                uiManager.showRestStage();
+
+                int xpSum = adventureManager.sumAllMonsterXp(monstersInEncounter);
                 boolean levelUp;
                 //Cogemos toda la XP del encuentro y la repartimos entre todos los miembros de la party por igual. Todos recibirán toda la cantidad
-                while(i < monstersInEncounter.size()){
-                    xpSum = xpSum + monstersInEncounter.get(i).getMonsterXpDrop();
-                    i++;
-                }
                 i = 0;
                 boolean evolved;
                 //bucle que mostrara la cantidad de XP ganada por el PJ + la posible subida de nivel del mismo
@@ -1380,95 +1243,10 @@ public class UIController {
                 while(i < characterQuantity){
 
                     int temporalLife = characterInParty.get(i).getActualLife();
-                    int restLife = characterInParty.get(i).getTotalLife();
+                    int smallIndex = adventureManager.smallestCharacterLife(characterInParty);
 
-                    //Abrimos switch para ver que clase de personaje tenemos
-                    switch (characterInParty.get(i).getCharacterClass()) {
-                        //bandagetime para la clase aventurero y guerrero
-                        case "Adventurer":
-                        case "Warrior":
-                            if (temporalLife != 0) {
-                                Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                                int diceRollHeal = characterManager.diceRollD8();
-                                int characterCuration = adventurer.bandageTime(diceRollHeal);
-                                int characterBandage = characterCuration + temporalLife;
-
-                                if (characterBandage > restLife) {
-                                    characterBandage = restLife;
-                                }
-
-                                characterInParty.get(i).setActualLife(characterBandage);
-
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses BandageTime. Heals " + characterCuration + " hit points");
-                            } else {
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                            }
-
-                            break;
-                            //improved bandagetime para la clase campeón
-                        case "Champion":
-                            if (temporalLife != 0) {
-                                Champion champion = new Champion(characterInParty.get(i));
-
-                                int characterCuration = champion.improvedBandageTime(restLife, temporalLife);
-                                int characterBandage = characterCuration + temporalLife;
-
-                                if (characterBandage > restLife) {
-                                    characterBandage = restLife;
-                                }
-
-                                characterInParty.get(i).setActualLife(characterBandage);
-
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Improved bandage time. Heals " + characterCuration + " hit points");
-                            } else {
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                            }
-                            break;
-                            //prayer of self-healing para la clase clérigo
-                        case "Cleric":
-                            if (temporalLife != 0) {
-                                Cleric cleric = new Cleric(characterInParty.get(i));
-                                int diceRollHeal = cleric.diceRollD10();
-                                int characterCuration = cleric.heal(diceRollHeal);
-                                int characterHeal = characterCuration + temporalLife;
-
-                                if (characterHeal > restLife) {
-                                    characterHeal = restLife;
-                                }
-
-                                characterInParty.get(i).setActualLife(characterHeal);
-
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Payer of self-healing. Heals " + characterCuration + " hit points");
-                            } else {
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                            }
-                            break;
-                        case "Paladin":
-                            //prayer of mass healing para la clase paladin
-                            if (temporalLife != 0) {
-                                Paladin paladin = new Paladin(characterInParty.get(i));
-                                int diceRollHeal = paladin.diceRollD10();
-                                int characterCuration = paladin.heal(diceRollHeal);
-
-                                for (Character character : characterInParty) {
-                                    temporalLife = character.getActualLife();
-                                    int characterBandage = characterCuration + temporalLife;
-
-                                    if (characterBandage > restLife) {
-                                        characterBandage = restLife;
-                                    }
-                                    if (temporalLife != 0) {
-                                        character.setActualLife(characterBandage);
-                                    }
-                                }
-
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " uses Prayer of mass healing. Heals " + characterCuration + " hit points to all the conscious party");
-                            } else {
-                                uiManager.showMessage(characterInParty.get(i).getCharacterName() + " is unconscious");
-                            }
-                            break;
-                    }
-
+                    int characterCuration = adventureManager.applyAbilitiesRestPhase(characterInParty.get(i), characterInParty, smallIndex);
+                    uiManager.showAbilitiesRestPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), characterCuration, temporalLife);
                     i++;
                 }
             }else{
