@@ -231,6 +231,22 @@ public class UIManager {
         showMessage(message);
     }
 
+    public void levelUpMessage(ArrayList<String> message){
+        if(message.get(1).equals("empty")){
+            showMessage(message.get(0));
+        }else{
+            showMessage(message.get(0));
+            showMessage(message.get(1));
+        }
+    }
+
+    public void unconsciousMessage(){
+        System.out.println("""
+                    Tavern keeper: Lad, wake up. Yes, your party fell unconscious.
+                    Don’t worry, you are safe back at the Tavern.
+                    """);
+    }
+
     public void bossAttackMessage(ArrayList<String> consciousPosition, String actualName){
         String message;
         if(consciousPosition.size() == 1){
@@ -254,7 +270,7 @@ public class UIManager {
 
     public void showAbilitiesPrepPhase(String characterClass, String characterName, int shield, int roll) {
 
-        String message = "empty";
+        String message = "";
 
         switch (characterClass) {
             case "Adventurer", "Warrior" -> {

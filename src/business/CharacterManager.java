@@ -345,11 +345,11 @@ public class CharacterManager {
         String typeOfDamage;
 
         if(characterClass.equals("Adventurer") || characterClass.equals("Warrior") || characterClass.equals("Champion")){
-            typeOfDamage = "physical";
+            typeOfDamage = "Physical";
         }else if(characterClass.equals("Cleric") || characterClass.equals("Paladin")){
-            typeOfDamage = "psychic";
+            typeOfDamage = "Psychic";
         }else{
-            typeOfDamage = "magical";
+            typeOfDamage = "Magical";
         }
 
 
