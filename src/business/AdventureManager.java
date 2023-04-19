@@ -416,33 +416,33 @@ public class AdventureManager {
 
     public int damageReduction(int damage, Character character, String typeOfDamage){
         if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
-            damage = Math.round(damage - characterManager.revertXpToLevel(character.getCharacterLevel()));
+            damage = (int)Math.ceil(damage - characterManager.revertXpToLevel(character.getCharacterLevel()));
         }else if(typeOfDamage.equals("Physical") && (character.getCharacterClass().equals("Warrior") || character.getCharacterClass().equals("Champion"))){
-            damage = Math.round(damage/2);
+            damage = (int)Math.ceil(damage/2) + 1;
         }else if(typeOfDamage.equals("Psychical") && character.getCharacterClass().equals("Paladin")){
-            damage = Math.round(damage/2);
+            damage = (int)Math.ceil(damage/2) + 1;
         }
         if(damage < 0){
             damage = 0;
         }
-        return damage;
+        return damage ;
     }
 
 
     public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
         if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
-            damage = Math.round(damage/2);
+            damage = (int)Math.ceil(damage/2);
         }else if(typeOfDamage.equals("Physical") && monster.getDamageType().equals("Physical")){
-            damage = Math.round(damage/2);
+            damage = (int)Math.ceil(damage/2);
         }else if(typeOfDamage.equals("Psychical") && monster.getDamageType().equals("Psychical")){
-            damage = Math.round(damage/2);
+            damage = (int)Math.ceil(damage/2);
         }
 
         if(damage < 0){
             damage = 0;
         }
 
-        return damage;
+        return damage + 1;
     }
 
 

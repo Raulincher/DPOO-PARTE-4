@@ -884,11 +884,10 @@ public class UIController {
 
             int aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
 
-
             // Abrimos nuevo bucle para realizar el combate
             do{
                 // Preparamos variables
-                int q = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total, damage, multihit = 0, heal = 0;
+                int q = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total, damage, reductedDamage, multihit = 0, heal = 0;
                 boolean isMage, isBoss = false, fail;
                 String[] auxName;
                 String actualName, healedCharacter, attackedMonster, compareName, typeOfDamage;
@@ -938,7 +937,10 @@ public class UIController {
                     actualName = auxName[0];
                     damage = 0;
 
+
                     aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
+                    System.out.println("me cambio aqui " + aliveMonsters + "aqui");
+
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
                     if(charactersDefeat < characterInParty.size() && aliveMonsters > 0) {
@@ -1032,13 +1034,13 @@ public class UIController {
                                                 //comprobamos que el personaje atacado no este muerto
                                                 if(actualLife != 0){
                                                     isMage = adventureManager.isMage(characterInParty, b);
-                                                    damage = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
+                                                    reductedDamage = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
                                                     isCrit = characterManager.diceRollD10();
-                                                    uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                                    uiManager.hitMessage(reductedDamage, typeOfDamage, isCrit);
                                                     if(isMage){
-                                                        total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, damage);
+                                                        total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, reductedDamage);
                                                     }else{
-                                                        total = adventureManager.applyDamage(isCrit,actualLife, damage);
+                                                        total = adventureManager.applyDamage(isCrit,actualLife, reductedDamage);
                                                     }
 
                                                     characterInParty.get(b).setActualLife(total);
@@ -1052,16 +1054,16 @@ public class UIController {
                                     }else {
 
                                         //aplicamos reducciones de daño dependiendo del tipo del mismo
-                                        damage = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
+                                        reductedDamage = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
 
                                         isCrit = characterManager.diceRollD10();
 
-                                        uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                        uiManager.hitMessage(reductedDamage, typeOfDamage, isCrit);
                                         isMage = adventureManager.isMage(characterInParty, smallestCharacterIndex);
                                         if(isMage){
-                                            total = adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, damage);
+                                            total = adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, reductedDamage);
                                         }else{
-                                            total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), damage);
+                                            total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), reductedDamage);
                                         }
 
                                         //si el ataque no ha fallado procedemos a restar las vidas
@@ -1099,18 +1101,17 @@ public class UIController {
                                             for(int c = 0; c < aliveMonsters; c++){
                                                 actualLife = monstersInEncounter.get(c).getActualHitPoints();
                                                 attackedMonster = monstersInEncounter.get(c).getMonsterName();
+                                                System.out.println(attackedMonster);
                                                 System.out.println(damage + "multihit sin");
                                                 isCrit = characterManager.diceRollD10();
-                                                System.out.println("multihit tipo de daño" + typeOfDamage);
-                                                System.out.println("bicho tipo de daño" + monstersInEncounter.get(c).getDamageType());
-                                                damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(c), typeOfDamage);
-                                                total = adventureManager.applyDamage(isCrit, actualLife, damage);
+                                                reductedDamage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(c), typeOfDamage);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, reductedDamage);
                                                 fail = adventureManager.failedAttack(isCrit);
-                                                System.out.println(damage + "multihit");
+                                                System.out.println(reductedDamage + "multihit");
 
                                                 System.out.println(total + "multihit");
 
-                                                uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                                uiManager.hitMessage(reductedDamage, typeOfDamage, isCrit);
 
                                                 //si no hay fallo aplicamos los daños y notificamos las muertes (en caso de haberlas)
                                                 if(!fail){
@@ -1127,9 +1128,9 @@ public class UIController {
                                             //atacaremos al monstruo con más vida el encuentro
                                             attackedMonster = monstersInEncounter.get(highestMonsterIndex).getMonsterName();
                                             isCrit = characterManager.diceRollD10();
-                                            damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(highestMonsterIndex), typeOfDamage);
-                                            total = adventureManager.applyDamage(isCrit, actualLife, damage);
-                                            uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                            reductedDamage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(highestMonsterIndex), typeOfDamage);
+                                            total = adventureManager.applyDamage(isCrit, actualLife, reductedDamage);
+                                            uiManager.hitMessage(reductedDamage, typeOfDamage, isCrit);
                                             fail = adventureManager.failedAttack(isCrit);
 
 
@@ -1150,9 +1151,9 @@ public class UIController {
                                                 //cogemos el monstruo con menos vida
                                                 attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
                                                 isCrit = characterManager.diceRollD10();
-                                                damage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
-                                                total = adventureManager.applyDamage(isCrit, actualLife, damage);
-                                                uiManager.hitMessage(damage, typeOfDamage, isCrit);
+                                                reductedDamage = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, reductedDamage);
+                                                uiManager.hitMessage(reductedDamage, typeOfDamage, isCrit);
                                                 fail = adventureManager.failedAttack(isCrit);
 
                                                 //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)
