@@ -1247,6 +1247,7 @@ public class UIController {
 
                     int characterCuration = adventureManager.applyAbilitiesRestPhase(characterInParty.get(i), characterInParty, smallIndex);
                     uiManager.showAbilitiesRestPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), characterCuration, temporalLife);
+                    adventureManager.applyAbilitiesRestPhase(characterInParty.get(i),characterInParty, smallIndex);
                     i++;
                 }
             }else{
