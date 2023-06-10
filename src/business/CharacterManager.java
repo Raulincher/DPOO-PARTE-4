@@ -315,7 +315,7 @@ public class CharacterManager {
      * @param name, valor que contendrá el posible nombre del personaje
      * @return exist, bool que dirá si el nombre está disponible o no
      */
-    public boolean characterNameDisponibility(String name, boolean isUsingApi) throws IOException {
+    public boolean characterNameDisponibility(String name, boolean isUsingApi) {
 
         boolean exist = false;
         ArrayList<Character> characters;
@@ -329,7 +329,6 @@ public class CharacterManager {
 
         // Analizamos con un bucle si el nombre coincide en la ArrayList
         while(i < characters.size() && !exist){
-            System.out.println(characters.get(i).getCharacterName());
             if(name.toLowerCase(Locale.ROOT).matches(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT))){
                 exist = true;
             }
@@ -345,11 +344,11 @@ public class CharacterManager {
         String typeOfDamage;
 
         if(characterClass.equals("Adventurer") || characterClass.equals("Warrior") || characterClass.equals("Champion")){
-            typeOfDamage = "physical";
+            typeOfDamage = "Physical";
         }else if(characterClass.equals("Cleric") || characterClass.equals("Paladin")){
-            typeOfDamage = "psychic";
+            typeOfDamage = "Psychical";
         }else{
-            typeOfDamage = "magical";
+            typeOfDamage = "Magical";
         }
 
 

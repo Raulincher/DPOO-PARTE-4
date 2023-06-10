@@ -22,9 +22,14 @@ public class Warrior extends Character {
 
     @Override
     public int initialLifeCalculator(int level) {
-        return 0;
-    }
+        int life;
+        int body = getBody();
 
+        // Calculamos la vida con la fórmula
+        life = (10 + body) * level;
+
+        return life;
+    }
     /**
      * Esta función servirá para construir el Warrior
      * a partir de un Character
@@ -39,15 +44,14 @@ public class Warrior extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Warrior
      *
-     * @param d12, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
     @Override
-    public int initiative(int d12) {
+    public int initiative() {
 
         int initiative = 0;
         int spirit = getSpirit();
-
+        int d12 = diceRollD12();
         // Calculamos con la fórmula
         initiative = d12 + spirit;
 
@@ -59,7 +63,6 @@ public class Warrior extends Character {
      * en la batalla, es decir, subir 1 al spirit.
      * No tendrá ni param ni return.
      */
-    @Override
     public void selfMotivated(){
         setSpirit(getSpirit() + 1);
     }
@@ -68,13 +71,12 @@ public class Warrior extends Character {
      * Esta función servirá para realizar el ataque Sword Slash
      * mejorado del Warrior
      *
-     * @param d10, que será el dado para calcular el ataque
      * @return int con el ataque que realizará
      */
     @Override
-    public int attack(int d10) {
+    public int attack() {
         int body = getBody();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + body;
     }
@@ -84,12 +86,11 @@ public class Warrior extends Character {
      * Esta función servirá para calcular cuánto se curará
      * el adventurer
      *
-     * @param d8, que será el dado para calcular la curación
      * @return curación del personaje
      */
-    public int bandageTime(int d8){
+    public int bandageTime(){
         int mind = getMind();
-
+        int d8 = diceRollD8();
         // Calculamos con la fórmula
         return mind + d8;
     }

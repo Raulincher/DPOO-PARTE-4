@@ -10,6 +10,7 @@
           "experience": 2,
           "hitPoints": 5,
           "initiative": 0,
+          "actualHitPoints": 0,
           "damageDice": "d4",
           "damageType": "Physical"
         },
@@ -19,6 +20,7 @@
           "experience": 2,
           "hitPoints": 5,
           "initiative": 0,
+          "actualHitPoints": 0,
           "damageDice": "d4",
           "damageType": "Physical"
         }
@@ -30,6 +32,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d6",
           "damageType": "Physical"
         },
@@ -39,6 +42,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d6",
           "damageType": "Physical"
         },
@@ -48,6 +52,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d6",
           "damageType": "Physical"
         }
@@ -59,6 +64,7 @@
           "experience": 148,
           "hitPoints": 89,
           "initiative": 3,
+          "actualHitPoints": 0,
           "damageDice": "d20",
           "damageType": "Physical"
         }
@@ -76,6 +82,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d8",
           "damageType": "Magical"
         },
@@ -85,6 +92,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d8",
           "damageType": "Magical"
         },
@@ -94,6 +102,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d8",
           "damageType": "Magical"
         },
@@ -103,6 +112,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d8",
           "damageType": "Magical"
         },
@@ -112,6 +122,7 @@
           "experience": 5,
           "hitPoints": 7,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d8",
           "damageType": "Magical"
         }
@@ -123,6 +134,7 @@
           "experience": 24,
           "hitPoints": 25,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -132,6 +144,7 @@
           "experience": 24,
           "hitPoints": 25,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -141,6 +154,7 @@
           "experience": 24,
           "hitPoints": 25,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -150,6 +164,7 @@
           "experience": 24,
           "hitPoints": 25,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -159,6 +174,7 @@
           "experience": 168,
           "hitPoints": 100,
           "initiative": 4,
+          "actualHitPoints": 0,
           "damageDice": "d20",
           "damageType": "Psychical"
         }
@@ -170,6 +186,7 @@
           "experience": 148,
           "hitPoints": 89,
           "initiative": 3,
+          "actualHitPoints": 0,
           "damageDice": "d20",
           "damageType": "Physical"
         }
@@ -187,6 +204,7 @@
           "experience": 24,
           "hitPoints": 24,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Magical"
         },
@@ -196,6 +214,7 @@
           "experience": 24,
           "hitPoints": 24,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Magical"
         },
@@ -205,6 +224,7 @@
           "experience": 24,
           "hitPoints": 24,
           "initiative": 2,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Magical"
         },
@@ -214,6 +234,7 @@
           "experience": 9,
           "hitPoints": 21,
           "initiative": -1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -223,6 +244,7 @@
           "experience": 9,
           "hitPoints": 21,
           "initiative": -1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -232,6 +254,7 @@
           "experience": 9,
           "hitPoints": 21,
           "initiative": -1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         },
@@ -241,6 +264,7 @@
           "experience": 9,
           "hitPoints": 21,
           "initiative": -1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Physical"
         }
@@ -252,6 +276,7 @@
           "experience": 148,
           "hitPoints": 89,
           "initiative": 3,
+          "actualHitPoints": 0,
           "damageDice": "d20",
           "damageType": "Physical"
         }
@@ -263,6 +288,7 @@
           "experience": 34,
           "hitPoints": 44,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Psychical"
         },
@@ -272,6 +298,7 @@
           "experience": 34,
           "hitPoints": 44,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Psychical"
         },
@@ -281,8 +308,59 @@
           "experience": 34,
           "hitPoints": 44,
           "initiative": 1,
+          "actualHitPoints": 0,
           "damageDice": "d10",
           "damageType": "Psychical"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "prueba",
+    "encounters": 2,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Morgoth",
+          "challenge": "Boss",
+          "experience": 168,
+          "hitPoints": 100,
+          "initiative": 4,
+          "actualHitPoints": 0,
+          "damageDice": "d20",
+          "damageType": "Psychical"
+        }
+      ],
+      [
+        {
+          "name": "Caracharoth",
+          "challenge": "Lieutenant",
+          "experience": 38,
+          "hitPoints": 39,
+          "initiative": 3,
+          "actualHitPoints": 0,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Caracharoth",
+          "challenge": "Lieutenant",
+          "experience": 38,
+          "hitPoints": 39,
+          "initiative": 3,
+          "actualHitPoints": 0,
+          "damageDice": "d10",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Caracharoth",
+          "challenge": "Lieutenant",
+          "experience": 38,
+          "hitPoints": 39,
+          "initiative": 3,
+          "actualHitPoints": 0,
+          "damageDice": "d10",
+          "damageType": "Physical"
         }
       ]
     ]

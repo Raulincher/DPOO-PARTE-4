@@ -176,7 +176,7 @@ public class UIManager {
 
                 } else {
                     //mostramos que personaje realiza la sanción y curamos a toda la party aun consciente
-                    message = "\n" + actualName + " uses Prayer of healing. Heals " + heal + " hit points to all conscious party";
+                    message = "\n" + actualName + " uses Prayer of mass healing. Heals " + heal + " hit points to all conscious party";
                 }
             }
             case "Mage" -> {
@@ -285,7 +285,7 @@ public class UIManager {
 
     public void showAbilitiesRestPhase(String characterClass, String characterName, int characterCuration, int temporalLife) {
 
-        String message = "empty";
+        String message = null;
 
         switch (characterClass) {
             //bandagetime para la clase aventurero y guerrero

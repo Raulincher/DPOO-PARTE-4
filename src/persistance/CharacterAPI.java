@@ -1,6 +1,8 @@
 package persistance;
 
+import business.entities.Adventurer;
 import business.entities.Character;
+import business.entities.Monster;
 import com.google.gson.Gson;
 
 import javax.net.ssl.SSLContext;
@@ -45,11 +47,11 @@ public class CharacterAPI {
      *
      * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
      * @return El contenido de la URL representada como texto.
-     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
-    public ArrayList<Character> getFromUrl(String url) throws IOException {
+    public ArrayList<Character> getFromUrl(String url) {
 
-        Character[] characters;
+        ArrayList<Character> charactersList;
+
         try {
             // Definir la solicitud
             // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
@@ -62,12 +64,16 @@ public class CharacterAPI {
 
             // Solo devuelve el cuerpo
             Gson g = new Gson();
-            characters = g.fromJson(response.body(), Character[].class);
-            return new ArrayList<Character>(Arrays.asList(characters));
+
+            Character[] characters;
+            characters = g.fromJson(response.body(), Adventurer[].class);
+            charactersList = new ArrayList<>(Arrays.asList(characters));
+
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
-            throw new IOException(e);
+            charactersList = null;
         }
+
+        return charactersList;
     }
 
 
@@ -83,7 +89,6 @@ public class CharacterAPI {
     public Boolean postToUrl(String url, Character character) throws IOException {
         Gson g = new Gson();
         String characterString = g.toJson(character);
-
 
         try {
             // Definir la solicitud
@@ -119,6 +124,7 @@ public class CharacterAPI {
         for (int i = 0; i < currentCharactersList.size(); i++) {
             if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
             {
+
                 currentCharactersList.get(i).setXp(xpplus + character.getCharacterLevel());
             }
             String characterString = g.toJson(currentCharactersList.get(i));
@@ -193,7 +199,14 @@ public class CharacterAPI {
             // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             response.body();
-            return true;
+            boolean check;
+            if(response.statusCode() == 404){
+                check = false;
+            }else{
+                check = true;
+            }
+            return check;
+
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Las excepciones se simplifican para cualquier clase que necesite atraparlas
             throw new IOException(e);

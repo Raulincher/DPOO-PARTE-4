@@ -52,15 +52,14 @@ public class Champion extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Champion
      *
-     * @param d12, que será el dado con el que se calculará la iniciativa
      * @return initiative, número de iniciativa del personaje
      */
     @Override
-    public int initiative(int d12) {
+    public int initiative() {
 
         int initiative = 0;
         int spirit = getSpirit();
-
+        int d12 = diceRollD12();
         // Calculamos con la fórmula
         initiative = d12 + spirit;
 
@@ -81,13 +80,12 @@ public class Champion extends Character {
      * Esta función servirá para realizar el ataque Sword Slash
      * mejorado del Champion
      *
-     * @param d10, que será el dado para calcular el ataque
      * @return int con el ataque que realizará
      */
     @Override
-    public int attack(int d10){
+    public int attack(){
         int body = getBody();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + body;
     }

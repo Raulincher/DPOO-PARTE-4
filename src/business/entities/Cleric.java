@@ -49,13 +49,12 @@ public class Cleric extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Cleric
      *
-     * @param d10, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
     @Override
-    public int initiative(int d10){
+    public int initiative(){
         int spirit = getSpirit();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + spirit;
     }
@@ -74,12 +73,11 @@ public class Cleric extends Character {
      * Esta función servirá para curar al personaje con
      * un valor aleatorio
      *
-     * @param d10, dado con el que se calculará la mind
      * @return int de vida que se curará
      */
-    public int heal(int d10){
+    public int heal(){
         int mind = getMind();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + mind;
     }
@@ -87,12 +85,12 @@ public class Cleric extends Character {
     /**
      * Esta función servirá para aumentar el spirit del personaje
      *
-     * @param d4, dado con el que se calculará el spirit
      * @return spirit resultante
      */
-    public int attack(int d4){
+    @Override
+    public int attack(){
         int spirit = getSpirit();
-
+        int d4 = diceRollD4();
         // Calculamos con la fórmula
         return d4 + spirit;
     }

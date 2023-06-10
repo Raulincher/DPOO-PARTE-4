@@ -6,11 +6,12 @@ import java.util.Random;
 
 public abstract class Character {
 
+
+    int actualLife, totalLife;
     @Expose
     String name, player, characterClass;
     @Expose
     int xp, body, mind, spirit;
-    int actualLife, totalLife;
 
     //Creamos constructor con todos los atributos
     /**
@@ -152,32 +153,19 @@ public abstract class Character {
      * Esta función servirá para calcular la iniciativa del
      * personaje
      *
-     * @param dice, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
-    public abstract int initiative(int dice);
-
-    public abstract int attack(int dice);
-
-    public void selfMotivated(){};
-
+    public abstract int initiative();
 
     /**
-     * Esta función genera un número entre el 1 y el 12 simulando tirar
-     * un dado de 12 caras
+     * Esta función servirá para calcular el daño que
+     * inflige el personaje
      *
-     * @return roll, int que será el número random generado
+     * @return damage, daño causado por el personaje
      */
-    public int diceRollD12(){
-        int roll = 0;
+    public abstract int attack();
 
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
-        Random rand = new Random();
-        int upperbound = 12;
-        roll = rand.nextInt(upperbound) + 1;
 
-        return roll;
-    }
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
@@ -289,6 +277,24 @@ public abstract class Character {
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
         int upperbound = 20;
+        roll = rand.nextInt(upperbound) + 1;
+
+        return roll;
+    }
+
+
+    /**
+     * Esta función genera un número entre el 1 y el 12 simulando tirar
+     * un dado de 12 caras
+     *
+     * @return roll, int que será el número random generado
+     */
+    public int diceRollD12(){
+        int roll = 0;
+
+        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
+        Random rand = new Random();
+        int upperbound = 12;
         roll = rand.nextInt(upperbound) + 1;
 
         return roll;

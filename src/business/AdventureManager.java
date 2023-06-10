@@ -200,36 +200,6 @@ public class AdventureManager {
         return exist;
     }
 
-    /**
-     * Esta función servirá para crear una lista con todas las vidas
-     * de los monsters
-     *
-     * @param monstersInEncounter, lista de todos los monsters del encuentro
-     * @param monstersLife, lista de monsters con sus vidas
-     * @param listOfPriorities, lista de prioridades
-     * @param characterQuantity, cantidad de personajes del encuentro
-     * @param charactersInParty, lista de personajes
-     */
-    public void setMonstersLifeList(ArrayList<Character> charactersInParty, ArrayList<String> monstersLife, ArrayList<Monster> monstersInEncounter, ArrayList<String> listOfPriorities, int characterQuantity){
-        int z = 0;
-        int i = 0;
-
-        // Iniciamos bucle que dure toda la lista de prioridades, restado las de los personajes ya que no interesan
-        while(z < listOfPriorities.size()){
-            String[] auxName = listOfPriorities.get(z).split("\\d+");
-            String actualName = auxName[0];
-
-            // Si nos encontramos con un monster en esta, guardamos su vida
-            for(int a = 0; a < monstersInEncounter.size(); a++){
-                if(monstersInEncounter.get(a).getMonsterName().equals(actualName)){
-                    monstersLife.add(i,monstersInEncounter.get(a).getMonsterName() + monstersInEncounter.get(a).getMonsterHitPoints() + "/" + monstersInEncounter.get(a).getMonsterHitPoints());
-                    i++;
-                    a = monstersInEncounter.size();
-                }
-            }
-            z++;
-        }
-    }
 
     /**
      * Esta función servirá para crear una lista con todas las vidas
@@ -239,38 +209,10 @@ public class AdventureManager {
      */
     public void setAdventurersLifeList(ArrayList<Character> characterInParty) {
         int z = 0;
-
         // Abrimos un if para comprobar si hay alguna vida establecida
         while(z < characterInParty.size()) {
-            switch (characterInParty.get(z).getCharacterClass()) {
-                // Caso de Adventurer
-                case "Adventurer", "Warrior" -> {
-                    Adventurer adventurer = new Adventurer(characterInParty.get(z));
-                    characterInParty.get(z).setActualLife(adventurer.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
-                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
-                }
-                // Caso de Champion
-                case "Champion" -> {
-                    Champion champion = new Champion(characterInParty.get(z));
-                    characterInParty.get(z).setActualLife(champion.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
-                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
-
-                }
-                // Caso de Cleric
-                case "Cleric", "Paladin" -> {
-                    Cleric cleric = new Cleric(characterInParty.get(z));
-                    characterInParty.get(z).setActualLife(cleric.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
-                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
-
-                }
-                // Caso de Mage
-                case "Mage" -> {
-                    Mage mage = new Mage(characterInParty.get(z), 0);
-                    characterInParty.get(z).setActualLife(mage.initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
-                    characterInParty.get(z).setTotalLife(characterInParty.get(z).getActualLife());
-
-                }
-            }
+            characterInParty.get(z).setTotalLife(characterInParty.get(z).initialLifeCalculator(characterManager.revertXpToLevel(characterInParty.get(z).getCharacterLevel())));
+            characterInParty.get(z).setActualLife(characterInParty.get(z).getTotalLife());
             z++;
         }
     }
@@ -430,6 +372,7 @@ public class AdventureManager {
 
 
     public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
+
         if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
             damage = damage/2;
         }else if(typeOfDamage.equals("Physical") && monster.getDamageType().equals("Physical")){
@@ -445,25 +388,14 @@ public class AdventureManager {
         return damage;
     }
 
-
-    public int countAliveCharacters(ArrayList<Character> characters){
-        int counter = 0;
-        for (Character character : characters) {
-            if (character.getActualLife() > 0) {
-                counter++;
-            }
-        }
-        return counter;
-    }
-
-    public String needAHeal(Character characterInParty){
-        String healedCharacter = "empty";
+    public Boolean needAHeal(Character characterInParty){
+        boolean needHeal = false;
         int actualLife = characterInParty.getActualLife();
         int totalLife = characterInParty.getTotalLife();
         if ((totalLife / 2) >= actualLife) {
-            healedCharacter = characterInParty.getCharacterName();
+            needHeal = true;
         }
-        return healedCharacter;
+        return needHeal;
     }
 
 
@@ -492,7 +424,7 @@ public class AdventureManager {
                 a = magesInBattle.size();
             }
         }
-        int actualLife = magesInBattle.get(mageIndex).getActualLife();
+        int actualLife = characterInParty.getActualLife();
         if(isCrit == 2){
            damage = damage * 2;
         }
@@ -500,6 +432,7 @@ public class AdventureManager {
             total = magesInBattle.get(mageIndex).getShield() - (damage);
             //en caso de que el daño haya sido parado parcialmente el restante será recibido a la vida del mago en cuestión
             if(total < 0){
+
                 total = actualLife + total;
                 magesInBattle.get(mageIndex).setShield(0);
             }else{
@@ -594,15 +527,45 @@ public class AdventureManager {
             }
             case "Mage" -> {
                 //efectuamos habilidad
-                int diceRoll = characterManager.diceRollD6();
                 int characterLevel = characterManager.revertXpToLevel(character.getCharacterLevel());
                 for (Mage mageaux : magesInBattle) {
                     if (mageaux.getCharacterName().equals(character.getCharacterName())) {
-                        mageaux.shieldSetup(diceRoll, characterLevel);
+                        mageaux.shieldSetup(characterLevel);
                     }
                 }
             }
         }
+    }
+
+    public int healingInCombat(Character healedCharacter, Character character, ArrayList<Character> charactersInParty){
+
+        int heal = 0;
+
+        switch (character.getCharacterClass()) {
+            case "Cleric" -> {
+                Cleric cleric = new Cleric(character);
+                //efectuamos habilidad
+                heal = cleric.heal();
+                if( healedCharacter.getTotalLife() <= healedCharacter.getActualLife() + heal){
+                    healedCharacter.setActualLife(healedCharacter.getTotalLife());
+                }else {
+                    healedCharacter.setActualLife(healedCharacter.getActualLife() + heal);
+                }
+            }
+            case "Paladin" -> {
+                Paladin paladin = new Paladin(character);
+                heal = paladin.heal();
+                //efectuamos habilidad
+                for (int a = 0; a < charactersInParty.size(); a++) {
+                    if( charactersInParty.get(a).getTotalLife() <= charactersInParty.get(a).getActualLife() + heal){
+                        charactersInParty.get(a).setActualLife(charactersInParty.get(a).getTotalLife());
+                    }else {
+                        charactersInParty.get(a).setActualLife(charactersInParty.get(a).getActualLife() + heal);
+                    }
+                }
+            }
+        }
+        return heal;
     }
 
     public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
@@ -614,7 +577,7 @@ public class AdventureManager {
             case "Adventurer" -> {
                 Adventurer adventurer = new Adventurer(character);
                 //efectuamos habilidad
-                curation = adventurer.bandageTime(adventurer.diceRollD8());
+                curation = adventurer.bandageTime();
                 total = adventurer.getActualLife() + curation;
                 if(total >= character.getTotalLife()){
                     total = character.getTotalLife();
@@ -624,7 +587,7 @@ public class AdventureManager {
             case "Warrior" -> {
                 Warrior warrior = new Warrior(character);
                 //efectuamos habilidad
-                curation = warrior.bandageTime(warrior.diceRollD8());
+                curation = warrior.bandageTime();
                 total = warrior.getActualLife() + curation;
                 if(total >= character.getTotalLife()){
                     total = character.getTotalLife();
@@ -644,7 +607,7 @@ public class AdventureManager {
             case "Cleric" -> {
                 Cleric cleric = new Cleric(character);
                 //efectuamos habilidad
-                curation = cleric.heal(cleric.diceRollD10());
+                curation = cleric.heal();
                 total = cleric.getActualLife() + curation;
                 if(total >= characterInParty.get(smallIndex).getTotalLife()){
                     total = characterInParty.get(smallIndex).getTotalLife();
@@ -653,7 +616,7 @@ public class AdventureManager {
             }
             case "Paladin" -> {
                 Paladin paladin = new Paladin(character);
-                curation = paladin.heal(paladin.diceRollD10());
+                curation = paladin.heal();
                 int i = 0;
                 while(i < characterInParty.size()){
                     total = characterInParty.get(i).getActualLife() + curation;
@@ -688,38 +651,20 @@ public class AdventureManager {
 
 
     public boolean failedAttack(int isCrit){
-
         return isCrit != 1 && isCrit != 2;
     }
 
     public int calculateDamage(Character character, int aliveMonster){
-        int damage = 0;
+        int damage;
 
-        switch (character.getCharacterClass()) {
-            case "Adventurer" -> {
-                damage = character.attack(character.diceRollD6());
-            }
-            case "Warrior", "Champion" -> {
-                damage = character.attack(character.diceRollD10());
-            }
-            case "Cleric" -> {
-                damage = character.attack(character.diceRollD4());
-            }
-            case "Paladin" -> {
-                damage = character.attack(character.diceRollD8());
-            }
-            case "Mage" -> {
-                //si hay más de 2 enemigos en batalla el mago pegara en área
-                if (aliveMonster >= 3) {
-                    damage = character.attack(character.diceRollD4());
-                }
-                //si por el contrario no los hay el mago atacara al enemigo con más vida
-                else {
-                    damage = character.attack(character.diceRollD6());
-                }
+        damage = character.attack();
+
+        if(aliveMonster >= 3){
+            if (character.getCharacterClass().equals("Mage")){
+                Mage mage = new Mage(character,0);
+                damage = mage.multihit();
             }
         }
-
 
         return damage;
     }
@@ -758,16 +703,38 @@ public class AdventureManager {
         // Iniciamos un bucle que recorra todas las prioridades
         while(i < listOfPriorities.size()){
             z = 0;
-            String[] auxName = listOfPriorities.get(i).split("\\d+");
-            String actualName = auxName[0];
+            String[] auxName;
+            String actualName;
+            int actualInitiative;
             auxFlag = false;
-            int actualInitiative = Integer.parseInt(listOfPriorities.get(i).replaceAll("[^0-9]", ""));
+
+            if(listOfPriorities.get(i).contains("-")){
+                auxName = listOfPriorities.get(i).split("-");
+                actualName = auxName[0];
+                String auxInitiative = auxName[1];
+                actualInitiative = Integer.parseInt("-" + auxInitiative);
+            }else{
+                auxName = listOfPriorities.get(i).split("\\d+");
+                actualName = auxName[0];
+                actualInitiative = Integer.parseInt(listOfPriorities.get(i).replaceAll("[^0-9]", ""));
+            }
 
             // Volvemos a recorrer las prioridades con otro contador para poder compararlas
             while(z < listOfPriorities.size()){
-                String[] auxCompareName = listOfPriorities.get(z).split("\\d+");
-                String compareName = auxCompareName[0];
-                int compareInitiative = Integer.parseInt(listOfPriorities.get(z).replaceAll("[^0-9]", ""));
+                String[] auxCompareName;
+                String compareName;
+                int compareInitiative;
+
+                if(listOfPriorities.get(z).contains("-")){
+                    auxCompareName = listOfPriorities.get(z).split("-");
+                    compareName = auxCompareName[0];
+                    String auxInitiative = auxCompareName[1];
+                    compareInitiative = Integer.parseInt("-" + auxInitiative);
+                }else{
+                    auxCompareName = listOfPriorities.get(z).split("\\d+");
+                    compareName = auxCompareName[0];
+                    compareInitiative = Integer.parseInt(listOfPriorities.get(z).replaceAll("[^0-9]", ""));
+                }
 
                 // Comparamos iniciativas para cambiar el orden
                 if(actualInitiative < compareInitiative && i < z){
@@ -811,34 +778,8 @@ public class AdventureManager {
             // Recogemos todas las iniciativas de los personajes
             if(i < characterInParty.size()){
 
-                // Caso Adventurer
-                switch (characterInParty.get(i).getCharacterClass()) {
-                    case "Adventurer", "Warrior", "Champion" -> {
-                        Adventurer adventurer = new Adventurer(characterInParty.get(i));
-                        diceroll = characterManager.diceRollD12();
-                        characterInitiative = adventurer.initiative(diceroll);
-                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
-                    }
-                    // Caso Cleric
-                    case "Cleric", "Paladin" -> {
-                        Cleric cleric = new Cleric(characterInParty.get(i));
-                        diceroll = characterManager.diceRollD10();
-                        characterInitiative = cleric.initiative(diceroll);
-                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
-                    }
-                    // Caso Mage
-                    case "Mage" -> {
-                        int b = 0;
-                        for (int a = 0; a < magesInBattle.size(); a++) {
-                            if (characterInParty.get(i).getCharacterName().equals(magesInBattle.get(a).getCharacterName())) {
-                                b = a;
-                            }
-                        }
-                        diceroll = characterManager.diceRollD20();
-                        characterInitiative = magesInBattle.get(b).initiative(diceroll);
-                        listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
-                    }
-                }
+                characterInitiative = characterInParty.get(i).initiative();
+                listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
                 z++;
             }
 
@@ -883,7 +824,7 @@ public class AdventureManager {
 
         int i = 0;
         int j = 0;
-        int z = 0;
+        int z;
         boolean repeated = true;
 
         // Iniciamos bucle a través de todos los monster

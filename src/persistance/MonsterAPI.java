@@ -49,7 +49,7 @@ public class MonsterAPI {
     public ArrayList<Monster> getFromUrl(String url) throws IOException {
 
         Monster[] monsters;
-
+        ArrayList<Monster> monstersList;
         try {
             // Definir la solicitud
             // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
@@ -63,12 +63,15 @@ public class MonsterAPI {
             // Solo devuelve el cuerpo
             Gson g = new Gson();
             monsters = g.fromJson(response.body(), Monster[].class);
-            return new ArrayList<Monster>(Arrays.asList(monsters));
-
+            monstersList = new ArrayList<>(Arrays.asList(monsters));
         } catch (URISyntaxException | IOException | InterruptedException e) {
+            monstersList = null;
             // Las excepciones se simplifican para cualquier clase que necesite atraparlas
-            throw new IOException(e);
+            //throw new IOException(e);
         }
+
+        return monstersList;
+
     }
 
     /**

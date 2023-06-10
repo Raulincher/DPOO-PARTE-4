@@ -72,13 +72,12 @@ public class Mage extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Mage
      *
-     * @param d20, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
     @Override
-    public int initiative(int d20){
+    public int initiative(){
         int mind = getMind();
-
+        int d20 = diceRollD20();
         // Calculamos con la fórmula
         return d20 + mind;
     }
@@ -86,13 +85,12 @@ public class Mage extends Character {
     /**
      * Esta función servirá para calcular el shield de inicio
      *
-     * @param d6, dado con el que se calculará el shield
      * @param level, nivel del personaje
      */
-    public void shieldSetup(int d6, int level){
+    public void shieldSetup(int level){
         int shield;
         int mind = getMind();
-
+        int d6 = diceRollD6();
         // Calculamos con la fórmula y actualizamos valor
         shield = (d6 + mind) * level;
         setShield(shield);
@@ -101,13 +99,12 @@ public class Mage extends Character {
     /**
      * Esta función servirá para calcular cuánto daño se hará con la fireball
      *
-     * @param d4, dado con el que se calculará el daño
      * @return dmg, daño resultante
      */
-    public int multihit(int d4){
+    public int multihit(){
         int dmg;
         int mind = getMind();
-
+        int d4 = diceRollD4();
         // Calculamos con la fórmula
         dmg = d4 + mind;
         return dmg;
@@ -116,13 +113,13 @@ public class Mage extends Character {
     /**
      * Esta función servirá para calcular cuánto daño se hará con el misil
      *
-     * @param d6, dado con el que se calculará el daño
      * @return dmg, daño resulltante
      */
-    public int attack(int d6){
+    @Override
+    public int attack(){
         int dmg;
         int mind = getMind();
-
+        int d6 = diceRollD6();
         // Calculamos con la fórmula
         dmg = d6 + mind;
         return dmg;

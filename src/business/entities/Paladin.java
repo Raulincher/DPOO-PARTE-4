@@ -23,10 +23,12 @@ public class Paladin extends Character {
     }
 
     @Override
-    public int initialLifeCalculator(int level) {
-        return 0;
-    }
+    public int initialLifeCalculator(int level){
+        int body = getBody();
 
+        // Calculamos con la fórmula
+        return (10 + body) * level;
+    }
     /**
      * Esta función servirá para construir el Paladin
      * a partir de un Character
@@ -41,13 +43,12 @@ public class Paladin extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Paladin
      *
-     * @param d10, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
     @Override
-    public int initiative(int d10){
+    public int initiative(){
         int spirit = getSpirit();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + spirit;
     }
@@ -66,12 +67,11 @@ public class Paladin extends Character {
      * Esta función servirá para realizar el Prayer of mass healing,
      * con el que se sumará la mind
      *
-     * @param d10, dado para calcular la suma de mind
      * @return cura resultante
      */
-    public int heal(int d10){
+    public int heal(){
         int mind = getMind();
-
+        int d10 = diceRollD10();
         // Calculamos con la fórmula
         return mind + d10;
     }
@@ -80,12 +80,12 @@ public class Paladin extends Character {
      * Esta función servirá para realizar el movimiento Never on my watch,
      * con el que se sumará el spirit
      *
-     * @param d8, dado con el que se calculará la suma
      * @return spirit resultante
      */
-    public int attack(int d8){
+    @Override
+    public int attack(){
         int spirit = getSpirit();
-
+        int d8 = diceRollD8();
         // Calculamos con la fórmula
         return d8 + spirit;
     }

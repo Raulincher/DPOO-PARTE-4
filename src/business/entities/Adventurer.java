@@ -44,14 +44,15 @@ public class Adventurer extends Character {
      * Esta función servirá para calcular la iniciativa del
      * adventurer
      *
-     * @param d12, que será el dado con el que se calculará la iniciativa
      * @return initiative, iniciativa del personaje
      */
     @Override
-    public int initiative(int d12) {
+    public int initiative() {
 
         int initiative = 0;
         int spirit = getSpirit();
+
+        int d12 = diceRollD12();
 
         // Calculamos la iniciativa del adventuer
         initiative = d12 + spirit;
@@ -64,7 +65,6 @@ public class Adventurer extends Character {
      * en la batalla, es decir, subir 1 al spirit.
      * No tendrá ni param ni return.
      */
-    @Override
     public void selfMotivated(){
         setSpirit(getSpirit() + 1);
     }
@@ -73,12 +73,12 @@ public class Adventurer extends Character {
      * Esta función servirá para realizar el ataque Sword Slash
      * del adventurer
      *
-     * @param d6, que será el dado para calcular el ataque
      * @return ataque del personaje
      */
-    public int attack(int d6){
+    @Override
+    public int attack(){
         int body = getBody();
-
+        int d6 = diceRollD6();
         // Calculamos con la fórmula
         return d6 + body;
     }
@@ -87,12 +87,11 @@ public class Adventurer extends Character {
      * Esta función servirá para calcular cuánto se curará
      * el adventurer
      *
-     * @param d8, que será el dado para calcular la curación
      * @return curación del personaje
      */
-    public int bandageTime(int d8){
+    public int bandageTime(){
         int mind = getMind();
-
+        int d8 = diceRollD8();
         // Calculamos con la fórmula
         return mind + d8;
     }

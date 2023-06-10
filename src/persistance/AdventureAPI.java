@@ -49,7 +49,9 @@ public class AdventureAPI {
      * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public ArrayList<Adventure> getFromUrl(String url) throws IOException {
-        Adventure[] adventures = null;
+        Adventure[] adventures;
+        ArrayList<Adventure> adventureList;
+
         try {
             // Definir la solicitud
             // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
@@ -62,11 +64,12 @@ public class AdventureAPI {
 
             Gson g = new Gson();
             adventures = g.fromJson(response.body(), Adventure[].class);
-            return new ArrayList<Adventure>(Arrays.asList(adventures));
+            adventureList =  new ArrayList<>(Arrays.asList(adventures));
         } catch (URISyntaxException | IOException | InterruptedException e) {
             // Las excepciones se simplifican para cualquier clase que necesite atraparlas
-            throw new IOException(e);
+            adventureList = null;
         }
+        return adventureList;
     }
 
 
