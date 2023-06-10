@@ -890,10 +890,10 @@ public class UIController {
             monsterManager.setInitialMonsterLife(monstersInEncounter);
             int aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
 
-
             // Abrimos nuevo bucle para realizar el combate
             do{
                 // Preparamos variables
+
                 int q = 0, reductedDmg = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total = 0, damage, multihit = 0, heal = 0;
                 boolean isMage, isBoss = false, fail, needAHeal = false;
                 String[] auxName;
@@ -943,7 +943,10 @@ public class UIController {
                     actualName = auxName[0];
                     damage = 0;
 
+
                     aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
+                    System.out.println("me cambio aqui " + aliveMonsters + "aqui");
+
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
                     if(charactersDefeat < characterInParty.size() && aliveMonsters > 0) {
@@ -1043,6 +1046,7 @@ public class UIController {
                                                 //comprobamos que el personaje atacado no este muerto
                                                 if(actualLife != 0){
                                                     isMage = adventureManager.isMage(characterInParty, b);
+
                                                     reductedDmg = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
                                                     if(isMage){
                                                         total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, reductedDmg);
@@ -1063,6 +1067,7 @@ public class UIController {
                                     }else {
 
                                         //aplicamos reducciones de daño dependiendo del tipo del mismo
+
                                         reductedDmg = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
 
                                         isMage = adventureManager.isMage(characterInParty, smallestCharacterIndex);
@@ -1120,7 +1125,7 @@ public class UIController {
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
                                                     }
-                                                    monstersInEncounter.get(c).setActualHitPoints(0);
+                                                    monstersInEncounter.get(c).setActualHitPoints(total);
                                                 }
                                             }
 
@@ -1155,7 +1160,6 @@ public class UIController {
 
                                                 //cogemos el monstruo con menos vida
                                                 attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
-
                                                 reductedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
 
                                                 total = adventureManager.applyDamage(isCrit, actualLife, reductedDmg);
@@ -1249,6 +1253,7 @@ public class UIController {
 
                     int characterCuration = adventureManager.applyAbilitiesRestPhase(characterInParty.get(i), characterInParty, smallIndex);
                     uiManager.showAbilitiesRestPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), characterCuration, temporalLife);
+                    adventureManager.applyAbilitiesRestPhase(characterInParty.get(i),characterInParty, smallIndex);
                     i++;
                 }
             }else{
@@ -1260,10 +1265,7 @@ public class UIController {
 
         //en caso de perder la partida veremos este mensaje y volveremos a la taberna
         if(defeated != 0) {
-            uiManager.showMessage("""
-                    Tavern keeper: Lad, wake up. Yes, your party fell unconscious.
-                    Don’t worry, you are safe back at the Tavern.
-                    """);
+            uiManager.unconsciousMessage();
         }
         //en caso de ganar la partida veremos este mensaje y volveremos a la taberna
         else{

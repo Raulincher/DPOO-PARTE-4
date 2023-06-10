@@ -358,34 +358,34 @@ public class AdventureManager {
 
     public int damageReduction(int damage, Character character, String typeOfDamage){
         if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
-            damage = damage - characterManager.revertXpToLevel(character.getCharacterLevel());
+            damage = (int)Math.ceil(damage - characterManager.revertXpToLevel(character.getCharacterLevel()));
         }else if(typeOfDamage.equals("Physical") && (character.getCharacterClass().equals("Warrior") || character.getCharacterClass().equals("Champion"))){
-            damage = damage/2;
+            damage = (int)Math.ceil(damage/2) + 1;
         }else if(typeOfDamage.equals("Psychical") && character.getCharacterClass().equals("Paladin")){
-            damage = damage/2;
+            damage = (int)Math.ceil(damage/2) + 1;
         }
         if(damage < 0){
             damage = 0;
         }
-        return damage;
+        return damage ;
     }
 
 
     public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
 
         if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
-            damage = damage/2;
+            damage = (int)Math.ceil(damage/2);
         }else if(typeOfDamage.equals("Physical") && monster.getDamageType().equals("Physical")){
-            damage = damage/2;
+            damage = (int)Math.ceil(damage/2);
         }else if(typeOfDamage.equals("Psychical") && monster.getDamageType().equals("Psychical")){
-            damage = damage/2;
+            damage = (int)Math.ceil(damage/2);
         }
 
         if(damage < 0){
             damage = 0;
         }
 
-        return damage;
+        return damage + 1;
     }
 
     public Boolean needAHeal(Character characterInParty){
@@ -537,7 +537,8 @@ public class AdventureManager {
         }
     }
 
-    public int healingInCombat(Character healedCharacter, Character character, ArrayList<Character> charactersInParty){
+
+    public int healingInCombat(Character healedCharacter, Character character, ArrayList<Character> charactersInParty) {
 
         int heal = 0;
 
@@ -546,9 +547,9 @@ public class AdventureManager {
                 Cleric cleric = new Cleric(character);
                 //efectuamos habilidad
                 heal = cleric.heal();
-                if( healedCharacter.getTotalLife() <= healedCharacter.getActualLife() + heal){
+                if (healedCharacter.getTotalLife() <= healedCharacter.getActualLife() + heal) {
                     healedCharacter.setActualLife(healedCharacter.getTotalLife());
-                }else {
+                } else {
                     healedCharacter.setActualLife(healedCharacter.getActualLife() + heal);
                 }
             }
@@ -557,15 +558,49 @@ public class AdventureManager {
                 heal = paladin.heal();
                 //efectuamos habilidad
                 for (int a = 0; a < charactersInParty.size(); a++) {
-                    if( charactersInParty.get(a).getTotalLife() <= charactersInParty.get(a).getActualLife() + heal){
+                    if (charactersInParty.get(a).getTotalLife() <= charactersInParty.get(a).getActualLife() + heal) {
                         charactersInParty.get(a).setActualLife(charactersInParty.get(a).getTotalLife());
-                    }else {
+                    } else {
                         charactersInParty.get(a).setActualLife(charactersInParty.get(a).getActualLife() + heal);
                     }
                 }
             }
         }
         return heal;
+    }
+
+
+    public ArrayList<String> levelUpController(Character character, int xpSum, boolean isUsingApi) throws IOException {
+        ArrayList<String> message = new ArrayList<String>(2);
+        String messageAux;
+
+        boolean levelUp = characterManager.levelUpCheck(xpSum, character.getCharacterLevel());
+
+
+        if(isUsingApi){
+            characterManager.levelUpdateAPI(character, xpSum);
+        }else{
+            characterManager.levelUpdate(character, xpSum);
+        }
+        if(levelUp){
+            messageAux = character.getCharacterName() + " gains " + xpSum + " xp." + character.getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(character.getCharacterLevel()) + "!";
+
+            message.add(0, messageAux);
+
+            boolean evolved = characterManager.evolution(character, isUsingApi);
+
+            if(evolved){
+                messageAux = (character.getCharacterName() + " evolves to " + character.getCharacterClass());
+                message.add(1, messageAux);
+            }
+        }else{
+            messageAux = character.getCharacterName() + " gains " + xpSum + " xp.";
+            message.add(0, messageAux);
+            message.add(1, "empty");
+
+        }
+
+        return message;
     }
 
     public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
