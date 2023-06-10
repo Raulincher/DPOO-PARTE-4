@@ -7,8 +7,11 @@ import business.entities.Character;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-
+/**
+ * Clase UIController, la cual manejará la info que otras clases mostrarán
+ */
 public class UIController {
+    //parámetros
     private final UIManager uiManager;
     private final AdventureManager adventureManager;
     private final CharacterManager characterManager;
@@ -1210,6 +1213,7 @@ public class UIController {
                 //Cogemos toda la XP del encuentro y la repartimos entre todos los miembros de la party por igual. Todos recibirán toda la cantidad
                 i = 0;
                 boolean evolved;
+
                 //bucle que mostrara la cantidad de XP ganada por el PJ + la posible subida de nivel del mismo
                 while(i < characterQuantity){
 

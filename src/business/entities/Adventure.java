@@ -2,6 +2,9 @@ package business.entities;
 
 import java.util.ArrayList;
 
+/**
+ * Clase que nos permite crear una Adventure en el programa
+ */
 public class Adventure {
     String name;
     int encounters;

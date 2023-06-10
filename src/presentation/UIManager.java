@@ -1,18 +1,14 @@
 package presentation;
 
-import business.entities.Adventurer;
-import business.entities.Champion;
-import business.entities.Character;
-import business.entities.Cleric;
-import business.entities.Paladin;
-
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 
-
+/**
+ * Clase UIManager, la cual permitirá mostrar toda la info necesaria por pantalla
+ */
 public class UIManager {
 
     // Añadimos un scanner
@@ -102,17 +98,6 @@ public class UIManager {
         System.out.println("--------------------");
         System.out.println("*** Short rest stage ***");
         System.out.println("--------------------");
-    }
-
-    /**
-     * Esta función servirá para enseñar la lista con todos los items al usuario
-     *
-     * @param items, LinkedList con todos los items
-     */
-    public void showList(LinkedList<String> items){
-        for (String item : items) {
-            System.out.println("\t* " + item);
-        }
     }
 
     /**
@@ -229,15 +214,6 @@ public class UIManager {
             }
         }
         showMessage(message);
-    }
-
-    public void levelUpMessage(ArrayList<String> message){
-        if(message.get(1).equals("empty")){
-            showMessage(message.get(0));
-        }else{
-            showMessage(message.get(0));
-            showMessage(message.get(1));
-        }
     }
 
     public void unconsciousMessage(){

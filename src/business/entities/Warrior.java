@@ -1,7 +1,8 @@
 package business.entities;
 
-import business.entities.Character;
-
+/**
+ * Clase Warrior que hereda métodos de la clase Character
+ */
 public class Warrior extends Character {
 
     //Creamos constructor con todos los atributos
@@ -20,16 +21,6 @@ public class Warrior extends Character {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
     }
 
-    @Override
-    public int initialLifeCalculator(int level) {
-        int life;
-        int body = getBody();
-
-        // Calculamos la vida con la fórmula
-        life = (10 + body) * level;
-
-        return life;
-    }
     /**
      * Esta función servirá para construir el Warrior
      * a partir de un Character
@@ -41,8 +32,31 @@ public class Warrior extends Character {
     }
 
     /**
+     * Esta función servirà para calcular la vida inicial
+     * de cada Cleric
+     *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
+     * @param level, que será el nivel del Cleric
+     * @return life, vida del personaje
+     */
+    @Override
+    public int initialLifeCalculator(int level) {
+        int life;
+        int body = getBody();
+
+        // Calculamos la vida con la fórmula
+        life = (10 + body) * level;
+
+        return life;
+    }
+
+    /**
      * Esta función servirá para calcular la iniciativa del
      * Warrior
+     *
+     * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
      */
@@ -59,17 +73,10 @@ public class Warrior extends Character {
     }
 
     /**
-     * Esta función servirá para hacer la acción de selfMotivated
-     * en la batalla, es decir, subir 1 al spirit.
-     * No tendrá ni param ni return.
-     */
-    public void selfMotivated(){
-        setSpirit(getSpirit() + 1);
-    }
-
-    /**
      * Esta función servirá para realizar el ataque Sword Slash
      * mejorado del Warrior
+     *
+     * sobreescribe el método attack de la clase character
      *
      * @return int con el ataque que realizará
      */
@@ -81,6 +88,14 @@ public class Warrior extends Character {
         return d10 + body;
     }
 
+    /**
+     * Esta función servirá para hacer la acción de selfMotivated
+     * en la batalla, es decir, subir 1 al spirit.
+     * No tendrá ni param ni return.
+     */
+    public void selfMotivated(){
+        setSpirit(getSpirit() + 1);
+    }
 
     /**
      * Esta función servirá para calcular cuánto se curará

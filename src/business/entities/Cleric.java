@@ -1,7 +1,8 @@
 package business.entities;
 
-import business.entities.Character;
-
+/**
+ * Clase Cleric que hereda métodos de la clase Character
+ */
 public class Cleric extends Character {
 
     //Creamos constructor con todos los atributos
@@ -34,6 +35,9 @@ public class Cleric extends Character {
      * Esta función servirà para calcular la vida inicial
      * de cada Cleric
      *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
      * @param level, que será el nivel del Cleric
      * @return life, vida del personaje
      */
@@ -49,6 +53,8 @@ public class Cleric extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Cleric
      *
+     * Esta función sobreescribe initiative de la clase character
+     *
      * @return initiative, iniciativa del personaje
      */
     @Override
@@ -57,6 +63,21 @@ public class Cleric extends Character {
         int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + spirit;
+    }
+
+    /**
+     * Esta función servirá para aumentar el spirit del personaje
+     *
+     * sobreescribe el método attack de la clase character
+     *
+     * @return spirit resultante
+     */
+    @Override
+    public int attack(){
+        int spirit = getSpirit();
+        int d4 = diceRollD4();
+        // Calculamos con la fórmula
+        return d4 + spirit;
     }
 
     /**
@@ -82,17 +103,6 @@ public class Cleric extends Character {
         return d10 + mind;
     }
 
-    /**
-     * Esta función servirá para aumentar el spirit del personaje
-     *
-     * @return spirit resultante
-     */
-    @Override
-    public int attack(){
-        int spirit = getSpirit();
-        int d4 = diceRollD4();
-        // Calculamos con la fórmula
-        return d4 + spirit;
-    }
+
 
 }

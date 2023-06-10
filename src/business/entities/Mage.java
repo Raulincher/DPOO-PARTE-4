@@ -1,7 +1,8 @@
 package business.entities;
 
-import business.entities.Character;
-
+/**
+ * Clase Mage que hereda métodos de la clase Character
+ */
 public class Mage extends Character {
 
     int shield;
@@ -57,6 +58,9 @@ public class Mage extends Character {
      * Esta función servirà para calcular la vida inicial
      * de cada Mage
      *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
      * @param level, que será el nivel del Mage
      * @return life, vida del personaje
      */
@@ -71,6 +75,8 @@ public class Mage extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Mage
+     *
+     * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
      */
@@ -112,6 +118,8 @@ public class Mage extends Character {
 
     /**
      * Esta función servirá para calcular cuánto daño se hará con el misil
+     *
+     * sobreescribe el método attack de la clase character
      *
      * @return dmg, daño resulltante
      */

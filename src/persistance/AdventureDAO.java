@@ -10,6 +10,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Clase AdventureDAO, la cual leerá toda la info del json de adventure
+ */
 public class AdventureDAO {
 
     // Añadimos atributos y json

@@ -13,6 +13,10 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * Clase CharacterManager, la cual tramitará todas las necesidades de un personaje
+ */
 public class CharacterManager {
 
     // Añadimos los componentes
@@ -164,7 +168,7 @@ public class CharacterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD12(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
         Random rand = new Random();
@@ -181,7 +185,7 @@ public class CharacterManager {
      * @return damage, int que será el número daño que causará
      */
     public int diceRollD10(){
-        int roll = 0;
+        int roll;
         int damage;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 10
@@ -199,76 +203,6 @@ public class CharacterManager {
         }
 
         return damage;
-    }
-
-    /**
-     * Esta función genera un número entre el 1 y el 6 simulando tirar
-     * un dado de 6 caras
-     *
-     * @return roll, int que será el número random generado
-     */
-    public int diceRollD6(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 7
-        Random rand = new Random();
-        int upperbound = 6;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
-    }
-
-    /**
-     * Esta función genera un número entre el 1 y el 8 simulando tirar
-     * un dado de 8 caras
-     *
-     * @return roll, int que será el número random generado
-     */
-    public int diceRollD8(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
-        Random rand = new Random();
-        int upperbound = 8;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
-    }
-
-
-    /**
-     * Esta función genera un número entre el 1 y el 20 simulando tirar
-     * un dado de 8 caras
-     *
-     * @return roll, int que será el número random generado
-     */
-    public int diceRollD4(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
-        Random rand = new Random();
-        int upperbound = 4;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
-    }
-
-
-    /**
-     * Esta función genera un número entre el 1 y el 20 simulando tirar
-     * un dado de 8 caras
-     *
-     * @return roll, int que será el número random generado
-     */
-    public int diceRollD20(){
-        int roll = 0;
-
-        // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
-        Random rand = new Random();
-        int upperbound = 20;
-        roll = rand.nextInt(upperbound) + 1;
-
-        return roll;
     }
 
     /**
@@ -306,8 +240,6 @@ public class CharacterManager {
         return level;
     }
 
-
-
     /**
      * Esta función indica si el nombre que se le quiere poner al personaje está ya en
      * uso o está disponible
@@ -339,8 +271,14 @@ public class CharacterManager {
     }
 
 
-    public String characterTypeOfDamage(String characterClass){
 
+    /**
+     * Esta función determina el tipo de daño de PJ dependiendo de su clase
+     *
+     * @param characterClass, clase a la cual pertenece el PJ
+     * @return typeOfDamage, String con el tipo de daño que hace el PJ
+     */
+    public String characterTypeOfDamage(String characterClass){
         String typeOfDamage;
 
         if(characterClass.equals("Adventurer") || characterClass.equals("Warrior") || characterClass.equals("Champion")){
@@ -350,7 +288,6 @@ public class CharacterManager {
         }else{
             typeOfDamage = "Magical";
         }
-
 
         return typeOfDamage;
     }
@@ -562,9 +499,6 @@ public class CharacterManager {
 
         return evolution;
     }
-
-
-
 
 
     /**

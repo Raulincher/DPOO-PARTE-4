@@ -1,7 +1,8 @@
 package business.entities;
 
-import business.entities.Character;
-
+/**
+ * Clase Champion que hereda métodos de la clase Character
+ */
 public class Champion extends Character {
 
     //Creamos constructor con todos los atributos
@@ -34,6 +35,9 @@ public class Champion extends Character {
      * Esta función servirà para calcular la vida inicial
      * de cada Champion
      *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
      * @param level, que será el nivel del Champion
      * @return life, vida que tendrá el personaje
      */
@@ -52,18 +56,36 @@ public class Champion extends Character {
      * Esta función servirá para calcular la iniciativa del
      * Champion
      *
+     * Esta función sobreescribe initiative de la clase character
+     *
      * @return initiative, número de iniciativa del personaje
      */
     @Override
     public int initiative() {
 
-        int initiative = 0;
+        int initiative;
         int spirit = getSpirit();
         int d12 = diceRollD12();
         // Calculamos con la fórmula
         initiative = d12 + spirit;
 
         return initiative;
+    }
+
+    /**
+     * Esta función servirá para realizar el ataque Sword Slash
+     * mejorado del Champion
+     *
+     * sobreescribe el método attack de la clase character
+     *
+     * @return int con el ataque que realizará
+     */
+    @Override
+    public int attack(){
+        int body = getBody();
+        int d10 = diceRollD10();
+        // Calculamos con la fórmula
+        return d10 + body;
     }
 
     /**
@@ -76,19 +98,6 @@ public class Champion extends Character {
         character.setSpirit(character.getSpirit() + 1);
     }
 
-    /**
-     * Esta función servirá para realizar el ataque Sword Slash
-     * mejorado del Champion
-     *
-     * @return int con el ataque que realizará
-     */
-    @Override
-    public int attack(){
-        int body = getBody();
-        int d10 = diceRollD10();
-        // Calculamos con la fórmula
-        return d10 + body;
-    }
 
     /**
      * Esta función servirá para calcular cuánto se curará

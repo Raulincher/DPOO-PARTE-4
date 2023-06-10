@@ -1,5 +1,8 @@
 package business.entities;
 
+/**
+ * Clase Monster, nos permite crear monstruos
+ */
 public class Monster {
     String name;
     String challenge;
@@ -95,14 +98,29 @@ public class Monster {
         return damageDice;
     }
 
+    /**
+     * Esta función servirá para actualizar la initiative del monster
+     *
+     * @param initiative, será la initiative del monster
+     */
     public void setInitiative(int initiative) {
         this.initiative = initiative;
     }
 
+    /**
+     * Esta función servirá para actualizar la vida actual del monster
+     *
+     * @param actualHitPoints, será la nueva vida actual del monster
+     */
     public void setActualHitPoints(int actualHitPoints) {
         this.actualHitPoints = actualHitPoints;
     }
 
+    /**
+     * Esta función recogerá la vida actual del monster
+     *
+     * @return actualHitPoints, que será la vida actual del monster
+     */
     public int getActualHitPoints() {
         return actualHitPoints;
     }

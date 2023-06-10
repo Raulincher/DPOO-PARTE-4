@@ -19,6 +19,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Clase AdventureAPI, la cual leerá toda la info de la API de adventure
+ */
 public class AdventureAPI {
 
     private final HttpClient client;
@@ -46,9 +49,8 @@ public class AdventureAPI {
      *
      * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
      * @return El contenido de la URL representada como texto.
-     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
-    public ArrayList<Adventure> getFromUrl(String url) throws IOException {
+    public ArrayList<Adventure> getFromUrl(String url){
         Adventure[] adventures;
         ArrayList<Adventure> adventureList;
 
@@ -102,32 +104,6 @@ public class AdventureAPI {
             throw new IOException(e);
         }
     }
-
-    /**
-     * Método que elimina los contenidos de una URL utilizando el protocolo HTTPS. Específicamente, se envía una solicitud DELETE.
-     * Todos los parámetros deben incluirse en la URL.
-     *
-     * @param url Una representación de cadena de la URL para eliminar, que se supondrá que utiliza HTTP/HTTPS.
-     * @return El contenido de la respuesta, en caso de que el servidor devuelva algo después de eliminar el contenido.
-     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
-     */
-    public String deleteFromUrl(String url) throws IOException {
-        try {
-            // Definir la solicitud
-            // El método predeterminado es GET, por lo que no necesitamos especificarlo (pero podemos hacerlo llamando a .GET() antes de .build()
-            // El patrón HttpRequest.Builder ofrece mucha personalización para la solicitud (encabezados, cuerpo, versión HTTP...)
-            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).DELETE().build();
-
-            // Usamos el BodyHandler predeterminado para cadenas (para que podamos obtener el cuerpo de la respuesta como una cadena)
-            // Tenga en cuenta que también podríamos enviar la solicitud de forma asíncrona, pero las cosas aumentarían en términos de complejidad de codificación
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            // Las excepciones se simplifican para cualquier clase que necesite atraparlas
-            throw new IOException(e);
-        }
-    }
-
 
 
     /**

@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-
+/**
+ * Clase CharacterDAO, la cual leerá toda la info del Json de character
+ */
 public class CharacterDAO {
 
     // Añadimos atributos y json

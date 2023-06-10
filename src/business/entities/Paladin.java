@@ -1,9 +1,8 @@
 package business.entities;
 
-import business.entities.Character;
-
-import java.util.Random;
-
+/**
+ * Clase Paladin que hereda métodos de la clase Character
+ */
 public class Paladin extends Character {
 
     //Creamos constructor con todos los atributos
@@ -22,13 +21,6 @@ public class Paladin extends Character {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);
     }
 
-    @Override
-    public int initialLifeCalculator(int level){
-        int body = getBody();
-
-        // Calculamos con la fórmula
-        return (10 + body) * level;
-    }
     /**
      * Esta función servirá para construir el Paladin
      * a partir de un Character
@@ -40,8 +32,28 @@ public class Paladin extends Character {
     }
 
     /**
+     * Esta función servirà para calcular la vida inicial
+     * de cada Cleric
+     *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
+     * @param level, que será el nivel del Cleric
+     * @return life, vida del personaje
+     */
+    @Override
+    public int initialLifeCalculator(int level){
+        int body = getBody();
+
+        // Calculamos con la fórmula
+        return (10 + body) * level;
+    }
+
+    /**
      * Esta función servirá para calcular la iniciativa del
      * Paladin
+     *
+     * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
      */
@@ -51,6 +63,22 @@ public class Paladin extends Character {
         int d10 = diceRollD10();
         // Calculamos con la fórmula
         return d10 + spirit;
+    }
+
+    /**
+     * Esta función servirá para realizar el movimiento Never on my watch,
+     * con el que se sumará el spirit
+     *
+     * sobreescribe el método attack de la clase character
+     *
+     * @return spirit resultante
+     */
+    @Override
+    public int attack(){
+        int spirit = getSpirit();
+        int d8 = diceRollD8();
+        // Calculamos con la fórmula
+        return d8 + spirit;
     }
 
     /**
@@ -76,17 +104,4 @@ public class Paladin extends Character {
         return mind + d10;
     }
 
-    /**
-     * Esta función servirá para realizar el movimiento Never on my watch,
-     * con el que se sumará el spirit
-     *
-     * @return spirit resultante
-     */
-    @Override
-    public int attack(){
-        int spirit = getSpirit();
-        int d8 = diceRollD8();
-        // Calculamos con la fórmula
-        return d8 + spirit;
-    }
 }

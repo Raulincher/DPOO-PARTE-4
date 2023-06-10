@@ -8,8 +8,13 @@ import persistance.AdventureDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+/**
+ * Clase AdventureManager, la cual tramitará todas las necesidades de una aventura como guardarlas o jugarlas
+ */
 public class AdventureManager {
 
+    //parámetros
     AdventureDAO adventureDAO;
     AdventureAPI adventureAPI;
     CharacterManager characterManager;
@@ -28,7 +33,17 @@ public class AdventureManager {
         this.adventureAPI = adventureAPI;
     }
 
-    public void setMonstersEncounter(ArrayList<Monster> monsters, ArrayList<ArrayList<Monster>> encounterMonsters, int monsterOption, int lastQuantity ,int monsterQuantity, int auxEncounter){
+    /**
+     * Esta función servirá para hacer un set de los monstruos de un encuentro
+     *
+     * @param monsters, arraylist de los monstruos
+     * @param encounterMonsters, arraylist de los monstruos del encuentro
+     * @param monsterOption, índice con la opción del monstruo escogido
+     * @param lastQuantity, cantidad anterior de monstruos añadida
+     * @param monsterQuantity, cantidad de monstruos a añadir
+     * @param auxEncounter, número del encuentro en el que estamos
+     */
+    public void setMonstersEncounter(ArrayList<Monster> monsters, ArrayList<ArrayList<Monster>> encounterMonsters, int monsterOption, int lastQuantity, int monsterQuantity, int auxEncounter){
 
         int i = 0;
 
@@ -221,7 +236,7 @@ public class AdventureManager {
      * Esta función servirá para contar los personajes que estén
      * muertos en ese instante
      *
-     * @param characters lista con todas las vidas de los personajes
+     * @param characters lista con todos los characters en batalla
      * @return número total de muertos
      */
     public int countDeadCharacters(ArrayList<Character> characters){
@@ -241,7 +256,7 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el personaje que tenga menos vida
      *
-     * @param characters lista con todas las vidas de los personajes
+     * @param characters lista con todos los characters en batalla
      * @return índice del personaje con menos vida
      */
     public int smallestCharacterLife(ArrayList<Character> characters){
@@ -278,7 +293,7 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el enemigo con mayor vida
      *
-     * @param monsters lista con todas las vidas de los monsters
+     * @param monsters lista con todos los monstruos en batalla
      * @return índice del monster con mayor vida
      */
     public int highestEnemyLife(ArrayList<Monster> monsters){
@@ -314,7 +329,7 @@ public class AdventureManager {
     /**
      * Esta función servirá para buscar el monster que tenga menos vida
      *
-     * @param monsters lista con todas las vidas de los monsters
+     * @param monsters lista con todas los monstruos en batalla
      * @return índice del monster con menos vida
      */
     public int smallestEnemyLife(ArrayList<Monster> monsters){
@@ -345,6 +360,12 @@ public class AdventureManager {
         return index;
     }
 
+    /**
+     * Esta función servirá para contar los monstruos vivos de la batalla
+     *
+     * @param monsters lista con todas los monstruos en batalla
+     * @return counter, contador de monstruos vivos
+     */
     public int countAliveMonsters(ArrayList<Monster> monsters){
         int counter = 0;
         for (Monster monster : monsters) {
@@ -355,7 +376,15 @@ public class AdventureManager {
         return counter;
     }
 
-
+    /**
+     * Esta función servirá para reducir el daño que reciben los characters por parte de los monsters
+     *
+     * @param damage, daño que recibe el personaje
+     * @param character, personaje que va a recibir el daño
+     * @param typeOfDamage, string con tipo de daño del monster
+     *
+     * @return damage, daño ya reducido
+     */
     public int damageReduction(int damage, Character character, String typeOfDamage){
         if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
             damage = (int)Math.ceil(damage - characterManager.revertXpToLevel(character.getCharacterLevel()));
@@ -370,7 +399,15 @@ public class AdventureManager {
         return damage ;
     }
 
-
+    /**
+     * Esta función servirá para reducir el daño que reciben los monsters por parte de los characters
+     *
+     * @param damage, daño que recibe el monster
+     * @param monster, monster que va a recibir el daño
+     * @param typeOfDamage, string con tipo de daño del character
+     *
+     * @return damage, daño ya reducido
+     */
     public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
 
         if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
@@ -388,6 +425,15 @@ public class AdventureManager {
         return damage + 1;
     }
 
+
+    /**
+     * Esta función servirá para comprobar si algun personaje necesita
+     * healing por parte de un clerigo o paladin en medio de la batalla
+     *
+     * @param characterInParty, personaje con el menos indice de vida
+     *
+     * @return needHeal, boolean que  confirmará que el healing es necesario
+     */
     public Boolean needAHeal(Character characterInParty){
         boolean needHeal = false;
         int actualLife = characterInParty.getActualLife();
@@ -399,7 +445,15 @@ public class AdventureManager {
     }
 
 
-
+    /**
+     * Esta función servirá para comprobar si el character que
+     * estamos tratando es un mago
+     *
+     * @param charactersInParty, lista de personajes en la aventura
+     * @param index, indice del personaje a tratar
+     *
+     * @return isMage, boolean que confirmará que el PJ es un mago
+     */
     public boolean isMage(ArrayList<Character> charactersInParty, int index ){
 
         boolean isMage = false;
@@ -413,7 +467,16 @@ public class AdventureManager {
 
 
 
-
+    /**
+     * Esta función servirá para tratar el escudo y la vida de un mago
+     *
+     * @param characterInParty, lista de personajes en la aventura
+     * @param magesInBattle, lista de magos en la aventura
+     * @param isCrit, indice que indica si el golpe es critico
+     * @param damage, indicador del daño que se recibe
+     *
+     * @return total, int que devolverá el total de vida restante del personaje
+     */
     public int shieldDealer(Character characterInParty, ArrayList<Mage> magesInBattle, int isCrit, int damage ){
 
         int mageIndex = 0;
@@ -449,7 +512,15 @@ public class AdventureManager {
         return total;
     }
 
-
+    /**
+     * Esta función servirá para tratar el daño que recibirán los personajes, a excepción del mago
+     *
+     * @param actualLife, vida actual del mago
+     * @param isCrit, indice que indica si el golpe es critico
+     * @param damage, indicador del daño que se recibe
+     *
+     * @return total, int que devolverá el total de vida restante del personaje
+     */
     public int applyDamage(int isCrit, int actualLife, int damage ){
         int total = 0;
 
@@ -468,7 +539,13 @@ public class AdventureManager {
         return total;
     }
 
-
+    /**
+     * Esta función servirá para sumar toda la exp que sueltan los monstruos al vencer en un encuentro
+     *
+     * @param monstersInEncounter, lista con lso mosntruos dentro del encuentro
+     *
+     * @return xpSum, int que representa la suma total de toda la exp
+     */
     public int sumAllMonsterXp(ArrayList<Monster> monstersInEncounter){
         int xpSum = 0, i = 0;
         while(i < monstersInEncounter.size()){
@@ -478,6 +555,15 @@ public class AdventureManager {
         return xpSum;
     }
 
+
+    /**
+     * Esta función servirá para encontrar a un personaje de clase mago dentro del array list de magos
+     *
+     * @param magesInBattle, lista con los magos de la batalla
+     * @param actualName, nombre del mago a buscar
+     *
+     * @return index, indice del mago que se buscaba
+     */
     public int getMageIndex(ArrayList<Mage> magesInBattle, String actualName){
         int index = -1;
 
@@ -491,6 +577,16 @@ public class AdventureManager {
     }
 
 
+
+    /**
+     * Esta función servirá para que los PJ usen las habilidades en la fase de preparación
+     *
+     * @param character, PJ que usará la habilidad
+     * @param characterInParty, lista de los PJs en batalla
+     * @param magesInBattle, lista de los magos en batalla
+     * @param roll, numero del d3
+     *
+     */
     public void applyAbilitiesPrepPhase(Character character, ArrayList<Character> characterInParty, ArrayList<Mage> magesInBattle, int roll){
 
         switch (character.getCharacterClass()) {
@@ -537,7 +633,16 @@ public class AdventureManager {
         }
     }
 
-
+    /**
+     * Esta función servirá para controlar el healing que puede darse en medio del combate
+     *
+     * @param healedCharacter, personaje que necesita la cura
+     * @param character, personaje que usará la habilidad de curar
+     * @param charactersInParty, lista de los personajes en batalla
+     *
+     * @return heal, int con el número de vida curado.
+     *
+     */
     public int healingInCombat(Character healedCharacter, Character character, ArrayList<Character> charactersInParty) {
 
         int heal = 0;
@@ -569,40 +674,15 @@ public class AdventureManager {
         return heal;
     }
 
-
-    public ArrayList<String> levelUpController(Character character, int xpSum, boolean isUsingApi) throws IOException {
-        ArrayList<String> message = new ArrayList<String>(2);
-        String messageAux;
-
-        boolean levelUp = characterManager.levelUpCheck(xpSum, character.getCharacterLevel());
-
-
-        if(isUsingApi){
-            characterManager.levelUpdateAPI(character, xpSum);
-        }else{
-            characterManager.levelUpdate(character, xpSum);
-        }
-        if(levelUp){
-            messageAux = character.getCharacterName() + " gains " + xpSum + " xp." + character.getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(character.getCharacterLevel()) + "!";
-
-            message.add(0, messageAux);
-
-            boolean evolved = characterManager.evolution(character, isUsingApi);
-
-            if(evolved){
-                messageAux = (character.getCharacterName() + " evolves to " + character.getCharacterClass());
-                message.add(1, messageAux);
-            }
-        }else{
-            messageAux = character.getCharacterName() + " gains " + xpSum + " xp.";
-            message.add(0, messageAux);
-            message.add(1, "empty");
-
-        }
-
-        return message;
-    }
-
+    /**
+     * Esta función servirá para que los PJ usen las habilidades en la fase de descanso
+     *
+     * @param character, PJ que usará la habilidad
+     * @param characterInParty, lista de los PJs en batalla
+     * @param smallIndex, indice del PJ con menos vida
+     *
+     * @return curation, numero que nos dirá la cantidad de curación realizada por el PJ. En el caso de que su habilidad trate de eso
+     */
     public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
 
         int curation = 0;
@@ -663,7 +743,12 @@ public class AdventureManager {
         return curation;
     }
 
-
+    /**
+     * Esta función permite iniciar una lista con los indices de todos los PJs conscientes
+     *
+     * @param consciousPosition, lista de personajes conscientes
+     * @param characterInParty, lista de los PJs en batalla
+     */
     public void setConsciousPosition(ArrayList<String> consciousPosition, ArrayList<Character> characterInParty){
 
         int a = 0;
@@ -682,16 +767,33 @@ public class AdventureManager {
         }
     }
 
-
+    /**
+     * Esta función permite determinar si un ataque ha fallado
+     *
+     * @param isCrit, indice que indica cuando un atque es critico, normal o fallo
+     *
+     * @return boolean que indica el fallo
+     */
     public boolean failedAttack(int isCrit){
         return isCrit != 1 && isCrit != 2;
     }
 
+
+    /**
+     * Esta función realiza los cálculos de daño de los diferentes PJs
+     *
+     * @param character, personaje que ataca
+     * @param aliveMonster, monstruos con vida en el encuentro
+     *
+     * @return damage, daño bruto calculado
+     */
     public int calculateDamage(Character character, int aliveMonster){
         int damage;
 
+        //función de la clase padre Character
         damage = character.attack();
 
+        //comprobación de multihit
         if(aliveMonster >= 3){
             if (character.getCharacterClass().equals("Mage")){
                 Mage mage = new Mage(character,0);
@@ -741,6 +843,7 @@ public class AdventureManager {
             int actualInitiative;
             auxFlag = false;
 
+            //comprobamos si la iniciativa es negativa
             if(listOfPriorities.get(i).contains("-")){
                 auxName = listOfPriorities.get(i).split("-");
                 actualName = auxName[0];
@@ -758,6 +861,7 @@ public class AdventureManager {
                 String compareName;
                 int compareInitiative;
 
+                //comprobamos si la iniciativa es negativa
                 if(listOfPriorities.get(z).contains("-")){
                     auxCompareName = listOfPriorities.get(z).split("-");
                     compareName = auxCompareName[0];
@@ -801,16 +905,14 @@ public class AdventureManager {
         ArrayList<String> listOfPriorities = new ArrayList<>(0);
         int i = 0;
         int z = 0;
-        int characterSpirit = 0;
-        int characterInitiative = 0;
-        int diceroll = 0;
+        int characterInitiative;
+        int diceroll;
 
         // Iniciamos un bucle que dure la cantidad de personajes y monsters combinada
         while(i < characterQuantity + monsterQuantity){
 
             // Recogemos todas las iniciativas de los personajes
             if(i < characterInParty.size()){
-
                 characterInitiative = characterInParty.get(i).initiative();
                 listOfPriorities.add(z, characterInParty.get(i).getCharacterName() + characterInitiative);
                 z++;
@@ -827,6 +929,7 @@ public class AdventureManager {
 
         return listOfPriorities;
     }
+
     /**
      * Esta función servirá para crear una lista con todos los monsters
      * que se encontrarán en toda la aventura, será una lista de listas
@@ -844,7 +947,6 @@ public class AdventureManager {
         }
         return encounterMonsters;
     }
-
 
     /**
      * Esta función servirá para contar cuantos monsters habrán

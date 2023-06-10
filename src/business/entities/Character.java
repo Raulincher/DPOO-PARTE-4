@@ -4,9 +4,12 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Random;
 
+/**
+ * Clase abstracta de Character
+ */
 public abstract class Character {
 
-
+    //parámetros
     int actualLife, totalLife;
     @Expose
     String name, player, characterClass;
@@ -37,19 +40,38 @@ public abstract class Character {
         this.totalLife = totalLife;
     }
 
-
+    /**
+     * Esta función servirá para actualizar la vida actual del character
+     *
+     * @param actualLife, será la nueva vida actual del character
+     */
     public void setActualLife(int actualLife) {
         this.actualLife = actualLife;
     }
 
+    /**
+     * Esta función llamará a la vida actual del character
+     *
+     * @return actualLife, vida actual del character
+     */
     public int getActualLife() {
         return actualLife;
     }
 
+    /**
+     * Esta función servirá para actualizar la vida total del character
+     *
+     * @param totalLife, será la nueva vida total del character
+     */
     public void setTotalLife(int totalLife) {
         this.totalLife = totalLife;
     }
 
+    /**
+     * Esta función llamará a la vida total del character
+     *
+     * @return actualLife, vida total del character
+     */
     public int getTotalLife() {
         return totalLife;
     }
@@ -170,6 +192,8 @@ public abstract class Character {
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
      *
+     * La usamos en los hijos de la clase Character
+     *
      * @return roll, int que será el número random generado
      */
     public int diceRollD3(){
@@ -188,6 +212,8 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 10 simulando tirar
      * un dado de 10 caras
+     *
+     * La usamos en los hijos de la clase Character
      *
      * @return damage, int que será el número daño que causará
      */
@@ -216,6 +242,8 @@ public abstract class Character {
      * Esta función genera un número entre el 1 y el 6 simulando tirar
      * un dado de 6 caras
      *
+     * La usamos en los hijos de la clase Character
+     *
      * @return roll, int que será el número random generado
      */
     public int diceRollD6(){
@@ -232,6 +260,8 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 8 simulando tirar
      * un dado de 8 caras
+     *
+     * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
      */
@@ -251,6 +281,8 @@ public abstract class Character {
      * Esta función genera un número entre el 1 y el 20 simulando tirar
      * un dado de 8 caras
      *
+     * La usamos en los hijos de la clase Character
+     *
      * @return roll, int que será el número random generado
      */
     public int diceRollD4(){
@@ -269,6 +301,8 @@ public abstract class Character {
      * Esta función genera un número entre el 1 y el 20 simulando tirar
      * un dado de 8 caras
      *
+     * La usamos en los hijos de la clase Character
+     *
      * @return roll, int que será el número random generado
      */
     public int diceRollD20(){
@@ -286,6 +320,8 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
+     *
+     * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
      */

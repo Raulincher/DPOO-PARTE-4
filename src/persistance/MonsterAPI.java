@@ -18,6 +18,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Clase MonsterAPI, la cual leerá toda la info de la API de monster
+ */
 public class MonsterAPI {
     private final HttpClient client;
 
@@ -46,7 +49,7 @@ public class MonsterAPI {
      * @return El contenido de la URL representada como texto.
      * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
-    public ArrayList<Monster> getFromUrl(String url) throws IOException {
+    public ArrayList<Monster> getFromUrl(String url) {
 
         Monster[] monsters;
         ArrayList<Monster> monstersList;

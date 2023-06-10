@@ -1,5 +1,8 @@
 package business.entities;
 
+/**
+ * Clase Adventurer que hereda métodos de la clase Character
+ */
 public class Adventurer extends Character {
 
     //Creamos constructor con todos los atributos
@@ -29,6 +32,15 @@ public class Adventurer extends Character {
         super(character.getCharacterName(), character.getPlayerName(), character.getCharacterLevel(), character.getBody(), character.getMind(), character.getSpirit(), character.getCharacterClass(), character.getActualLife(), character.getTotalLife());
     }
 
+    /**
+     * Esta función servirá para calcular la vida
+     * inicial de un personaje.
+     *
+     * Sobreescribe el método initialLifeCalculator
+     * de la clase character
+     *
+     * @return initiative, iniciativa del personaje
+     */
     @Override
     public int initialLifeCalculator(int level) {
         int life;
@@ -44,14 +56,14 @@ public class Adventurer extends Character {
      * Esta función servirá para calcular la iniciativa del
      * adventurer
      *
+     * Esta función sobreescribe initiative de la clase character
+     *
      * @return initiative, iniciativa del personaje
      */
     @Override
     public int initiative() {
-
         int initiative = 0;
         int spirit = getSpirit();
-
         int d12 = diceRollD12();
 
         // Calculamos la iniciativa del adventuer
@@ -61,17 +73,10 @@ public class Adventurer extends Character {
     }
 
     /**
-     * Esta función servirá para hacer la acción de selfMotivated
-     * en la batalla, es decir, subir 1 al spirit.
-     * No tendrá ni param ni return.
-     */
-    public void selfMotivated(){
-        setSpirit(getSpirit() + 1);
-    }
-
-    /**
      * Esta función servirá para realizar el ataque Sword Slash
      * del adventurer
+     *
+     * sobreescribe el método attack de la clase character
      *
      * @return ataque del personaje
      */
@@ -81,6 +86,14 @@ public class Adventurer extends Character {
         int d6 = diceRollD6();
         // Calculamos con la fórmula
         return d6 + body;
+    }
+
+    /**
+     * Esta función servirá para hacer la acción de selfMotivated
+     * en la batalla, es decir, subir 1 al spirit.
+     */
+    public void selfMotivated(){
+        setSpirit(getSpirit() + 1);
     }
 
     /**
