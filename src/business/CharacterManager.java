@@ -315,7 +315,7 @@ public class CharacterManager {
      * @param name, valor que contendrá el posible nombre del personaje
      * @return exist, bool que dirá si el nombre está disponible o no
      */
-    public boolean characterNameDisponibility(String name, boolean isUsingApi) {
+    public boolean characterNameDisponibility(String name, boolean isUsingApi) throws IOException {
 
         boolean exist = false;
         ArrayList<Character> characters;

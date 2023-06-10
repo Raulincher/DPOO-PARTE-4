@@ -945,7 +945,6 @@ public class UIController {
 
 
                     aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
-                    System.out.println("me cambio aqui " + aliveMonsters + "aqui");
 
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
@@ -1066,6 +1065,7 @@ public class UIController {
 
                                     }else {
 
+                                        fail = adventureManager.failedAttack(isCrit);
                                         //aplicamos reducciones de daño dependiendo del tipo del mismo
 
                                         reductedDmg = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
@@ -1076,7 +1076,6 @@ public class UIController {
                                         }else{
                                             total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), reductedDmg);
                                         }
-
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
                                             characterInParty.get(smallestCharacterIndex).setActualLife(total);
@@ -1247,13 +1246,13 @@ public class UIController {
                 i = 0;
                 //Recorremos toda la party para usar las posibles habilidades disponibles que tengamos en el momento
                 while(i < characterQuantity){
-
                     int temporalLife = characterInParty.get(i).getActualLife();
                     int smallIndex = adventureManager.smallestCharacterLife(characterInParty);
-
                     int characterCuration = adventureManager.applyAbilitiesRestPhase(characterInParty.get(i), characterInParty, smallIndex);
+
                     uiManager.showAbilitiesRestPhase(characterInParty.get(i).getCharacterClass(), characterInParty.get(i).getCharacterName(), characterCuration, temporalLife);
                     adventureManager.applyAbilitiesRestPhase(characterInParty.get(i),characterInParty, smallIndex);
+
                     i++;
                 }
             }else{

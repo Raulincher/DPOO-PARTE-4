@@ -606,7 +606,7 @@ public class AdventureManager {
     public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
 
         int curation = 0;
-        int total = 0;
+        int total;
 
         switch (character.getCharacterClass()) {
             case "Adventurer" -> {
@@ -633,11 +633,8 @@ public class AdventureManager {
                 Champion champion = new Champion(character);
                 //efectuamos habilidad
                 curation = champion.improvedBandageTime(champion.getTotalLife(), champion.getActualLife());
-                total = champion.getActualLife() + curation;
-                if(total >= character.getTotalLife()){
-                    total = character.getTotalLife();
-                }
-                champion.setActualLife(total);
+                champion.setActualLife(champion.getTotalLife());
+
             }
             case "Cleric" -> {
                 Cleric cleric = new Cleric(character);
@@ -659,6 +656,7 @@ public class AdventureManager {
                         total = characterInParty.get(i).getTotalLife();
                     }
                     characterInParty.get(i).setActualLife(total);
+                    i++;
                 }
             }
         }

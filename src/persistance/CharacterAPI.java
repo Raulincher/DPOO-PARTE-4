@@ -48,7 +48,7 @@ public class CharacterAPI {
      * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
      * @return El contenido de la URL representada como texto.
      */
-    public ArrayList<Character> getFromUrl(String url) {
+    public ArrayList<Character> getFromUrl(String url) throws IOException {
 
         ArrayList<Character> charactersList;
 
@@ -70,7 +70,9 @@ public class CharacterAPI {
             charactersList = new ArrayList<>(Arrays.asList(characters));
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            charactersList = null;
+            throw new IOException(e);
+            //charactersList = null;
+
         }
 
         return charactersList;
