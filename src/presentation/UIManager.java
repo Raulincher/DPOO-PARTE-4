@@ -2,7 +2,6 @@ package presentation;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -102,7 +101,7 @@ public class UIManager {
 
     /**
      * Esta función servirá para pedirle al usuario que
-     * escriba un Integer, cubirendo el posible error
+     * escriba un Integer, cubriendo el posible error
      *
      * @param message, mensaje con el que se pedirá el Integer
      * @return int con el Integer que se pida
@@ -122,7 +121,7 @@ public class UIManager {
 
     /**
      * Esta función servirá para pedirle al usuario que
-     * escriba un String, cubirendo el posible error
+     * escriba un String, cubriendo el posible error
      *
      * @param message, mensaje con el que se pedirá el String
      * @return String con lo que se pida
@@ -135,14 +134,14 @@ public class UIManager {
     public void messageAttack(String actualName, String attackedMonster, String characterClass, int heal, int multihit, String healedCharacter){
         String message = "empty";
         switch (characterClass) {
-            case "Adventurer" -> {
+            case "Adventurer" ->
                 //mostramos nombre de personaje que ataca, habilidad que usa y enemigo que es atacado
                 message = "\n" + actualName + " attacks " + attackedMonster + " with Sword slash.";
-            }
-            case "Warrior", "Champion" -> {
+
+            case "Warrior", "Champion" ->
                 //mostramos nombre de personaje que ataca, habilidad que usa y enemigo que es atacado
                 message = "\n" + actualName + " attacks " + attackedMonster + " with Improved sword slash.";
-            }
+
             case "Cleric" -> {
                 if (healedCharacter.equals("empty")) {
                     //en caso de no sanar el clérigo atacará con su habilidad de clase
@@ -198,7 +197,7 @@ public class UIManager {
 
     public void showLifeInBattle(int actualLife, String actualName, int totalLife, int shield, int z){
 
-        String message = "empty";
+        String message;
 
         if(shield == -1){
             if(z == 0){
@@ -249,26 +248,26 @@ public class UIManager {
         String message = "";
 
         switch (characterClass) {
-            case "Adventurer", "Warrior" -> {
+            case "Adventurer", "Warrior" ->
                 //anunciamos habilidad
                 message = characterName + " uses Self-Motivated. Their Spirit increases in +1";
-            }
-            case "Champion" -> {
+
+            case "Champion" ->
                 //anunciamos habilidad
                 message = characterName + " uses Motivational speech. Everyone’s Spirit increases in +1";
-            }
-            case "Cleric" -> {
+
+            case "Cleric" ->
                 //anunciamos habilidad
                 message = characterName + " uses Prayer of good luck. Everyone’s Mind increases in +1";
-            }
-            case "Paladin" -> {
+
+            case "Paladin" ->
                 //anunciamos habilidad
                 message = characterName + " uses Blessing of good luck. Everyone’s Mind increases in +" + roll;
-            }
-            case "Mage" -> {
+
+            case "Mage" ->
                 //anunciamos habilidad
                 message = characterName + " uses Mage shield. Shield recharges " + shield;
-            }
+
         }
         showMessage(message);
     }

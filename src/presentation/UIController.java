@@ -193,7 +193,7 @@ public class UIController {
      *
      * @param option, opción que el usuario habrá escogido
      * @param isUsingApi, bool para saber si se está usando la API
-     * @throws IOException
+     * @throws IOException, por posible fallo de lectura
      */
     private void executeOption(int option, boolean isUsingApi) throws IOException {
         uiManager.showMessage("");
@@ -222,7 +222,7 @@ public class UIController {
      * de preguntas prepara un gran terreno para que el usuario cree un personaje.
      *
      * @param isUsingApi, bool para saber si se está usando la API
-     * @throws IOException
+     * @throws IOException, por posible fallo de lectura
      */
     private void characterCreation(boolean isUsingApi) throws IOException {
         // Preparamos variables y damos la bienvenida
@@ -275,7 +275,7 @@ public class UIController {
 
             // A través de un if / else nos aseguremos que el nivel esté bien introducido
             if(characterLevel > 10 || characterLevel < 1){
-                uiManager.showMessage("\nTavern keeper: I don't think you could be at that level, c'mon tell me the truth");
+                uiManager.showMessage("\nTavern keeper: I don't think you could be at that level, C'mon tell me the truth");
                 uiManager.showMessage("Character level can't be lower than 1 or higher than 10\n");
             }
             else {
@@ -352,7 +352,7 @@ public class UIController {
      * ya existentes.
      *
      * @param isUsingApi, bool para saber si se está usando la API
-     * @throws IOException
+     * @throws IOException, por posible fallo de lectura
      */
     private void listCharacters(boolean isUsingApi) throws IOException {
         int i = 0;
@@ -462,7 +462,7 @@ public class UIController {
      * Esta función representa la opción 3 y crea una adventure.
      *
      * @param isUsingApi, bool para saber si se está usando la API
-     * @throws IOException
+     * @throws IOException, por posible fallo de lectura
      */
     private void adventureCreation(boolean isUsingApi) throws IOException {
         int error = 0;
@@ -668,7 +668,7 @@ public class UIController {
      * Esta función representa la opción 4 para empezar una adventure.
      *
      * @param isUsingApi, bool para saber si se está usando la API
-     * @throws IOException
+     * @throws IOException, por posible fallo de lectura
      */
     private void adventurePlay(boolean isUsingApi) throws IOException {
 
@@ -866,7 +866,7 @@ public class UIController {
             int roundCounter = 0;
 
             // Creamos la lista en cuestión
-            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, magesInBattle, characterInParty, monstersInEncounter );
+            ArrayList<String> listOfPriorities = adventureManager.listOfPriorities(characterQuantity, monsterQuantity, characterInParty, monstersInEncounter );
 
             // La ordenamos según el número de iniciativa
             adventureManager.orderListOfPriorities(listOfPriorities);
@@ -897,8 +897,8 @@ public class UIController {
             do{
                 // Preparamos variables
 
-                int q = 0, reductedDmg = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total = 0, damage, multihit = 0, heal = 0;
-                boolean isMage, isBoss = false, fail, needAHeal = false;
+                int q = 0, reducedDmg = 0, isCrit, totalLife, actualLife, highestMonsterIndex, smallestMonsterIndex, smallestCharacterIndex, shield, total, damage, multihit = 0, heal = 0;
+                boolean isMage, isBoss = false, fail, needAHeal;
                 String[] auxName;
                 String actualName, attackedMonster, compareName, typeOfDamage;
                 ArrayList<String> consciousPosition = new ArrayList<>(0);
@@ -931,7 +931,6 @@ public class UIController {
 
                 // Iniciamos bucle para la batalla
                 while(q < listOfPriorities.size()){
-                    fail = false;
                     //comprobamos si hay o no critico. (2 (crítico), 1 (golpe normal), 0 (fallo))
                     isCrit = characterManager.diceRollD10();
                     //indice del enemigo con más vida
@@ -1039,8 +1038,8 @@ public class UIController {
                                     typeOfDamage = monstersInEncounter.get(j).getDamageType();
 
                                     //Con los jefes hemos decidido añadir que, independientemente de la resistencia a los tipos de sus enemigos, siempre harán el mismo daño
+                                    fail = adventureManager.failedAttack(isCrit);
                                     if(isBoss){
-                                        fail = adventureManager.failedAttack(isCrit);
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
                                             for(int b = 0; b < characterInParty.size(); b++){
@@ -1049,11 +1048,11 @@ public class UIController {
                                                 if(actualLife != 0){
                                                     isMage = adventureManager.isMage(characterInParty, b);
 
-                                                    reductedDmg = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
+                                                    reducedDmg = adventureManager.damageReduction(damage, characterInParty.get(b), typeOfDamage);
                                                     if(isMage){
-                                                        total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, reductedDmg);
+                                                        total = adventureManager.shieldDealer(characterInParty.get(b), magesInBattle, isCrit, reducedDmg);
                                                     }else{
-                                                        total = adventureManager.applyDamage(isCrit,actualLife, reductedDmg);
+                                                        total = adventureManager.applyDamage(isCrit,actualLife, reducedDmg);
                                                     }
 
 
@@ -1068,16 +1067,15 @@ public class UIController {
 
                                     }else {
 
-                                        fail = adventureManager.failedAttack(isCrit);
                                         //aplicamos reducciones de daño dependiendo del tipo del mismo
 
-                                        reductedDmg = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
+                                        reducedDmg = adventureManager.damageReduction(damage, characterInParty.get(smallestCharacterIndex), typeOfDamage);
 
                                         isMage = adventureManager.isMage(characterInParty, smallestCharacterIndex);
                                         if(isMage){
-                                            total = adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, reductedDmg);
+                                            total = adventureManager.shieldDealer(characterInParty.get(smallestCharacterIndex), magesInBattle, isCrit, reducedDmg);
                                         }else{
-                                            total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), reductedDmg);
+                                            total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), reducedDmg);
                                         }
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
@@ -1091,7 +1089,7 @@ public class UIController {
                                     }
                                     z = listOfPriorities.size();
                                     j = monstersInEncounter.size();
-                                    uiManager.hitMessage(reductedDmg, typeOfDamage, isCrit);
+                                    uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
                                 }
                                 j++;
                             }
@@ -1116,11 +1114,11 @@ public class UIController {
                                                 actualLife = monstersInEncounter.get(c).getActualHitPoints();
                                                 attackedMonster = monstersInEncounter.get(c).getMonsterName();
 
-                                                reductedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(c), typeOfDamage);
+                                                reducedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(c), typeOfDamage);
 
-                                                total = adventureManager.applyDamage(isCrit, actualLife, reductedDmg);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, reducedDmg);
                                                 fail = adventureManager.failedAttack(isCrit);
-                                                uiManager.hitMessage(reductedDmg, typeOfDamage, isCrit);
+                                                uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
 
                                                 //si no hay fallo aplicamos los daños y notificamos las muertes (en caso de haberlas)
                                                 if(!fail){
@@ -1137,12 +1135,12 @@ public class UIController {
                                             //atacaremos al monstruo con más vida el encuentro
                                             attackedMonster = monstersInEncounter.get(highestMonsterIndex).getMonsterName();
 
-                                            reductedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(highestMonsterIndex), typeOfDamage);
+                                            reducedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(highestMonsterIndex), typeOfDamage);
 
-                                            total = adventureManager.applyDamage(isCrit, actualLife, reductedDmg);
+                                            total = adventureManager.applyDamage(isCrit, actualLife, reducedDmg);
 
 
-                                            uiManager.hitMessage(reductedDmg, typeOfDamage, isCrit);
+                                            uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
                                             fail = adventureManager.failedAttack(isCrit);
 
 
@@ -1162,11 +1160,11 @@ public class UIController {
 
                                                 //cogemos el monstruo con menos vida
                                                 attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
-                                                reductedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
+                                                reducedDmg = adventureManager.monsterDamageReduction(damage, monstersInEncounter.get(smallestMonsterIndex), typeOfDamage);
 
-                                                total = adventureManager.applyDamage(isCrit, actualLife, reductedDmg);
+                                                total = adventureManager.applyDamage(isCrit, actualLife, reducedDmg);
 
-                                                uiManager.hitMessage(reductedDmg, typeOfDamage, isCrit);
+                                                uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
                                                 fail = adventureManager.failedAttack(isCrit);
 
                                                 //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)

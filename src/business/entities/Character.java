@@ -197,7 +197,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD3(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
         Random rand = new Random();
@@ -218,7 +218,7 @@ public abstract class Character {
      * @return damage, int que será el número daño que causará
      */
     public int diceRollD10(){
-        int roll = 0;
+        int roll;
         int damage;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 10
@@ -247,7 +247,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD6(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 7
         Random rand = new Random();
@@ -266,7 +266,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD8(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
@@ -286,7 +286,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD4(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
@@ -306,7 +306,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD20(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 9
         Random rand = new Random();
@@ -326,7 +326,7 @@ public abstract class Character {
      * @return roll, int que será el número random generado
      */
     public int diceRollD12(){
-        int roll = 0;
+        int roll;
 
         // Usaremos la clase Random para sacar el número aleatorio con upperbound de 12
         Random rand = new Random();

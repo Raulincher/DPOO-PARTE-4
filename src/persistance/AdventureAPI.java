@@ -1,7 +1,6 @@
 package persistance;
 
 import business.entities.Adventure;
-import business.entities.Character;
 import com.google.gson.Gson;
 
 import javax.net.ssl.SSLContext;

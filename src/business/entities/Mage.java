@@ -121,7 +121,7 @@ public class Mage extends Character {
      *
      * sobreescribe el método attack de la clase character
      *
-     * @return dmg, daño resulltante
+     * @return dmg, daño resultante
      */
     @Override
     public int attack(){

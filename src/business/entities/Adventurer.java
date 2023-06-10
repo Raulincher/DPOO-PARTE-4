@@ -62,7 +62,7 @@ public class Adventurer extends Character {
      */
     @Override
     public int initiative() {
-        int initiative = 0;
+        int initiative;
         int spirit = getSpirit();
         int d12 = diceRollD12();
 

@@ -56,7 +56,7 @@ public class Monster {
     /**
      * Esta función llamará el num de hitPoints del Monster
      *
-     * @return hitPoints, que será el num de hitPoints del Monster
+     * @return hitPoints, que será el núm de hitPoints del Monster
      */
     public int getMonsterHitPoints() {
         return hitPoints;

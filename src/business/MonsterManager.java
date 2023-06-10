@@ -4,7 +4,6 @@ import business.entities.Monster;
 import persistance.MonsterAPI;
 import persistance.MonsterDAO;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -29,7 +28,7 @@ public class MonsterManager {
     }
 
     /**
-     * Esta función nos permite saber que numero tiene el dado del monstruo
+     * Esta función nos permite saber que número tiene el dado del monstruo
      *
      * @param dice, es el tipo de azar que tiene el Monster
      * @return diceNumber, será el número que tenga el dado en cuestión
@@ -54,7 +53,7 @@ public class MonsterManager {
      *
      * @return ArrayList con los Monsters
      */
-    public ArrayList<Monster> getAPIMonsters() throws IOException {return monsterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/shared/monsters");}
+    public ArrayList<Monster> getAPIMonsters() {return monsterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/shared/monsters");}
 
     /**
      * Esta función calcula cuanto daño causará un Monster dependiendo
@@ -64,7 +63,7 @@ public class MonsterManager {
      * @return damage, que será el daño que causará
      */
     public int monsterDamageCalculator(String diceType){
-        int damage = 0;
+        int damage;
 
         // Abrimos los ifs dependiendo del tipo de azar que tenga el Monster y asignamos damage
         if(Objects.equals(diceType, "4")){
@@ -91,7 +90,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD4(){
-        int roll = 0;
+        int roll;
 
         // A través de la variable random generamos el número con upperbound de 4
         Random rand = new Random();
@@ -108,7 +107,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD20(){
-        int roll = 0;
+        int roll ;
 
         // A través de la variable random generamos el número con upperbound de 20
         Random rand = new Random();
@@ -125,7 +124,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD12(){
-        int roll = 0;
+        int roll;
 
         // A través de la variable random generamos el número con upperbound de 12
         Random rand = new Random();
@@ -142,7 +141,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD10(){
-        int roll = 0;
+        int roll;
 
         // A través de la variable random generamos el número con upperbound de 10
         Random rand = new Random();
@@ -159,7 +158,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD6(){
-        int roll = 0;
+        int roll;
 
         // A través de la variable random generamos el número con upperbound de 7
         Random rand = new Random();
@@ -176,7 +175,7 @@ public class MonsterManager {
      * @return roll, int que será el número random generado
      */
     public int diceRollD8(){
-        int roll = 0;
+        int roll;
 
         // A través de la variable random generamos el número con upperbound de 8
         Random rand = new Random();
@@ -188,7 +187,7 @@ public class MonsterManager {
 
 
     /**
-     * Esta función permite poner la vida actual de los montruos al máximo
+     * Esta función permite poner la vida actual de los monstruos al máximo
      * para así dar inicio al encuentro
      *
      * @param monsters, lista de los monstruos del encuentro

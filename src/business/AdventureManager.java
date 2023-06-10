@@ -70,7 +70,7 @@ public class AdventureManager {
         // Primero nos aseguramos de que el encuentro esté inicializado
         // En caso contrario lo inicializamos
         if(encounterMonsters.get(encounter).get(0) == null){
-            encounterMonsters.set(encounter, new ArrayList<Monster>(monsterQuantity));
+            encounterMonsters.set(encounter, new ArrayList<>(monsterQuantity));
             lastQuantity = 0;
         }else{
             // Nos aseguramos de que quepa otro monster
@@ -91,18 +91,18 @@ public class AdventureManager {
     public void setMonstersNames(ArrayList<String> monstersQuantityAndNames, ArrayList<Monster> monsters, int monsterQuantity, int monsterOption){
         int auxSize = monstersQuantityAndNames.size();
 
-        // Nos aseguramos de que hayan monstruos añadidos en el encuentro
+        // Nos aseguramos de que hallan monstruos añadidos en el encuentro
         if(monstersQuantityAndNames.size() == 0){
             monstersQuantityAndNames.add(0, monsters.get(monsterOption - 1).getMonsterName() + monsterQuantity);
         }
         else{
 
-            // En caso que sí, iniciamos un bucle a través de todos los monsters con sus nombres
+            // En caso de que sí, iniciamos un bucle a través de todos los monsters con sus nombres
             for(int j = 0; j < monstersQuantityAndNames.size(); j++){
                 String auxName = monstersQuantityAndNames.get(j);
                 String[] auxNameSplit = auxName.split("\\d+");
 
-                // En caso que el monster no esté añadido, lo añadimos a la ArrayList
+                // En caso de que el monster no esté añadido, lo añadimos a la ArrayList
                 if(!auxNameSplit[0].matches(monsters.get(monsterOption - 1).getMonsterName())){
                     if(auxSize == monstersQuantityAndNames.size() && j == monstersQuantityAndNames.size() - 1){
                         monstersQuantityAndNames.add(j + 1, monsters.get(monsterOption - 1).getMonsterName() + monsterQuantity);
@@ -174,11 +174,11 @@ public class AdventureManager {
     }
 
     /**
-     * Esta función servirá para recoger todas las adventures de las APIs
+     * Esta función servirá para recoger todas las adventures de las API
      *
      * @return se devolverá en una ArrayList todas las adventures
      */
-    public ArrayList<Adventure> getAPIAdventuresList() throws IOException {return adventureAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures");}
+    public ArrayList<Adventure> getAPIAdventuresList() {return adventureAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/adventures");}
 
     /**
      * Esta función servirá para comprobar si ya se ha añadido algún boss
@@ -243,9 +243,9 @@ public class AdventureManager {
         int deadCounter = 0;
 
         // A través de un bucle revisamos cuáles no tienen vida
-        for(int a = 0; a < characters.size(); a++){
-            int actualLife = characters.get(a).getActualLife();
-            if(actualLife == 0){
+        for (Character character : characters) {
+            int actualLife = character.getActualLife();
+            if (actualLife == 0) {
                 deadCounter++;
             }
         }
@@ -277,7 +277,7 @@ public class AdventureManager {
                     index = z;
                     flag = 1;
                 }
-                // En caso que la nueva vida de la lista sea menor, actualizamos el índice del personaje
+                // En caso de que la nueva vida de la lista sea menor, actualizamos el índice del personaje
                 else{
                     if(smallerCharacterLife > actualLife){
                         smallerCharacterLife = actualLife;
@@ -307,7 +307,7 @@ public class AdventureManager {
 
             int actualLife = monsters.get(z).getActualHitPoints();
 
-            // Las iremos comparando y actualizaremos el índice en caso que haya una mayor
+            // Las iremos comparando y actualizaremos el índice en caso de que haya una mayor
             if (actualLife != 0) {
                 if (flag == 0) {
                     biggerMonsterLife = actualLife;
@@ -341,7 +341,7 @@ public class AdventureManager {
         // Abrimos bucle a través de la lista de vidas de los monsters
         while(z < monsters.size()){
             int actualLife = monsters.get(z).getActualHitPoints();
-            // Iremos comparando entre ellas, en caso que se detecte una menor actualizaremos índice
+            // Iremos comparando entre ellas, en caso de que se detecte una menor actualizaremos índice
             if (actualLife != 0) {
                 if (flag == 0) {
                     smallerMonsterLife = actualLife;
@@ -387,11 +387,11 @@ public class AdventureManager {
      */
     public int damageReduction(int damage, Character character, String typeOfDamage){
         if(typeOfDamage.equals("Magical") && character.getCharacterClass().equals("Mage")){
-            damage = (int)Math.ceil(damage - characterManager.revertXpToLevel(character.getCharacterLevel()));
+            damage = damage - characterManager.revertXpToLevel(character.getCharacterLevel());
         }else if(typeOfDamage.equals("Physical") && (character.getCharacterClass().equals("Warrior") || character.getCharacterClass().equals("Champion"))){
-            damage = (int)Math.ceil(damage/2) + 1;
+            damage = damage/2;
         }else if(typeOfDamage.equals("Psychical") && character.getCharacterClass().equals("Paladin")){
-            damage = (int)Math.ceil(damage/2) + 1;
+            damage = damage/2;
         }
         if(damage < 0){
             damage = 0;
@@ -411,11 +411,11 @@ public class AdventureManager {
     public int monsterDamageReduction(int damage, Monster monster, String typeOfDamage){
 
         if(typeOfDamage.equals("Magical") && monster.getDamageType().equals("Magical")){
-            damage = (int)Math.ceil(damage/2);
+            damage = damage/2;
         }else if(typeOfDamage.equals("Physical") && monster.getDamageType().equals("Physical")){
-            damage = (int)Math.ceil(damage/2);
+            damage = damage/2;
         }else if(typeOfDamage.equals("Psychical") && monster.getDamageType().equals("Psychical")){
-            damage = (int)Math.ceil(damage/2);
+            damage = damage/2;
         }
 
         if(damage < 0){
@@ -428,9 +428,9 @@ public class AdventureManager {
 
     /**
      * Esta función servirá para comprobar si algun personaje necesita
-     * healing por parte de un clerigo o paladin en medio de la batalla
+     * healing por parte de un clérigo o paladin en medio de la batalla
      *
-     * @param characterInParty, personaje con el menos indice de vida
+     * @param characterInParty, personaje con el menor índice de vida
      *
      * @return needHeal, boolean que  confirmará que el healing es necesario
      */
@@ -456,13 +456,7 @@ public class AdventureManager {
      */
     public boolean isMage(ArrayList<Character> charactersInParty, int index ){
 
-        boolean isMage = false;
-
-        if(charactersInParty.get(index).getCharacterClass().equals("Mage")){
-            isMage = true;
-        }
-
-        return isMage;
+        return charactersInParty.get(index).getCharacterClass().equals("Mage");
     }
 
 
@@ -480,7 +474,7 @@ public class AdventureManager {
     public int shieldDealer(Character characterInParty, ArrayList<Mage> magesInBattle, int isCrit, int damage ){
 
         int mageIndex = 0;
-        int total = 0;
+        int total;
         for(int a = 0; a < magesInBattle.size(); a++){
             if(magesInBattle.get(a).getCharacterName().equals(characterInParty.getCharacterName())){
                 mageIndex = a;
@@ -542,9 +536,9 @@ public class AdventureManager {
     /**
      * Esta función servirá para sumar toda la exp que sueltan los monstruos al vencer en un encuentro
      *
-     * @param monstersInEncounter, lista con lso mosntruos dentro del encuentro
+     * @param monstersInEncounter, lista con lso monstruos dentro del encuentro
      *
-     * @return xpSum, int que representa la suma total de toda la exp
+     * @return xpSum, int. que representa la suma total de toda la exp
      */
     public int sumAllMonsterXp(ArrayList<Monster> monstersInEncounter){
         int xpSum = 0, i = 0;
@@ -603,30 +597,30 @@ public class AdventureManager {
             case "Champion" -> {
                 Champion champion = new Champion(character);
                 //efectuamos habilidad
-                for (int a = 0; a < characterInParty.size(); a++) {
-                    champion.MotivationalSpeech(characterInParty.get(a));
+                for (Character value : characterInParty) {
+                    champion.MotivationalSpeech(value);
                 }
             }
             case "Cleric" -> {
                 Cleric cleric = new Cleric(character);
                 //efectuamos habilidad
-                for (int a = 0; a < characterInParty.size(); a++) {
-                    cleric.prayerOfGoodLuck(characterInParty.get(a));
+                for (Character value : characterInParty) {
+                    cleric.prayerOfGoodLuck(value);
                 }
             }
             case "Paladin" -> {
                 Paladin paladin = new Paladin(character);
                 //efectuamos habilidad
-                for (int a = 0; a < characterInParty.size(); a++) {
-                    paladin.blessOfGoodLuck(roll, characterInParty.get(a));
+                for (Character value : characterInParty) {
+                    paladin.blessOfGoodLuck(roll, value);
                 }
             }
             case "Mage" -> {
                 //efectuamos habilidad
                 int characterLevel = characterManager.revertXpToLevel(character.getCharacterLevel());
-                for (Mage mageaux : magesInBattle) {
-                    if (mageaux.getCharacterName().equals(character.getCharacterName())) {
-                        mageaux.shieldSetup(characterLevel);
+                for (Mage mageAux : magesInBattle) {
+                    if (mageAux.getCharacterName().equals(character.getCharacterName())) {
+                        mageAux.shieldSetup(characterLevel);
                     }
                 }
             }
@@ -652,22 +646,14 @@ public class AdventureManager {
                 Cleric cleric = new Cleric(character);
                 //efectuamos habilidad
                 heal = cleric.heal();
-                if (healedCharacter.getTotalLife() <= healedCharacter.getActualLife() + heal) {
-                    healedCharacter.setActualLife(healedCharacter.getTotalLife());
-                } else {
-                    healedCharacter.setActualLife(healedCharacter.getActualLife() + heal);
-                }
+                healedCharacter.setActualLife(Math.min(healedCharacter.getTotalLife(), healedCharacter.getActualLife() + heal));
             }
             case "Paladin" -> {
                 Paladin paladin = new Paladin(character);
                 heal = paladin.heal();
                 //efectuamos habilidad
-                for (int a = 0; a < charactersInParty.size(); a++) {
-                    if (charactersInParty.get(a).getTotalLife() <= charactersInParty.get(a).getActualLife() + heal) {
-                        charactersInParty.get(a).setActualLife(charactersInParty.get(a).getTotalLife());
-                    } else {
-                        charactersInParty.get(a).setActualLife(charactersInParty.get(a).getActualLife() + heal);
-                    }
+                for (Character value : charactersInParty) {
+                    value.setActualLife(Math.min(value.getTotalLife(), value.getActualLife() + heal));
                 }
             }
         }
@@ -681,7 +667,7 @@ public class AdventureManager {
      * @param characterInParty, lista de los PJs en batalla
      * @param smallIndex, indice del PJ con menos vida
      *
-     * @return curation, numero que nos dirá la cantidad de curación realizada por el PJ. En el caso de que su habilidad trate de eso
+     * @return curation, número que nos dirá la cantidad de curación realizada por el PJ. En el caso de que su habilidad trate de eso
      */
     public int applyAbilitiesRestPhase(Character character, ArrayList<Character> characterInParty, int smallIndex){
 
@@ -744,7 +730,7 @@ public class AdventureManager {
     }
 
     /**
-     * Esta función permite iniciar una lista con los indices de todos los PJs conscientes
+     * Esta función permite iniciar una lista con los índices de todos los PJs conscientes
      *
      * @param consciousPosition, lista de personajes conscientes
      * @param characterInParty, lista de los PJs en batalla
@@ -758,10 +744,10 @@ public class AdventureManager {
                 b--;
             }
         }
-        for(int b = 0; b < characterInParty.size(); b++){
-            int actualLife = characterInParty.get(b).getActualLife();
-            if(actualLife != 0){
-                consciousPosition.add(a,characterInParty.get(b).getCharacterName());
+        for (Character character : characterInParty) {
+            int actualLife = character.getActualLife();
+            if (actualLife != 0) {
+                consciousPosition.add(a, character.getCharacterName());
                 a++;
             }
         }
@@ -770,7 +756,7 @@ public class AdventureManager {
     /**
      * Esta función permite determinar si un ataque ha fallado
      *
-     * @param isCrit, indice que indica cuando un atque es critico, normal o fallo
+     * @param isCrit, indice que indica cuando un ataque es critico, normal o fallo
      *
      * @return boolean que indica el fallo
      */
@@ -895,13 +881,12 @@ public class AdventureManager {
      * según la iniciativa de cada personaje y monster sin ordenar
      *
      * @param characterInParty, lista de personajes en el grupo
-     * @param characterQuantity, int con el num de personajes
+     * @param characterQuantity, int con el núm de personajes
      * @param monsterQuantity, int con el num de monsters
-     * @param magesInBattle lista con todos los magos de la batalla
      * @param monstersInEncounter lista con los monsters del encuentro
      * @return listOfPriorities, lista de prioridades sin ordenar
      */
-    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, ArrayList<Mage> magesInBattle, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
+    public ArrayList<String> listOfPriorities(int characterQuantity, int monsterQuantity, ArrayList<Character> characterInParty, ArrayList<Monster> monstersInEncounter){
         ArrayList<String> listOfPriorities = new ArrayList<>(0);
         int i = 0;
         int z = 0;
@@ -940,9 +925,9 @@ public class AdventureManager {
      */
     public ArrayList<ArrayList<Monster>> initializeEncounters(ArrayList<ArrayList<Monster>> encounterMonsters, int adventureEncounters){
 
-        // Iniciamos bucle que recorra todos los encuentros y avamos añadiendo las ArrayLists
+        // Iniciamos bucle que recorra todos los encuentros y vayamos añadiendo las ArrayLists
         for (int i = 0; i < adventureEncounters; i++) {
-            encounterMonsters.add(i, new ArrayList<Monster>(1));
+            encounterMonsters.add(i, new ArrayList<>(1));
             encounterMonsters.get(i).add(0,null);
         }
         return encounterMonsters;
@@ -997,7 +982,7 @@ public class AdventureManager {
      *
      * @param adventureName, nombre deseado de la aventura
      * @param encounters, número de encuentros deseados
-     * @param monsters, lista de lista de todos los monsters que habrán
+     * @param monsters, lista de todos los monsters que habrán
      * @return se guardará la aventura a través del DAO
      */
     public boolean createAdventure(String adventureName, int encounters, ArrayList<ArrayList<Monster>> monsters){
@@ -1010,7 +995,7 @@ public class AdventureManager {
      *
      * @param adventureName, nombre deseado de la aventura
      * @param encounters, número de encuentros deseados
-     * @param monsters, lista de lista de todos los monsters que habrán
+     * @param monsters, lista de todos los monsters que habrán
      * @return se guardará la aventura a través de la API
      */
     public boolean createAdventureAPI(String adventureName, int encounters, ArrayList<ArrayList<Monster>> monsters) throws IOException {

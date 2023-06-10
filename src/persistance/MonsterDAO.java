@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class MonsterDAO {
 
     // Añadimos atributos y json
-    private Gson  gson;
+    private final Gson gson;
     public String monsterPath = "files/monsters.json";
 
     //Creamos constructor con todos los atributos
@@ -28,7 +28,7 @@ public class MonsterDAO {
 
     /**
      * Esta función servirá para recoger una lista con
-     * todos los Monsters que hayan en el JSON
+     * todos los Monsters que hallan en el JSON
      *
      * @return monsters, ArrayList en cuestión
      */

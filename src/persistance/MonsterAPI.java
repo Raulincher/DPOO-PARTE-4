@@ -47,7 +47,6 @@ public class MonsterAPI {
      *
      * @param url Una representación de cadena de la URL para leer, que se supondrá que utiliza HTTP/HTTPS.
      * @return El contenido de la URL representada como texto.
-     * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
     public ArrayList<Monster> getFromUrl(String url) {
 

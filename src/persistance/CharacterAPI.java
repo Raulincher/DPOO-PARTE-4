@@ -2,7 +2,6 @@ package persistance;
 
 import business.entities.Adventurer;
 import business.entities.Character;
-import business.entities.Monster;
 import com.google.gson.Gson;
 
 import javax.net.ssl.SSLContext;
@@ -125,13 +124,12 @@ public class CharacterAPI {
         Gson g = new Gson();
         ArrayList<Character> currentCharactersList = getFromUrl(url);
         deleteFromUrl(url);
-        for (int i = 0; i < currentCharactersList.size(); i++) {
-            if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
-            {
+        for (Character value : currentCharactersList) {
+            if (Objects.equals(character.getCharacterName(), value.getCharacterName())) {
 
-                currentCharactersList.get(i).setXp(xpplus + character.getCharacterLevel());
+                value.setXp(xpplus + character.getCharacterLevel());
             }
-            String characterString = g.toJson(currentCharactersList.get(i));
+            String characterString = g.toJson(value);
             try {
                 // Definir la solicitud
                 // En este caso, tenemos que usar los métodos .POST() y .headers() para definir lo que queremos (enviar una cadena que contenga datos JSON)
@@ -155,18 +153,17 @@ public class CharacterAPI {
      * @param url link necesario para vincularlo
      * @param character personaje a actualizar la clase
      * @param newClass nueva clase que tendrá el personaje
-     * @throws IOException
+     * @throws IOException, en caso de error
      */
     public void updateClassToUrl(String url, Character character, String newClass) throws IOException {
         Gson g = new Gson();
         ArrayList<Character> currentCharactersList = getFromUrl(url);
         deleteFromUrl(url);
-        for (int i = 0; i < currentCharactersList.size(); i++) {
-            if (Objects.equals(character.getCharacterName(), currentCharactersList.get(i).getCharacterName()))
-            {
-                currentCharactersList.get(i).setClass(newClass);
+        for (Character value : currentCharactersList) {
+            if (Objects.equals(character.getCharacterName(), value.getCharacterName())) {
+                value.setClass(newClass);
             }
-            String characterString = g.toJson(currentCharactersList.get(i));
+            String characterString = g.toJson(value);
             try {
                 // Definir la solicitud
                 // En este caso, tenemos que usar los métodos .POST() y .headers() para definir lo que queremos (enviar una cadena que contenga datos JSON)
@@ -204,11 +201,7 @@ public class CharacterAPI {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             response.body();
             boolean check;
-            if(response.statusCode() == 404){
-                check = false;
-            }else{
-                check = true;
-            }
+            check = response.statusCode() != 404;
             return check;
 
         } catch (URISyntaxException | IOException | InterruptedException e) {

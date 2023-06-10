@@ -104,7 +104,7 @@ public class CharacterManager {
      * Esta función calcula qué cantidad de bonus se le tiene que otorgar al jugador
      *
      * @param stat, array que contendrá los dos valores con los que se calculará el bonus
-     * @return statBonus, valor que devuleve el bonus que recibirá el jugador
+     * @return statBonus, valor que devuelve el bonus que recibirá el jugador
      */
     public String statCalculator(int[] stat){
 
@@ -130,13 +130,13 @@ public class CharacterManager {
      * nivel tenga en ese momento
      *
      * @param level, valor que contendrá el nivel actual del personaje
-     * @return xp, valor que devuleve la experiencia que ganará
+     * @return xp, valor que devuelve la experiencia que ganará
      */
     public int experienceCalculator(int level){
 
         int xp;
 
-        // Asignaremos el nivel según la experienca a través de ifs
+        // Asignaremos el nivel según la experiencia a través de ifs
         if(level == 1){
             xp = 0;
         }else if(level == 2){
@@ -247,7 +247,7 @@ public class CharacterManager {
      * @param name, valor que contendrá el posible nombre del personaje
      * @return exist, bool que dirá si el nombre está disponible o no
      */
-    public boolean characterNameDisponibility(String name, boolean isUsingApi) throws IOException {
+    public boolean characterNameDisponibility(String name, boolean isUsingApi){
 
         boolean exist = false;
         ArrayList<Character> characters;
@@ -300,8 +300,7 @@ public class CharacterManager {
      * @return fixedName, valor con el nombre corregido
      */
     public String fixName(String name){
-        String auxName = name;
-        String[] auxNameSplit = auxName.split(" ");
+        String[] auxNameSplit = name.split(" ");
         String fixedName = null;
         int i = 0;
 
@@ -317,6 +316,7 @@ public class CharacterManager {
             i++;
         }
 
+        assert fixedName != null;
         fixedName = fixedName.substring(0, fixedName.length() - 1);
 
         return fixedName;
@@ -339,7 +339,7 @@ public class CharacterManager {
      *
      * @return devolverá un Array con todos los personajes
      */
-    public ArrayList<Character> getAPICharacters() throws IOException {
+    public ArrayList<Character> getAPICharacters(){
         return characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
     }
 
@@ -390,21 +390,21 @@ public class CharacterManager {
 
     /**
      * Esta función genera una lista de los personajes que un propio jugador crea.
-     * En caso que no coincida, devuelve la ArrayList vacía
+     * En caso de que no coincida, devuelve la ArrayList vacía
      *
      * @param playerName, valor que contendrá el nombre del jugador
      * @return filteredCharacters, lista con todos los personajes que ha creado un jugador
      */
-    public ArrayList<Character> filteredPlayers(String playerName, boolean isUsingAPI) throws IOException {
-        ArrayList<Character> characters = null;
+    public ArrayList<Character> filteredPlayers(String playerName, boolean isUsingAPI){
+        ArrayList<Character> characters;
 
-        // Comprovamos si es desde la API o el DAO
+        // Comprobamos si es desde la API o el DAO
         if(isUsingAPI){
             characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
         }else{
             characters = characterDAO.readCharacterJSON();
         }
-        ArrayList<Character> filteredCharacters = null;
+        ArrayList<Character> filteredCharacters;
         int i = 0;
         int j = 0;
         boolean noCoincidence = true;
@@ -484,7 +484,7 @@ public class CharacterManager {
                 evolution = "Champion";
             }
         }
-        // Revisamos la línea evolutuva de Cleric en caso que lo sea
+        // Revisamos la línea evolutiva de Cleric en caso de que lo sea
         else if(characterClass.equals("Cleric")){
             if(characterLevel > 0 && characterLevel < 5){
                 evolution = "Cleric";
@@ -492,7 +492,7 @@ public class CharacterManager {
                 evolution = "Paladin";
             }
         }
-        // En caso que sea Mage se queda igual
+        // En caso de que sea Mage se queda igual
         else{
             evolution = "Mage";
         }
@@ -502,12 +502,12 @@ public class CharacterManager {
 
 
     /**
-     * Esta función servirá para actualizar un personaje en caso que evolucione
+     * Esta función servirá para actualizar un personaje en caso de que evolucione
      *
      * @param character  personaje a analizar
      * @param isUsingApi bool para comprobar si es desde la API
-     * @return evolved, para comrpobar si ha evolucionado o no
-     * @throws IOException
+     * @return evolved, para comprobar si ha evolucionado o no
+     * @throws IOException, en caso de error
      */
     public boolean evolution(Character character, boolean isUsingApi) throws IOException {
 
@@ -565,7 +565,7 @@ public class CharacterManager {
      *
      * @param character personaje que ha evolucionado
      * @param newClass clase en la que ha evolucionado
-     * @throws IOException
+     * @throws IOException, en caso de error
      */
     public void updateEvolutionApi(Character character, String newClass) throws IOException {
         characterAPI.updateClassToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character, newClass);
@@ -578,32 +578,25 @@ public class CharacterManager {
      * @param characterName, valor que contendrá el nombre del personaje
      * @return filteredCharacter, personaje resultante de la búsqueda
      */
-    public Character getCharacterByName(String characterName, boolean isUsingApi) throws IOException {
+    public Character getCharacterByName(String characterName, boolean isUsingApi) {
         Character filteredCharacter = null;
+        ArrayList<Character> characters;
+        int i = 0;
         if(isUsingApi){
-            ArrayList<Character> characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-            int i = 0;
+            characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
 
             // A través del while buscamos si coincide el personaje deseado
-            while(i < characters.size()){
-                if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
-                    filteredCharacter = characters.get(i);
-                    i = characters.size();
-                }
-                i++;
-            }
         }else{
-            ArrayList<Character> characters = characterDAO.readCharacterJSON();
-            int i = 0;
+            characters = characterDAO.readCharacterJSON();
 
             // A través del while buscamos si coincide el personaje deseado
-            while(i < characters.size()){
-                if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
-                    filteredCharacter = characters.get(i);
-                    i = characters.size();
-                }
-                i++;
+        }
+        while(i < characters.size()){
+            if(characters.get(i).getCharacterName().toLowerCase(Locale.ROOT).contains(characterName.toLowerCase(Locale.ROOT))){
+                filteredCharacter = characters.get(i);
+                i = characters.size();
             }
+            i++;
         }
 
         return filteredCharacter;
@@ -654,7 +647,7 @@ public class CharacterManager {
 
     /**
      * Esta función servirá para borrar un personaje de la API en caso de emergencia
-     * @throws IOException
+     * @throws IOException, en caso de error
      */
     public void emergencyDelete() throws IOException {
         characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");

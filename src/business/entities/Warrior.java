@@ -63,7 +63,7 @@ public class Warrior extends Character {
     @Override
     public int initiative() {
 
-        int initiative = 0;
+        int initiative;
         int spirit = getSpirit();
         int d12 = diceRollD12();
         // Calculamos con la fórmula
