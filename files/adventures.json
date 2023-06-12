@@ -364,5 +364,63 @@
         }
       ]
     ]
+  },
+  {
+    "name": "prueba",
+    "encounters": 1,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Sauron",
+          "challenge": "Boss",
+          "experience": 148,
+          "hitPoints": 89,
+          "initiative": 3,
+          "actualHitPoints": 0,
+          "damageDice": "d20",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "actualHitPoints": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "actualHitPoints": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "actualHitPoints": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Snuffler",
+          "challenge": "Minion",
+          "experience": 2,
+          "hitPoints": 6,
+          "initiative": 0,
+          "actualHitPoints": 0,
+          "damageDice": "d4",
+          "damageType": "Physical"
+        }
+      ]
+    ]
   }
 ]

@@ -166,7 +166,7 @@ public abstract class Character {
      * Esta función servirà para calcular la vida inicial
      * de cada personaje
      *
-     * @param level, que será el nivel del Champion
+     * @param level, que será el nivel
      * @return life, vida que tendrá el personaje
      */
     public abstract int initialLifeCalculator(int level);

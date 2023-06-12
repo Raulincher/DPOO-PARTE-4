@@ -960,6 +960,7 @@ public class UIController {
                         while (z < characterInParty.size()) {
                             if (actualName.equals(characterInParty.get(z).getCharacterName())) {
                                 actualLife = characterInParty.get(z).getActualLife();
+
                                 if(actualLife != 0) {
                                     attackedMonster = monstersInEncounter.get(smallestMonsterIndex).getMonsterName();
                                     isMage = adventureManager.isMage(characterInParty,z);
@@ -1037,7 +1038,6 @@ public class UIController {
                                     //miramos el tipo de daño que hace el enemigo en cuestión
                                     typeOfDamage = monstersInEncounter.get(j).getDamageType();
 
-                                    //Con los jefes hemos decidido añadir que, independientemente de la resistencia a los tipos de sus enemigos, siempre harán el mismo daño
                                     fail = adventureManager.failedAttack(isCrit);
                                     if(isBoss){
                                         //si el ataque no ha fallado procedemos a restar las vidas
@@ -1089,7 +1089,9 @@ public class UIController {
                                     }
                                     z = listOfPriorities.size();
                                     j = monstersInEncounter.size();
-                                    uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
+                                    if(damage != 0) {
+                                        uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
+                                    }
                                 }
                                 j++;
                             }
