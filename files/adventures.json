@@ -422,5 +422,83 @@
         }
       ]
     ]
+  },
+  {
+    "name": "prueba 1",
+    "encounters": 1,
+    "encounterMonsters": [
+      [
+        {
+          "name": "Glaurung the Great Worm",
+          "challenge": "Boss",
+          "experience": 140,
+          "hitPoints": 81,
+          "initiative": 3,
+          "actualHitPoints": 0,
+          "damageDice": "d20",
+          "damageType": "Psychical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        },
+        {
+          "name": "Mumakil",
+          "challenge": "Minion",
+          "experience": 11,
+          "hitPoints": 29,
+          "initiative": -1,
+          "actualHitPoints": 0,
+          "damageDice": "d12",
+          "damageType": "Physical"
+        }
+      ]
+    ]
   }
 ]

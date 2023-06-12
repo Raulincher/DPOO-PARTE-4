@@ -276,7 +276,7 @@ public class UIManager {
 
     public void showAbilitiesRestPhase(String characterClass, String characterName, int characterCuration, int temporalLife) {
 
-        String message = null;
+        String message = characterName + " is reading a book. I guess it feels clever now! (no effect)";
 
         switch (characterClass) {
             //bandagetime para la clase aventurero y guerrero

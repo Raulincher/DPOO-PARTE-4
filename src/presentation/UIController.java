@@ -910,6 +910,7 @@ public class UIController {
                 z = 0;
                 while(z < characterInParty.size()) {
                     actualName = characterInParty.get(z).getCharacterName();
+
                     //comprobación de que nuestro personaje sea un mago
                     //en caso de serlo lo guardamos en un array para almacenar su cantidad de escudo
                     int mageIndex = adventureManager.getMageIndex(magesInBattle, actualName);
@@ -943,6 +944,9 @@ public class UIController {
                     charactersDefeat = adventureManager.countDeadCharacters(characterInParty);
                     auxName = listOfPriorities.get(q).split("\\d+");
                     actualName = auxName[0];
+                    if(actualName.contains("-")){
+                        actualName = actualName.substring(0, actualName.length()-1);
+                    }
                     damage = 0;
 
 
@@ -1055,7 +1059,9 @@ public class UIController {
                                                         total = adventureManager.applyDamage(isCrit,actualLife, reducedDmg);
                                                     }
 
-
+                                                    if(damage != 0) {
+                                                        uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
+                                                    }
                                                     characterInParty.get(b).setActualLife(total);
                                                     if (total == 0) {
                                                         uiManager.deadMessage(characterInParty.get(b).getCharacterName());
@@ -1077,6 +1083,9 @@ public class UIController {
                                         }else{
                                             total = adventureManager.applyDamage(isCrit, characterInParty.get(smallestCharacterIndex).getActualLife(), reducedDmg);
                                         }
+                                        if(damage != 0) {
+                                            uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
+                                        }
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
                                             characterInParty.get(smallestCharacterIndex).setActualLife(total);
@@ -1089,9 +1098,7 @@ public class UIController {
                                     }
                                     z = listOfPriorities.size();
                                     j = monstersInEncounter.size();
-                                    if(damage != 0) {
-                                        uiManager.hitMessage(reducedDmg, typeOfDamage, isCrit);
-                                    }
+
                                 }
                                 j++;
                             }
@@ -1126,6 +1133,12 @@ public class UIController {
                                                 if(!fail){
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
+                                                        monstersInEncounter.remove(c);
+                                                        aliveMonsters--;
+                                                        c--;
+                                                    }
+                                                    if(c < 0){
+                                                        c = 0;
                                                     }
                                                     monstersInEncounter.get(c).setActualHitPoints(total);
                                                 }
@@ -1148,10 +1161,11 @@ public class UIController {
 
                                             //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)
                                             if(!fail){
+                                                monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(total);
                                                 if (total == 0) {
                                                     uiManager.showMessage(attackedMonster + " dies.");
+                                                    monstersInEncounter.remove(highestMonsterIndex);
                                                 }
-                                                monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(total);
 
                                             }
                                         }else{
@@ -1171,10 +1185,11 @@ public class UIController {
 
                                                 //si no hay fallo aplicamos el daño y notificamos la muerte (en caso de haberla)
                                                 if(!fail){
+                                                    monstersInEncounter.get(smallestMonsterIndex).setActualHitPoints(total);
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
+                                                        monstersInEncounter.remove(smallestMonsterIndex);
                                                     }
-                                                    monstersInEncounter.get(smallestMonsterIndex).setActualHitPoints(total);
                                                 }
                                             }
                                         }
