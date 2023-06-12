@@ -1037,7 +1037,7 @@ public class UIController {
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
                     if(aliveMonsters > 0 && charactersDefeat < characterInParty.size() ){
                         //recorriendo toda la lista de prioridades buscamos a que bando pertenece el personaje que pega
-                        while(z < listOfPriorities.size() && listOfPriorities.size() > characterInParty.size()){
+                        while(z < listOfPriorities.size()){
                             while (j < monstersInEncounter.size()) {
                                 compareName = monstersInEncounter.get(j).getMonsterName();
                                 //si el personaje que pega es un monstruo entraremos aquí
