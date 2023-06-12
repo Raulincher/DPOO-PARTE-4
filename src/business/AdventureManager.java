@@ -367,13 +367,7 @@ public class AdventureManager {
      * @return counter, contador de monstruos vivos
      */
     public int countAliveMonsters(ArrayList<Monster> monsters){
-        int counter = 0;
-        for (Monster monster : monsters) {
-            if (monster.getActualHitPoints() > 0) {
-                counter++;
-            }
-        }
-        return counter;
+        return monsters.size();
     }
 
     /**

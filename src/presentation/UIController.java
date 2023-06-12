@@ -871,6 +871,8 @@ public class UIController {
             // La ordenamos según el número de iniciativa
             adventureManager.orderListOfPriorities(listOfPriorities);
 
+            int xpSum = adventureManager.sumAllMonsterXp(monstersInEncounter);
+
             // Abrimos bucle para mostrar en orden la lista de quién atacará primero
             i = 0;
             while(i < listOfPriorities.size()){
@@ -949,8 +951,8 @@ public class UIController {
                     }
                     damage = 0;
 
-
                     aliveMonsters = adventureManager.countAliveMonsters(monstersInEncounter);
+
 
 
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
@@ -1017,6 +1019,7 @@ public class UIController {
                                         adventureManager.setConsciousPosition(consciousPosition, characterInParty);
                                         uiManager.bossAttackMessage(consciousPosition, actualName);
                                     }else{
+                                        isBoss = false;
                                         uiManager.showMessage("\n" + actualName + " attacks " + characterInParty.get(smallestCharacterIndex).getCharacterName());
                                     }
                                 }
@@ -1034,7 +1037,7 @@ public class UIController {
                     //comprobamos que alguno de los bandos siga en pie (personajes vivos >= 1 && monstruos en batalla > 0)
                     if(aliveMonsters > 0 && charactersDefeat < characterInParty.size() ){
                         //recorriendo toda la lista de prioridades buscamos a que bando pertenece el personaje que pega
-                        while(z < listOfPriorities.size()){
+                        while(z < listOfPriorities.size() && listOfPriorities.size() > characterInParty.size()){
                             while (j < monstersInEncounter.size()) {
                                 compareName = monstersInEncounter.get(j).getMonsterName();
                                 //si el personaje que pega es un monstruo entraremos aquí
@@ -1043,6 +1046,8 @@ public class UIController {
                                     typeOfDamage = monstersInEncounter.get(j).getDamageType();
 
                                     fail = adventureManager.failedAttack(isCrit);
+
+
                                     if(isBoss){
                                         //si el ataque no ha fallado procedemos a restar las vidas
                                         if(!fail){
@@ -1133,12 +1138,32 @@ public class UIController {
                                                 if(!fail){
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
+                                                        i = 0;
+                                                        while(i < listOfPriorities.size()){
+                                                            auxName = listOfPriorities.get(i).split("\\d+");
+                                                            String enemyToErase = auxName[0];
+                                                            if(enemyToErase.contains("-")){
+                                                                enemyToErase = enemyToErase.substring(0, enemyToErase.length()-1);
+                                                            }
+                                                            if(enemyToErase.equals(monstersInEncounter.get(c).getMonsterName())){
+                                                                listOfPriorities.remove(i);
+                                                                if(i < q){
+                                                                    q--;
+                                                                }
+                                                                if(q<0){
+                                                                    q = 0;
+                                                                }
+                                                                i = listOfPriorities.size();
+                                                            }
+                                                            i++;
+                                                        }
                                                         monstersInEncounter.remove(c);
                                                         aliveMonsters--;
                                                         c--;
-                                                    }
-                                                    if(c < 0){
-                                                        c = 0;
+                                                        if(c < 0){
+                                                            c = 0;
+                                                        }
+
                                                     }
                                                     monstersInEncounter.get(c).setActualHitPoints(total);
                                                 }
@@ -1163,8 +1188,32 @@ public class UIController {
                                             if(!fail){
                                                 monstersInEncounter.get(highestMonsterIndex).setActualHitPoints(total);
                                                 if (total == 0) {
+
                                                     uiManager.showMessage(attackedMonster + " dies.");
+                                                    i = 0;
+                                                    while(i < listOfPriorities.size()){
+                                                        auxName = listOfPriorities.get(i).split("\\d+");
+                                                        String enemyToErase = auxName[0];
+                                                        if(enemyToErase.contains("-")){
+                                                            enemyToErase = enemyToErase.substring(0, enemyToErase.length()-1);
+                                                        }
+                                                        if(enemyToErase.equals(monstersInEncounter.get(highestMonsterIndex).getMonsterName())){
+                                                            listOfPriorities.remove(i);
+                                                            if(i < q){
+                                                                q--;
+                                                            }
+                                                            if(q < 0){
+                                                                q = 0;
+                                                            }
+                                                            i = listOfPriorities.size();
+                                                        }
+                                                        i++;
+                                                    }
                                                     monstersInEncounter.remove(highestMonsterIndex);
+                                                    aliveMonsters--;
+
+
+
                                                 }
 
                                             }
@@ -1188,7 +1237,29 @@ public class UIController {
                                                     monstersInEncounter.get(smallestMonsterIndex).setActualHitPoints(total);
                                                     if (total == 0) {
                                                         uiManager.showMessage(attackedMonster + " dies.");
+                                                        i = 0;
+                                                        while(i < listOfPriorities.size()){
+                                                            auxName = listOfPriorities.get(i).split("\\d+");
+                                                            String enemyToErase = auxName[0];
+                                                            if(enemyToErase.contains("-")){
+                                                                enemyToErase = enemyToErase.substring(0, enemyToErase.length()-1);
+                                                            }
+                                                            if(enemyToErase.equals(monstersInEncounter.get(smallestMonsterIndex).getMonsterName())){
+                                                                listOfPriorities.remove(i);
+                                                                if(i < q){
+                                                                    q--;
+                                                                }
+                                                                if(q<0){
+                                                                    q = 0;
+                                                                }
+                                                                i = listOfPriorities.size();
+                                                            }
+                                                            i++;
+                                                        }
                                                         monstersInEncounter.remove(smallestMonsterIndex);
+                                                        aliveMonsters--;
+
+
                                                     }
                                                 }
                                             }
@@ -1223,7 +1294,7 @@ public class UIController {
                 //FASE DE DESCANSO
                 uiManager.showRestStage();
 
-                int xpSum = adventureManager.sumAllMonsterXp(monstersInEncounter);
+
                 boolean levelUp;
                 //Cogemos toda la XP del encuentro y la repartimos entre todos los miembros de la party por igual. Todos recibirán toda la cantidad
                 i = 0;
