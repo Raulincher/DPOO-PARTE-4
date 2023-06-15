@@ -644,13 +644,4 @@ public class CharacterManager {
     public void levelUpdateAPI(Character character, int gainedXp) throws IOException {
         characterAPI.updateToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character,gainedXp);
     }
-
-    /**
-     * Esta función servirá para borrar un personaje de la API en caso de emergencia
-     * @throws IOException, en caso de error
-     */
-    public void emergencyDelete() throws IOException {
-        characterAPI.deleteFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
-    }
-
 }

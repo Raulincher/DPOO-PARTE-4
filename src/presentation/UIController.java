@@ -476,7 +476,6 @@ public class UIController {
         int monsterOption;
         int monsterDeleteOption;
         boolean adventureSaved, exist;
-        error = 0;
         String adventureName = null;
 
         // Preguntamos por los datos de la adventure
