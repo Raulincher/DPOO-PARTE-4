@@ -35,7 +35,6 @@ public class Adventurer extends Character {
     /**
      * Esta función servirá para calcular la vida
      * inicial de un personaje.
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -55,7 +54,6 @@ public class Adventurer extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * adventurer
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
@@ -75,7 +73,6 @@ public class Adventurer extends Character {
     /**
      * Esta función servirá para realizar el ataque Sword Slash
      * del adventurer
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return ataque del personaje

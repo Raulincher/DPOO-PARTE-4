@@ -34,7 +34,6 @@ public class Champion extends Character {
     /**
      * Esta función servirà para calcular la vida inicial
      * de cada Champion
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -55,7 +54,6 @@ public class Champion extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Champion
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, número de iniciativa del personaje
@@ -75,7 +73,6 @@ public class Champion extends Character {
     /**
      * Esta función servirá para realizar el ataque Sword Slash
      * mejorado del Champion
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return int con el ataque que realizará

@@ -191,7 +191,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
@@ -212,7 +211,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 10 simulando tirar
      * un dado de 10 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return damage, int que será el número daño que causará
@@ -241,7 +239,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 6 simulando tirar
      * un dado de 6 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
@@ -260,7 +257,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 8 simulando tirar
      * un dado de 8 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
@@ -280,7 +276,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 20 simulando tirar
      * un dado de 8 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
@@ -300,7 +295,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 20 simulando tirar
      * un dado de 8 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado
@@ -320,7 +314,6 @@ public abstract class Character {
     /**
      * Esta función genera un número entre el 1 y el 12 simulando tirar
      * un dado de 12 caras
-     *
      * La usamos en los hijos de la clase Character
      *
      * @return roll, int que será el número random generado

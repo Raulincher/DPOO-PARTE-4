@@ -34,7 +34,6 @@ public class Paladin extends Character {
     /**
      * Esta función servirà para calcular la vida inicial
      * de cada Cleric
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -52,7 +51,6 @@ public class Paladin extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Paladin
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
@@ -68,7 +66,6 @@ public class Paladin extends Character {
     /**
      * Esta función servirá para realizar el movimiento Never on my watch,
      * con el que se sumará el spirit
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return spirit resultante

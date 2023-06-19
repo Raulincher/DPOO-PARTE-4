@@ -34,7 +34,6 @@ public class Cleric extends Character {
     /**
      * Esta función servirà para calcular la vida inicial
      * de cada Cleric
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -52,7 +51,6 @@ public class Cleric extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Cleric
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
@@ -67,7 +65,6 @@ public class Cleric extends Character {
 
     /**
      * Esta función servirá para aumentar el spirit del personaje
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return spirit resultante

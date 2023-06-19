@@ -34,7 +34,6 @@ public class Warrior extends Character {
     /**
      * Esta función servirà para calcular la vida inicial
      * de cada Cleric
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -55,7 +54,6 @@ public class Warrior extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Warrior
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
@@ -75,7 +73,6 @@ public class Warrior extends Character {
     /**
      * Esta función servirá para realizar el ataque Sword Slash
      * mejorado del Warrior
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return int con el ataque que realizará

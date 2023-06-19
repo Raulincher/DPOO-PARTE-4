@@ -57,7 +57,6 @@ public class Mage extends Character {
     /**
      * Esta función servirà para calcular la vida inicial
      * de cada Mage
-     *
      * Sobreescribe el método initialLifeCalculator
      * de la clase character
      *
@@ -75,7 +74,6 @@ public class Mage extends Character {
     /**
      * Esta función servirá para calcular la iniciativa del
      * Mage
-     *
      * Esta función sobreescribe initiative de la clase character
      *
      * @return initiative, iniciativa del personaje
@@ -118,7 +116,6 @@ public class Mage extends Character {
 
     /**
      * Esta función servirá para calcular cuánto daño se hará con el misil
-     *
      * sobreescribe el método attack de la clase character
      *
      * @return dmg, daño resultante
