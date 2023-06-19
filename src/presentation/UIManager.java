@@ -78,20 +78,31 @@ public class UIManager {
         System.out.println(message);
     }
 
-
+    /**
+     * Esta función servirá para mostrar que se está produciendo la Preparation Stage
+     * No tendrá ni param ni return
+     */
     public void showPrepStage(){
         System.out.println("-------------------------");
         System.out.println("*** Preparation stage ***");
         System.out.println("-------------------------\n");
     }
 
-
+    /**
+     * Esta función servirá para mostrar que se está produciendo la Combat Stage
+     * No tendrá ni param ni return
+     */
     public void showCombatStage(){
         System.out.println("\n\n--------------------");
         System.out.println("*** Combat stage ***");
         System.out.println("--------------------");
     }
 
+    /**
+     * Esta función servirá para mostrar que se ha terminado el combate y
+     * se entra en la Rest Stage
+     * No tendrá ni param ni return
+     */
     public void showRestStage(){
         System.out.println("All enemies are defeated.");
         System.out.println("--------------------");
@@ -131,6 +142,17 @@ public class UIManager {
         return scanner.nextLine();
     }
 
+    /**
+     * Esta función servirá para mostrar el mensaje correspondiente
+     * según que clase sea el personaje que ataque
+     *
+     * @param actualName, nombre del personaje
+     * @param attackedMonster, nombre del monstruo que ataca
+     * @param characterClass, clase del personaje
+     * @param heal, curación en caso que el personaje cure
+     * @param multihit, para los magos que hagan multihit
+     * @param healedCharacter, personaje que sea curado
+     */
     public void messageAttack(String actualName, String attackedMonster, String characterClass, int heal, int multihit, String healedCharacter){
         String message = "empty";
         switch (characterClass) {
@@ -178,34 +200,58 @@ public class UIManager {
 
         showMessage(message);
     }
-    
-    
+
+    /**
+     * Esta función servirá para mostrar el hit y el dañó provocado,
+     * teniendo en cuenta si es crítico o si se falla
+     *
+     * @param damage, daño provocado
+     * @param typeOfDamage, tipo de daño que provoca
+     * @param isCrit, int para saber si el hit será crítico
+     */
     public void hitMessage(int damage, String typeOfDamage, int isCrit){
         String message;
 
+        // En caso que sea crítico
         if(isCrit == 2){
             message = "Critical hit and deals " + (damage * 2) + " " + typeOfDamage + " damage.";
-        }else if(isCrit == 1){
+        }
+        // En caso que sea normal
+        else if(isCrit == 1){
             message = "Hit and deals " + damage + " " + typeOfDamage + " damage.";
-        }else{
+        }
+        // En caso que falle
+        else{
             message = "Fails and deals 0 damage.";
         }
 
         showMessage(message);
     }
 
-
+    /**
+     * Esta función servirá para mostrar la situación de vida en la que se encuentran
+     * nos personajes
+     *
+     * @param actualLife, vida actual del personaje
+     * @param actualName, nombre del personaje
+     * @param totalLife, vida total que tenía el personaje
+     * @param shield, escudo en caso que tenga
+     * @param z, int para saber si se trata del primer personaje que se nombra
+     */
     public void showLifeInBattle(int actualLife, String actualName, int totalLife, int shield, int z){
 
         String message;
 
+        // En caso que no lleve shield
         if(shield == -1){
             if(z == 0){
                message = "\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points";
             }else{
                 message = "\t- "+ actualName + "\t\t"+ actualLife + " / " + totalLife + " hit points";
             }
-        }else{
+        }
+        // En caso que lleve shield
+        else{
             if(z == 0){
                 message = "\t- "+ actualName + "\t\t\t"+ actualLife + " / " + totalLife + " hit points (Shield: " + shield + ")";
             }else{
@@ -215,6 +261,11 @@ public class UIManager {
         showMessage(message);
     }
 
+    /**
+     * Esta función servirá para mostrar el grupo ha sido derrotado y han caído
+     * todos inconscientes
+     * No tendrá ni param ni return
+     */
     public void unconsciousMessage(){
         System.out.println("""
                     Tavern keeper: Lad, wake up. Yes, your party fell unconscious.
@@ -222,8 +273,17 @@ public class UIManager {
                     """);
     }
 
+    /**
+     * Esta función servirá para mostrar el ataque en área del boss
+     *
+     * @param consciousPosition, lista con los jugadores aún conscientes
+     * @param actualName, nombre del boss
+     */
     public void bossAttackMessage(ArrayList<String> consciousPosition, String actualName){
         String message;
+
+        // Abrimos un seguido de if/else if según los personajes con vida que aún estén disponibles
+        // Para sufrir el ataque en área del boss
         if(consciousPosition.size() == 1){
             message = "\n" + actualName + " attacks " + consciousPosition.get(0) + ".";
         }else if(consciousPosition.size() == 2){
@@ -238,11 +298,23 @@ public class UIManager {
         showMessage(message);
     }
 
+    /**
+     * Esta función servirá para mostrar que un jugador ha caído inconsciente
+     * No tendrá ni param ni return
+     */
     public void deadMessage(String name){
         showMessage(name + " falls unconscious.");
     }
 
-
+    /**
+     * Esta función servirá para mostrar que un personaje usa su habilidad en la fase de
+     * preparación
+     *
+     * @param characterClass, clase del personaje
+     * @param characterName, nombre del personaje
+     * @param shield, shield en caso que tenga
+     * @param roll, dado D3
+     */
     public void showAbilitiesPrepPhase(String characterClass, String characterName, int shield, int roll) {
 
         String message = "";
@@ -272,8 +344,15 @@ public class UIManager {
         showMessage(message);
     }
 
-
-
+    /**
+     * Esta función servirá para mostrar que un personaje usa su habilidad en la fase de
+     * descanso
+     *
+     * @param characterClass, clase del personaje
+     * @param characterName, nombre del personaje
+     * @param characterCuration, personaje que es curado
+     * @param temporalLife, vida temporal para asegurar que no está muerto
+     */
     public void showAbilitiesRestPhase(String characterClass, String characterName, int characterCuration, int temporalLife) {
 
         String message = characterName + " is reading a book. I guess it feels clever now! (no effect)";

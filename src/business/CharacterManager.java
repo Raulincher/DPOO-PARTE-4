@@ -251,6 +251,7 @@ public class CharacterManager {
 
         boolean exist = false;
         ArrayList<Character> characters;
+        // Usamos IF para comprobar si usa la API o en el JSON
         if(isUsingApi){
             characters = characterAPI.getFromUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters");
 
@@ -281,11 +282,16 @@ public class CharacterManager {
     public String characterTypeOfDamage(String characterClass){
         String typeOfDamage;
 
+        // Abrimos if para determinar los que tendrán daño físico
         if(characterClass.equals("Adventurer") || characterClass.equals("Warrior") || characterClass.equals("Champion")){
             typeOfDamage = "Physical";
-        }else if(characterClass.equals("Cleric") || characterClass.equals("Paladin")){
+        }
+        // Abrimos otro if para determinar los que tendrán daño psíquico
+        else if(characterClass.equals("Cleric") || characterClass.equals("Paladin")){
             typeOfDamage = "Psychical";
-        }else{
+        }
+        // Los demás tendrán daño mágico con un else
+        else{
             typeOfDamage = "Magical";
         }
 

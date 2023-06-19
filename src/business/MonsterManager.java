@@ -194,6 +194,7 @@ public class MonsterManager {
      */
     public void setInitialMonsterLife(ArrayList<Monster> monsters){
 
+        // Lo realizaremos a través de un bucle de todos los monsters
         for (Monster monster : monsters) {
             monster.setActualHitPoints(monster.getMonsterHitPoints());
         }

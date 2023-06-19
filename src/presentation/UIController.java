@@ -1323,6 +1323,7 @@ public class UIController {
                     }else{
                         characterManager.levelUpdate(characterInParty.get(i), xpSum);
                     }
+                    // En caso que suba de nivel mostramos el mensaje correspondiente
                     if(levelUp){
                         characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));
                         uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp." + characterInParty.get(i).getCharacterName() + " levels up. They are now lvl " + characterManager.revertXpToLevel(characterInParty.get(i).getCharacterLevel()) + "!");
@@ -1332,7 +1333,9 @@ public class UIController {
                         if(evolved){
                             uiManager.showMessage(characterInParty.get(i).getCharacterName() + " evolves to " + characterInParty.get(i).getCharacterClass());
                         }
-                    }else{
+                    }
+                    // En caso contrario, mostramos solo el primer mensaje
+                    else{
                         uiManager.showMessage(characterInParty.get(i).getCharacterName() + " gains " + xpSum + " xp.");
                     }
                     characterInParty.set(i,characterManager.getCharacterByName(characterInParty.get(i).getCharacterName(),isUsingApi));

@@ -679,6 +679,7 @@ public class AdventureManager {
                 Paladin paladin = new Paladin(character);
                 heal = paladin.heal();
                 //efectuamos habilidad
+                //Recorremos el bucle de los personajes actuales para aplicarla
                 for (Character value : charactersInParty) {
                     value.setActualLife(Math.min(value.getTotalLife(), value.getActualLife() + heal));
                 }
@@ -741,8 +742,10 @@ public class AdventureManager {
             }
             case "Paladin" -> {
                 Paladin paladin = new Paladin(character);
+                //efectuamos habilidad
                 curation = paladin.heal();
                 int i = 0;
+                //Recorremos el bucle de los personajes actuales para aplicarla
                 while(i < characterInParty.size()){
                     total = characterInParty.get(i).getActualLife() + curation;
                     if(total >= characterInParty.get(i).getTotalLife()){
@@ -765,12 +768,14 @@ public class AdventureManager {
     public void setConsciousPosition(ArrayList<String> consciousPosition, ArrayList<Character> characterInParty){
 
         int a = 0;
+        // En caso que detecte alguien inconsciente actualizamos la lista
         if(consciousPosition.size() != 0){
             for(int b = 0; b < consciousPosition.size(); b++){
                 consciousPosition.remove(b);
                 b--;
             }
         }
+        // Actualizamos la lista añadiendo los que estan conscientes
         for (Character character : characterInParty) {
             int actualLife = character.getActualLife();
             if (actualLife != 0) {
