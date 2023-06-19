@@ -300,7 +300,7 @@ public class UIManager {
 
     /**
      * Esta función servirá para mostrar que un jugador ha caído inconsciente
-     * No tendrá ni param ni return
+     * @param name, nombre del PJ inconsciente
      */
     public void deadMessage(String name){
         showMessage(name + " falls unconscious.");

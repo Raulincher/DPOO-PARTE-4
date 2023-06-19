@@ -21,6 +21,7 @@ public class MonsterManager {
      * Esta función servirá para construir el MonsterManager
      *
      * @param monsterDAO, lo vincularemos con su respectivo DAO
+     * @param monsterAPI, lo vincularemos con su respectiva API
      */
     public MonsterManager(MonsterDAO monsterDAO, MonsterAPI monsterAPI) {
         this.monsterDAO = monsterDAO;

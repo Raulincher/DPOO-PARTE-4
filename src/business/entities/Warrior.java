@@ -16,6 +16,8 @@ public class Warrior extends Character {
      * @param mind, mind del Character
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
+     * @param actualLife, PV actuales
+     * @param totalLife, PV totales
      */
     public Warrior(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife) {
         super(characterName, playerName, characterLevel, body, mind, spirit, characterClass, actualLife, totalLife);

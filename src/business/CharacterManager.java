@@ -28,6 +28,7 @@ public class CharacterManager {
      * Esta función servirá para construir el CharacterManager
      *
      * @param characterDAO, lo vincularemos con su respectivo DAO
+     * @param characterAPI, lo vincularemos con su respectiva api
      */
     public CharacterManager(CharacterDAO characterDAO, CharacterAPI characterAPI){
         this.characterDAO = characterDAO;
@@ -43,6 +44,7 @@ public class CharacterManager {
      * @param body, el body deseado del personaje
      * @param mind, el mind deseado del personaje
      * @param spirit, el espíritu deseado del personaje
+     * @param characterClass, clase del PJ
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacter(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass){
@@ -67,6 +69,7 @@ public class CharacterManager {
      * @param body, el body deseado del personaje
      * @param mind, el mind deseado del personaje
      * @param spirit, el espíritu deseado del personaje
+     * @param characterClass, clase del PJ
      * @return se guardará a través del DAO el personaje creado
      */
     public boolean createCharacterAPI(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass) throws IOException {
@@ -245,6 +248,7 @@ public class CharacterManager {
      * uso o está disponible
      *
      * @param name, valor que contendrá el posible nombre del personaje
+     * @param isUsingApi, boolean que nos dirá si la api esta siendo usada
      * @return exist, bool que dirá si el nombre está disponible o no
      */
     public boolean characterNameDisponibility(String name, boolean isUsingApi){
@@ -399,6 +403,7 @@ public class CharacterManager {
      * En caso de que no coincida, devuelve la ArrayList vacía
      *
      * @param playerName, valor que contendrá el nombre del jugador
+     * @param isUsingAPI, boolean que nos dirá si la api esta siendo usada
      * @return filteredCharacters, lista con todos los personajes que ha creado un jugador
      */
     public ArrayList<Character> filteredPlayers(String playerName, boolean isUsingAPI){
@@ -513,7 +518,6 @@ public class CharacterManager {
      * @param character  personaje a analizar
      * @param isUsingApi bool para comprobar si es desde la API
      * @return evolved, para comprobar si ha evolucionado o no
-     * @throws IOException, en caso de error
      */
     public boolean evolution(Character character, boolean isUsingApi) throws IOException {
 
@@ -571,7 +575,6 @@ public class CharacterManager {
      *
      * @param character personaje que ha evolucionado
      * @param newClass clase en la que ha evolucionado
-     * @throws IOException, en caso de error
      */
     public void updateEvolutionApi(Character character, String newClass) throws IOException {
         characterAPI.updateClassToUrl("https://balandrau.salle.url.edu/dpoo/S1-Project_12/characters", character, newClass);
@@ -582,6 +585,7 @@ public class CharacterManager {
      * que se ha introducido, buscándolo por la ArrayList
      *
      * @param characterName, valor que contendrá el nombre del personaje
+     * @param isUsingApi, boolean que nos dirá si la api esta siendo usada
      * @return filteredCharacter, personaje resultante de la búsqueda
      */
     public Character getCharacterByName(String characterName, boolean isUsingApi) {

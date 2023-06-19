@@ -117,6 +117,8 @@ public class CharacterAPI {
      * El cuerpo de la solicitud se establece en el parámetro correspondiente y el cuerpo de la respuesta se devuelve por si acaso.
      *
      * @param url Una representación de cadena de la URL para publicar, que se supondrá que utiliza HTTP/HTTPS.
+     * @param character, Pj a actualizar
+     * @param xpplus, cantidad de XP a actualizar
      * Carácter @param El contenido a publicar, que se enviará al servidor en el cuerpo de la solicitud.
      * @throws IOException si la URL tiene un formato incorrecto o no se puede acceder al servidor.
      */
@@ -153,7 +155,6 @@ public class CharacterAPI {
      * @param url link necesario para vincularlo
      * @param character personaje a actualizar la clase
      * @param newClass nueva clase que tendrá el personaje
-     * @throws IOException, en caso de error
      */
     public void updateClassToUrl(String url, Character character, String newClass) throws IOException {
         Gson g = new Gson();

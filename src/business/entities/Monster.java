@@ -23,6 +23,8 @@ public class Monster {
      * @param monsterHitPoints, hitPoints del Monster
      * @param monsterDice, dado de daño del Monster
      * @param damageType, tipo de daño del Monster
+     * @param monsterInitiative, iniciativa del monstruo en combate
+     * @param actualHitPoints, PV actuales
      */
     public Monster(String monsterName, String monsterChallenge, int monsterXpDrop, int monsterHitPoints, int actualHitPoints, int monsterInitiative, String monsterDice, String damageType){
         this.name = monsterName;

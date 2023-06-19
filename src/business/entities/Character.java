@@ -27,6 +27,8 @@ public abstract class Character {
      * @param mind, mind del Character
      * @param spirit, spirit del Character
      * @param characterClass, clase del Character
+     * @param actualLife, PV actuales
+     * @param totalLife, PV totales
      */
     public Character(String characterName, String playerName, int characterLevel, int body, int mind, int spirit, String characterClass, int actualLife, int totalLife){
         this.name = characterName;

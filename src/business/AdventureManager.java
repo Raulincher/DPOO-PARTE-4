@@ -61,6 +61,7 @@ public class AdventureManager {
      * uso o está disponible
      *
      * @param name, valor que contendrá el posible nombre del personaje
+     * @param isUsingApi, boolean que nos dirá si la api esta siendo usada
      * @return exist, bool que dirá si el nombre está disponible o no
      */
     public boolean adventureNameDisponibility(String name, boolean isUsingApi){
@@ -74,13 +75,14 @@ public class AdventureManager {
             adventures = adventureDAO.getAllAdventures();
         }
         int i = 0;
-
-        // Analizamos con un bucle si el nombre coincide en la ArrayList
-        while(i < adventures.size() && !exist){
-            if(name.toLowerCase(Locale.ROOT).matches(adventures.get(i).getAdventureName().toLowerCase(Locale.ROOT))){
-                exist = true;
+        if(adventures != null) {
+            // Analizamos con un bucle si el nombre coincide en la ArrayList
+            while (i < adventures.size() && !exist) {
+                if (name.toLowerCase(Locale.ROOT).matches(adventures.get(i).getAdventureName().toLowerCase(Locale.ROOT))) {
+                    exist = true;
+                }
+                i++;
             }
-            i++;
         }
 
         return exist;
